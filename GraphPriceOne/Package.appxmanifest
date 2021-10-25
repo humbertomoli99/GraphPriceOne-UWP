@@ -8,15 +8,15 @@
   IgnorableNamespaces="uap mp genTemplate">
 
   <Identity
-    Name="B5AD3218-F2F8-4E15-9E3E-7AC316ECFC4A"
-    Publisher="CN=humbe"
-    Version="1.0.0.0" />
+    Name="28981bertomolina.GraphPriceOne"
+    Publisher="CN=07B7D03B-E0D7-4267-BD21-005497AB4FCB"
+    Version="0.0.1.0" />
 
-  <mp:PhoneIdentity PhoneProductId="B5AD3218-F2F8-4E15-9E3E-7AC316ECFC4A" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="bbc37a88-481e-435b-b1de-80388dff3fd9" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>GraphPriceOne</DisplayName>
-    <PublisherDisplayName>humbe</PublisherDisplayName>
+    <PublisherDisplayName>HMLearning</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
