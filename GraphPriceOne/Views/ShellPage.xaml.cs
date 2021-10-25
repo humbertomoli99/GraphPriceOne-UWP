@@ -21,6 +21,9 @@ namespace GraphPriceOne.Views
             DataContext = ViewModel;
             ViewModel.Initialize(contentFrame, NavigationViewControl, KeyboardAccelerators);
 
+            App.mContentFrame = contentFrame;
+            contentFrame.Navigate(typeof(MainPage));
+
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
 
             titleBar.ButtonBackgroundColor = Colors.Transparent;
