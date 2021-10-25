@@ -4,11 +4,14 @@ using GraphPriceOne.Services;
 
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace GraphPriceOne
 {
     public sealed partial class App : Application
     {
+        public static Frame mContentFrame { get; set; }
+
         private Lazy<ActivationService> _activationService;
 
         private ActivationService ActivationService
