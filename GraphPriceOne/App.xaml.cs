@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.IO;
+using GraphPriceOne.Core.Services;
 using GraphPriceOne.Services;
 
 using Windows.ApplicationModel.Activation;
@@ -10,6 +11,18 @@ namespace GraphPriceOne
 {
     public sealed partial class App : Application
     {
+        static ProductService _productService;
+        public static ProductService ProductService
+        {
+            get
+            {
+                if (_productService == null)
+                {
+                    _productService = new ProductService(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Product.db3"));
+                }
+                return _productService;
+            }
+        }
         public static Frame mContentFrame { get; set; }
 
         private Lazy<ActivationService> _activationService;
