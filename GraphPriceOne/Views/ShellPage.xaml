@@ -58,6 +58,9 @@
             IsSettingsVisible="True"
             IsTitleBarAutoPaddingEnabled="False"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+            <winui:NavigationView.AutoSuggestBox>
+                <AutoSuggestBox AutomationProperties.Name="Search" QueryIcon="Find" />
+            </winui:NavigationView.AutoSuggestBox>
             <winui:NavigationView.MenuItems>
                 <!--
                     TODO WTS: Change the symbols for each item as appropriate for your app
