@@ -9,7 +9,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
-    <Grid x:Name="ContentArea" Margin="{StaticResource SmallLeftRightMargin}">
+    <Grid x:Name="ContentArea">
         <Grid>
             <controls:DataGrid
                 x:Uid="DataTable"

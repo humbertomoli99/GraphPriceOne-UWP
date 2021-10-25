@@ -130,7 +130,7 @@
                 </ic:EventTriggerBehavior>
             </i:Interaction.Behaviors>
             <Grid>
-                <Frame x:Name="contentFrame">
+                <Frame x:Name="contentFrame" Margin="{StaticResource ExtraLargeLeftTopRightBottomMargin}">
                     <Grid>
                         <TextBlock Padding="56,16,0,0">Page content!</TextBlock>
                     </Grid>

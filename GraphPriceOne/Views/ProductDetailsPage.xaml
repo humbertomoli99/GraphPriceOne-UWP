@@ -9,7 +9,7 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea" Margin="{StaticResource MediumLeftRightMargin}">
+    <Grid x:Name="ContentArea">
         <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
             <tc:RadCartesianChart x:Uid="CartesianChart">
                 <tc:RadCartesianChart.HorizontalAxis>

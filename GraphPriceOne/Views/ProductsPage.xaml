@@ -9,7 +9,7 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     xmlns:model="using:GraphPriceOne.Core.Models"
     mc:Ignorable="d">
-    <Grid x:Name="ContentArea" Margin="{StaticResource SmallLeftRightMargin}">
+    <Grid x:Name="ContentArea">
         <Grid>
             <controls:DataGrid
                 x:Uid="DataTable"
