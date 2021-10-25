@@ -68,27 +68,46 @@
                 <winui:NavigationViewItem
                     x:Uid="Shell_Main"
                     helpers:NavHelper.NavigateTo="views:MainPage"
-                    Icon="Document" />
+                    Content="Principal"
+                    Tag="Home">
+                    <winui:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10F;" />
+                    </winui:NavigationViewItem.Icon>
+                </winui:NavigationViewItem>
+
+                <winui:NavigationViewItemSeparator />
+                <winui:NavigationViewItemHeader Content="Pages" />
+
+
                 <winui:NavigationViewItem
                     x:Uid="Shell_Stores"
                     helpers:NavHelper.NavigateTo="views:StoresPage"
-                    Icon="Document" />
+                    Content="Stores"
+                    Tag="Stores">
+                    <winui:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE719;" />
+                    </winui:NavigationViewItem.Icon>
+                </winui:NavigationViewItem>
+
                 <winui:NavigationViewItem
                     x:Uid="Shell_Products"
                     helpers:NavHelper.NavigateTo="views:ProductsPage"
-                    Icon="Document" />
-                <winui:NavigationViewItem
-                    x:Uid="Shell_ProductDetails"
-                    helpers:NavHelper.NavigateTo="views:ProductDetailsPage"
-                    Icon="Document" />
+                    Content="Products"
+                    Tag="Products">
+                    <winui:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74C;" />
+                    </winui:NavigationViewItem.Icon>
+                </winui:NavigationViewItem>
+
                 <winui:NavigationViewItem
                     x:Uid="Shell_Export"
                     helpers:NavHelper.NavigateTo="views:ExportPage"
-                    Icon="Document" />
-                <winui:NavigationViewItem
-                    x:Uid="Shell_AddStore"
-                    helpers:NavHelper.NavigateTo="views:AddStorePage"
-                    Icon="Document" />
+                    Content="Exportar"
+                    Tag="Export">
+                    <winui:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA90;" />
+                    </winui:NavigationViewItem.Icon>
+                </winui:NavigationViewItem>
             </winui:NavigationView.MenuItems>
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ViewModel.Selected.Content, Mode=OneWay}">
