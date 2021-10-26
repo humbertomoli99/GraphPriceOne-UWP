@@ -236,4 +236,10 @@ Suspendisse dui purus, scelerisque at, vulputate vitae, pretium mattis, nunc. Ma
     <value>Notifications</value>
     <comment>Navigation view item name for Notifications</comment>
   </data>
+  <data name="Shell_Feedback.Content" xml:space="preserve">
+    <value>Feedback</value>
+  </data>
+  <data name="Shell_HeaderItem.Content" xml:space="preserve">
+    <value>Page</value>
+  </data>
 </root>

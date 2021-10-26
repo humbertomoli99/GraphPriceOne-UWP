@@ -81,9 +81,9 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
                     </winui:NavigationViewItem.Icon>
                 </winui:NavigationViewItem>
-                
+
                 <winui:NavigationViewItemSeparator />
-                <winui:NavigationViewItemHeader Content="Pages" />
+                <winui:NavigationViewItemHeader x:Uid="Shell_HeaderItem" />
 
                 <winui:NavigationViewItem x:Uid="Shell_Stores" helpers:NavHelper.NavigateTo="views:StoresPage">
                     <winui:NavigationViewItem.Icon>
@@ -127,6 +127,19 @@
                     </Grid>
                 </Frame>
             </Grid>
+            <winui:NavigationView.PaneFooter>
+                <StackPanel
+                    x:Name="FooterStackPanel"
+                    Orientation="Vertical"
+                    Visibility="Visible">
+                    <winui:NavigationViewItem x:Uid="Shell_Feedback">
+                        <winui:NavigationViewItem.Icon>
+                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE939;" />
+                        </winui:NavigationViewItem.Icon>
+                    </winui:NavigationViewItem>
+                </StackPanel>
+            </winui:NavigationView.PaneFooter>
+
         </winui:NavigationView>
 
     </Grid>
