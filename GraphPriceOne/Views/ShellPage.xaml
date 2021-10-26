@@ -68,9 +68,7 @@
                     Or to use an IconElement instead of a Symbol see https://github.com/Microsoft/WindowsTemplateStudio/blob/release/docs/UWP/projectTypes/navigationpane.md
                     Edit String/en-US/Resources.resw: Add a menu item title for each page
                 -->
-                <winui:NavigationViewItem
-                    x:Uid="Shell_Main"
-                    helpers:NavHelper.NavigateTo="views:MainPage">
+                <winui:NavigationViewItem x:Uid="Shell_Main" helpers:NavHelper.NavigateTo="views:MainPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10F;" />
                     </winui:NavigationViewItem.Icon>
@@ -79,33 +77,25 @@
                 <winui:NavigationViewItemSeparator />
                 <winui:NavigationViewItemHeader Content="Pages" />
 
-                <winui:NavigationViewItem
-                    x:Uid="Shell_Notifications"
-                    helpers:NavHelper.NavigateTo="views:NotificationsPage">
+                <winui:NavigationViewItem x:Uid="Shell_Notifications" helpers:NavHelper.NavigateTo="views:NotificationsPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
                     </winui:NavigationViewItem.Icon>
                 </winui:NavigationViewItem>
 
-                <winui:NavigationViewItem
-                    x:Uid="Shell_Stores"
-                    helpers:NavHelper.NavigateTo="views:StoresPage">
+                <winui:NavigationViewItem x:Uid="Shell_Stores" helpers:NavHelper.NavigateTo="views:StoresPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE719;" />
                     </winui:NavigationViewItem.Icon>
                 </winui:NavigationViewItem>
 
-                <winui:NavigationViewItem
-                    x:Uid="Shell_Products"
-                    helpers:NavHelper.NavigateTo="views:ProductsPage">
+                <winui:NavigationViewItem x:Uid="Shell_Products" helpers:NavHelper.NavigateTo="views:ProductsPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74C;" />
                     </winui:NavigationViewItem.Icon>
                 </winui:NavigationViewItem>
 
-                <winui:NavigationViewItem
-                    x:Uid="Shell_Export"
-                    helpers:NavHelper.NavigateTo="views:ExportPage">
+                <winui:NavigationViewItem x:Uid="Shell_Export" helpers:NavHelper.NavigateTo="views:ExportPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA90;" />
                     </winui:NavigationViewItem.Icon>
