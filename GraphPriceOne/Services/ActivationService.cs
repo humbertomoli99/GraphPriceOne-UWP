@@ -77,7 +77,7 @@ namespace GraphPriceOne.Services
         {
             if (!e.Handled)
             {
-                e.Handled = TryGoBack(App.mContentFrame);
+                e.Handled = NavigationService.GoBack();
             }
         }
 
@@ -126,26 +126,7 @@ namespace GraphPriceOne.Services
         {
             return args is IActivatedEventArgs;
         }
-        public static bool TryGoBack(Frame frame)
-        {
-            if (frame.CanGoBack)
-            {
-                frame.GoBack();
-                return true;
-            }
-            return false;
-        }
-        // Add this code after the TryGoBack method added previously.
-        // Perform forward navigation if possible.
-        private bool TryGoForward(Frame frame)
-        {
-            if (frame.CanGoForward)
-            {
-                frame.GoForward();
-                return true;
-            }
-            return false;
-        }
+
         // Invoked on every keystroke, including system keys such as Alt key combinations.
         // Used to detect keyboard navigation between pages even when the page itself
         // doesn't have focus.
@@ -160,11 +141,11 @@ namespace GraphPriceOne.Services
             {
                 if (e.VirtualKey == VirtualKey.Left)
                 {
-                    e.Handled = TryGoBack(App.mContentFrame);
+                    e.Handled = NavigationService.GoBack();
                 }
                 else if (e.VirtualKey == VirtualKey.Right)
                 {
-                    e.Handled = TryGoForward(App.mContentFrame);
+                    NavigationService.GoForward();
                 }
             }
         }
@@ -174,11 +155,11 @@ namespace GraphPriceOne.Services
             // For this event, e.Handled arrives as 'true'.
             if (e.CurrentPoint.Properties.IsXButton1Pressed)
             {
-                e.Handled = !TryGoBack(App.mContentFrame);
+                e.Handled = !NavigationService.GoBack();
             }
             else if (e.CurrentPoint.Properties.IsXButton2Pressed)
             {
-                e.Handled = !TryGoForward(App.mContentFrame);
+                NavigationService.GoForward();
             }
         }
     }
