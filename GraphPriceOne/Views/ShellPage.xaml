@@ -70,9 +70,7 @@
                 -->
                 <winui:NavigationViewItem
                     x:Uid="Shell_Main"
-                    helpers:NavHelper.NavigateTo="views:MainPage"
-                    Content="Principal"
-                    Tag="Home">
+                    helpers:NavHelper.NavigateTo="views:MainPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE10F;" />
                     </winui:NavigationViewItem.Icon>
@@ -81,12 +79,17 @@
                 <winui:NavigationViewItemSeparator />
                 <winui:NavigationViewItemHeader Content="Pages" />
 
+                <winui:NavigationViewItem
+                    x:Uid="Shell_Notifications"
+                    helpers:NavHelper.NavigateTo="views:NotificationsPage">
+                    <winui:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
+                    </winui:NavigationViewItem.Icon>
+                </winui:NavigationViewItem>
 
                 <winui:NavigationViewItem
                     x:Uid="Shell_Stores"
-                    helpers:NavHelper.NavigateTo="views:StoresPage"
-                    Content="Stores"
-                    Tag="Stores">
+                    helpers:NavHelper.NavigateTo="views:StoresPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE719;" />
                     </winui:NavigationViewItem.Icon>
@@ -94,9 +97,7 @@
 
                 <winui:NavigationViewItem
                     x:Uid="Shell_Products"
-                    helpers:NavHelper.NavigateTo="views:ProductsPage"
-                    Content="Products"
-                    Tag="Products">
+                    helpers:NavHelper.NavigateTo="views:ProductsPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE74C;" />
                     </winui:NavigationViewItem.Icon>
@@ -104,9 +105,7 @@
 
                 <winui:NavigationViewItem
                     x:Uid="Shell_Export"
-                    helpers:NavHelper.NavigateTo="views:ExportPage"
-                    Content="Exportar"
-                    Tag="Export">
+                    helpers:NavHelper.NavigateTo="views:ExportPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA90;" />
                     </winui:NavigationViewItem.Icon>
