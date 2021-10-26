@@ -122,7 +122,7 @@ namespace GraphPriceOne.Views
 
         private void NavigationViewControl_SelectionChanged(Microsoft.UI.Xaml.Controls.NavigationView sender, Microsoft.UI.Xaml.Controls.NavigationViewSelectionChangedEventArgs args)
         {
-            //contentFrame.BackStack.Clear();
+            contentFrame.BackStack.Clear();
         }
     }
 }
