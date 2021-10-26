@@ -18,7 +18,7 @@ namespace GraphPriceOne
             {
                 if (_productService == null)
                 {
-                    _productService = new ProductService(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Product.db3"));
+                    _productService = new ProductService(Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Product.db3"));
                 }
                 return _productService;
             }
