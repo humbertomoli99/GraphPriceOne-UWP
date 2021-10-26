@@ -54,11 +54,12 @@
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             Header="Title"
             IsBackButtonVisible="Visible"
-            IsBackEnabled="{x:Bind ViewModel.IsBackEnabled, Mode=OneWay}"
+            IsBackEnabled="{Binding ElementName=contentFrame, Path=CanGoBack}"
             IsSettingsVisible="True"
             IsTitleBarAutoPaddingEnabled="False"
             PaneDisplayMode="LeftCompact"
-            SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}">
+            SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
+            SelectionChanged="NavigationViewControl_SelectionChanged">
             <winui:NavigationView.AutoSuggestBox>
                 <AutoSuggestBox AutomationProperties.Name="Search" QueryIcon="Find" />
             </winui:NavigationView.AutoSuggestBox>
