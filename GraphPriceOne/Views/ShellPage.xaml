@@ -127,18 +127,6 @@
                     </Grid>
                 </Frame>
             </Grid>
-            <winui:NavigationView.PaneFooter>
-                <StackPanel
-                    x:Name="FooterStackPanel"
-                    Orientation="Vertical"
-                    Visibility="Visible">
-                    <winui:NavigationViewItem x:Uid="Shell_Feedback">
-                        <winui:NavigationViewItem.Icon>
-                            <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE939;" />
-                        </winui:NavigationViewItem.Icon>
-                    </winui:NavigationViewItem>
-                </StackPanel>
-            </winui:NavigationView.PaneFooter>
 
         </winui:NavigationView>
 
