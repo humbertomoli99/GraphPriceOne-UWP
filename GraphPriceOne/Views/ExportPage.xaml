@@ -5,9 +5,9 @@
     xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
-    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     xmlns:model="using:GraphPriceOne.Core.Models"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
+    muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <Grid>
@@ -22,23 +22,12 @@
                         Remove this column definitions and define columns for your data.
                         Consider adding header properties to Resources.resw
                     -->
-                    <controls:DataGridTextColumn Binding="{Binding OrderID}" Header="OrderID" />
-                    <controls:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
-                    <controls:DataGridTextColumn Binding="{Binding Company}" Header="Company" />
-                    <controls:DataGridTextColumn Binding="{Binding ShipTo}" Header="ShipTo" />
-                    <controls:DataGridTextColumn Binding="{Binding OrderTotal}" Header="OrderTotal" />
-                    <controls:DataGridTextColumn Binding="{Binding Status}" Header="Status" />
-                    <controls:DataGridTemplateColumn Header="Symbol">
-                        <controls:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate x:DataType="model:SampleOrder">
-                                <FontIcon
-                                    Margin="{StaticResource SmallLeftRightMargin}"
-                                    HorizontalAlignment="Left"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                    Glyph="{x:Bind Symbol}" />
-                            </DataTemplate>
-                        </controls:DataGridTemplateColumn.CellTemplate>
-                    </controls:DataGridTemplateColumn>
+                    <controls:DataGridTextColumn Binding="{Binding ID_PRODUCT}" Header="OrderID" />
+                    <controls:DataGridTextColumn Binding="{Binding productName}" Header="OrderDate" />
+                    <controls:DataGridTextColumn Binding="{Binding productDescription}" Header="Company" />
+                    <controls:DataGridTextColumn Binding="{Binding productUrl}" Header="ShipTo" />
+                    <controls:DataGridTextColumn Binding="{Binding PriceTag}" Header="OrderTotal" />
+                    <controls:DataGridTextColumn Binding="{Binding priceCurrency}" Header="Status" />
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>
