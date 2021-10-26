@@ -13,10 +13,10 @@ namespace GraphPriceOne.Core.Services
         public ProductService(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
-            _database.CreateTableAsync<Product>().Wait();
+            _database.CreateTableAsync<ProductInfo>().Wait();
         }
         //Insert & Update
-        public async Task<bool> AddProductAsync(Product productService)
+        public async Task<bool> AddProductAsync(ProductInfo productService)
         {
             if (productService.ID_PRODUCT > 0)
             {
@@ -31,21 +31,21 @@ namespace GraphPriceOne.Core.Services
 
         public async Task<bool> DeleteProductAsync(int id)
         {
-            await _database.DeleteAsync<Product>(id);
+            await _database.DeleteAsync<ProductInfo>(id);
             return await Task.FromResult(true);
         }
 
-        public async Task<Product> GetProductAsync(int id)
+        public async Task<ProductInfo> GetProductAsync(int id)
         {
-            return await _database.Table<Product>().Where(p => p.ID_PRODUCT == id).FirstOrDefaultAsync();
+            return await _database.Table<ProductInfo>().Where(p => p.ID_PRODUCT == id).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetProductsAsync()
+        public async Task<IEnumerable<ProductInfo>> GetProductsAsync()
         {
-            return await Task.FromResult(await _database.Table<Product>().ToListAsync());
+            return await Task.FromResult(await _database.Table<ProductInfo>().ToListAsync());
         }
 
-        public Task<bool> UpdateProductAsync(Product productService)
+        public Task<bool> UpdateProductAsync(ProductInfo productService)
         {
             throw new NotImplementedException();
         }

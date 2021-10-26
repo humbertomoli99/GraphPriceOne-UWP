@@ -6,7 +6,7 @@ using System.Text;
 
 namespace GraphPriceOne.Core.Models
 {
-    public class Product
+    public class ProductInfo
     {
         [PrimaryKey, AutoIncrement]
         public int ID_PRODUCT { get; set; }

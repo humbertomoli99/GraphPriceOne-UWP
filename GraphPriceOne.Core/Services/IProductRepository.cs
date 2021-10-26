@@ -8,10 +8,10 @@ namespace GraphPriceOne.Core.Services
 {
     public interface IProductRepository
     {
-        Task<bool> AddProductAsync(Product productService);
-        Task<bool> UpdateProductAsync(Product productService);
+        Task<bool> AddProductAsync(ProductInfo productService);
+        Task<bool> UpdateProductAsync(ProductInfo productService);
         Task<bool> DeleteProductAsync(int id);
-        Task<Product> GetProductAsync(int id);
-        Task<IEnumerable<Product>> GetProductsAsync();
+        Task<ProductInfo> GetProductAsync(int id);
+        Task<IEnumerable<ProductInfo>> GetProductsAsync();
     }
 }
