@@ -1,5 +1,5 @@
 ﻿using System;
-
+using GraphPriceOne.Services;
 using GraphPriceOne.ViewModels;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
@@ -21,8 +21,7 @@ namespace GraphPriceOne.Views
             DataContext = ViewModel;
             ViewModel.Initialize(contentFrame, NavigationViewControl, KeyboardAccelerators);
 
-            App.mContentFrame = contentFrame;
-            contentFrame.Navigate(typeof(MainPage));
+            NavigationService.Navigate(typeof(MainPage));
 
             var titleBar = ApplicationView.GetForCurrentView().TitleBar;
 
