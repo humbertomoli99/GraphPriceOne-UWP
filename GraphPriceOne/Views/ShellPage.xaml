@@ -75,13 +75,15 @@
                 </winui:NavigationViewItem>
 
                 <winui:NavigationViewItemSeparator />
-                <winui:NavigationViewItemHeader Content="Pages" />
 
                 <winui:NavigationViewItem x:Uid="Shell_Notifications" helpers:NavHelper.NavigateTo="views:NotificationsPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA8F;" />
                     </winui:NavigationViewItem.Icon>
                 </winui:NavigationViewItem>
+                
+                <winui:NavigationViewItemSeparator />
+                <winui:NavigationViewItemHeader Content="Pages" />
 
                 <winui:NavigationViewItem x:Uid="Shell_Stores" helpers:NavHelper.NavigateTo="views:StoresPage">
                     <winui:NavigationViewItem.Icon>
