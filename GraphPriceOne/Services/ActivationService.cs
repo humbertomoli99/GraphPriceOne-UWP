@@ -8,6 +8,8 @@ using GraphPriceOne.Core.Helpers;
 using GraphPriceOne.Services;
 
 using Windows.ApplicationModel.Activation;
+using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -44,6 +46,15 @@ namespace GraphPriceOne.Services
                 {
                     // Create a Shell or Frame to act as the navigation context
                     Window.Current.Content = _shell?.Value ?? new Frame();
+
+                    // Add support for system back requests. 
+                    SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
+                    // Add support for accelerator keys. 
+                    // Listen to the window directly so the app responds
+                    // to accelerator keys regardless of which element has focus.
+                    Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += CoreDispatcher_AcceleratorKeyActivated;
+                    // Add support for mouse navigation buttons. 
+                    Window.Current.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
                 }
             }
 
@@ -59,6 +70,14 @@ namespace GraphPriceOne.Services
 
                 // Tasks after activation
                 await StartupAsync();
+            }
+        }
+        // Handle system back requests.
+        private void System_BackRequested(object sender, BackRequestedEventArgs e)
+        {
+            if (!e.Handled)
+            {
+                e.Handled = TryGoBack(App.mContentFrame);
             }
         }
 
@@ -106,6 +125,61 @@ namespace GraphPriceOne.Services
         private bool IsInteractive(object args)
         {
             return args is IActivatedEventArgs;
+        }
+        public static bool TryGoBack(Frame frame)
+        {
+            if (frame.CanGoBack)
+            {
+                frame.GoBack();
+                return true;
+            }
+            return false;
+        }
+        // Add this code after the TryGoBack method added previously.
+        // Perform forward navigation if possible.
+        private bool TryGoForward(Frame frame)
+        {
+            if (frame.CanGoForward)
+            {
+                frame.GoForward();
+                return true;
+            }
+            return false;
+        }
+        // Invoked on every keystroke, including system keys such as Alt key combinations.
+        // Used to detect keyboard navigation between pages even when the page itself
+        // doesn't have focus.
+        private void CoreDispatcher_AcceleratorKeyActivated(CoreDispatcher sender, AcceleratorKeyEventArgs e)
+        {
+            // When Alt+Left are pressed navigate back.
+            // When Alt+Right are pressed navigate forward.
+            if (e.EventType == CoreAcceleratorKeyEventType.SystemKeyDown
+                && (e.VirtualKey == VirtualKey.Left || e.VirtualKey == VirtualKey.Right)
+                && e.KeyStatus.IsMenuKeyDown == true
+                && !e.Handled)
+            {
+                if (e.VirtualKey == VirtualKey.Left)
+                {
+                    e.Handled = TryGoBack(App.mContentFrame);
+                }
+                else if (e.VirtualKey == VirtualKey.Right)
+                {
+                    e.Handled = TryGoForward(App.mContentFrame);
+                }
+            }
+        }
+        // Handle mouse back button.
+        private void CoreWindow_PointerPressed(CoreWindow sender, PointerEventArgs e)
+        {
+            // For this event, e.Handled arrives as 'true'.
+            if (e.CurrentPoint.Properties.IsXButton1Pressed)
+            {
+                e.Handled = !TryGoBack(App.mContentFrame);
+            }
+            else if (e.CurrentPoint.Properties.IsXButton2Pressed)
+            {
+                e.Handled = !TryGoForward(App.mContentFrame);
+            }
         }
     }
 }
