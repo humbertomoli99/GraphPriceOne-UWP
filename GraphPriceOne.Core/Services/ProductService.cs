@@ -14,6 +14,11 @@ namespace GraphPriceOne.Core.Services
         {
             _database = new SQLiteAsyncConnection(dbPath);
             _database.CreateTableAsync<ProductInfo>().Wait();
+            _database.CreateTableAsync<Store>().Wait();
+            _database.CreateTableAsync<Selectores>().Wait();
+            _database.CreateTableAsync<ProductPhotos>().Wait();
+            _database.CreateTableAsync<Notifications>().Wait();
+            _database.CreateTableAsync<History>().Wait();
         }
         //Insert & Update
         public async Task<bool> AddProductAsync(ProductInfo productService)
