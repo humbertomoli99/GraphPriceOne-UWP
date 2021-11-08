@@ -50,9 +50,11 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(await _database.Table<ProductInfo>().ToListAsync());
         }
 
-        public Task<bool> UpdateProductAsync(ProductInfo productService)
+        public async Task<bool> UpdateProductAsync(ProductInfo productService)
         {
-            throw new NotImplementedException();
+            await _database.UpdateAsync(productService);
+            return await Task.FromResult(true);
+            //throw new NotImplementedException();
         }
     }
 }
