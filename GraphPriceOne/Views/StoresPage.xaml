@@ -42,5 +42,13 @@
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>
+        <Grid>
+            <Button
+                Margin="10,10,10,10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Content="➕ Add Store"
+                Style="{StaticResource AccentButtonStyle}" />
+        </Grid>
     </Grid>
 </Page>

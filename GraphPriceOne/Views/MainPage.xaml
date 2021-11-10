@@ -14,5 +14,13 @@
                 Place your content here.
             -->
         </Grid>
+        <Grid>
+            <Button
+                Margin="10,10,10,10"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Content="➕ Add Product"
+                Style="{StaticResource AccentButtonStyle}" />
+        </Grid>
     </Grid>
 </Page>
