@@ -34,7 +34,7 @@ namespace GraphPriceOne.Library
                 SuggestedFileName = "Products List"
             };
 
-            savePicker.FileTypeChoices.Add("Data in table form", new List<string>() { ".csv" });
+            savePicker.FileTypeChoices.Add("Spreadsheet", new List<string>() { ".csv" });
 
             StorageFile file = await savePicker.PickSaveFileAsync();
             if (file != null)
