@@ -27,9 +27,6 @@ namespace GraphPriceOne.Library
                 csv.WriteRecords(data);
             }
 
-
-            var ExportFolder = ApplicationData.Current.LocalFolder.Path;
-
             StorageFolder folderExit = await StorageFolder.GetFolderFromPathAsync(folder);
             StorageFile SaveFile = await folderExit.GetFileAsync(fileName);
 
