@@ -39,7 +39,7 @@ namespace GraphPriceOne.Core.Services
                 _database.CreateTableAsync<Store>().Wait();
                 _database.CreateTableAsync<Selectores>().Wait();
                 _database.CreateTableAsync<ProductPhotos>().Wait();
-                _database.CreateTableAsync<Notifications>().Wait();
+                _database.CreateTableAsync<Notification>().Wait();
                 _database.CreateTableAsync<History>().Wait();
             }
         }
