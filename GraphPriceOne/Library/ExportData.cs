@@ -10,8 +10,6 @@ namespace GraphPriceOne.Library
 {
     public class ExportData
     {
-        private static SQLiteConnection _sqlite;
-
         public static async void ExportDataCsv()
         {
             var data = await App.ProductService.GetProductsAsync();
