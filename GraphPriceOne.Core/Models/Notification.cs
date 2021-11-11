@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GraphPriceOne.Core.Models
 {
-    public class Notifications
+    public class Notification
     {
         [PrimaryKey, AutoIncrement]
         public int ID_PRODUCT { get; set; }
