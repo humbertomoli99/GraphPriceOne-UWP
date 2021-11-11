@@ -47,8 +47,8 @@
                 Margin="10,10,10,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
-                Content="➕ Add New Store"
                 Click="Button_Click"
+                Content="➕ Add New Store"
                 Style="{StaticResource AccentButtonStyle}" />
         </Grid>
     </Grid>

@@ -36,8 +36,9 @@
                 Margin="10,10,10,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
+                Click="Button_Click"
                 Content="⏏️ Export Data"
-                Style="{StaticResource AccentButtonStyle}" Click="Button_Click" />
+                Style="{StaticResource AccentButtonStyle}" />
         </Grid>
     </Grid>
 </Page>
