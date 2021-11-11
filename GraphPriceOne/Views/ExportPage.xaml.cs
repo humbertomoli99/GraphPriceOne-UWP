@@ -1,5 +1,5 @@
 ﻿using System;
-
+using GraphPriceOne.Library;
 using GraphPriceOne.ViewModels;
 
 using Windows.UI.Xaml.Controls;
@@ -23,6 +23,11 @@ namespace GraphPriceOne.Views
             base.OnNavigatedTo(e);
 
             await ViewModel.LoadDataAsync();
+        }
+
+        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        {
+            ExportData.ExportDataCsv();
         }
     }
 }
