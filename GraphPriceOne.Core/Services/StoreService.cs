@@ -26,21 +26,21 @@ namespace GraphPriceOne.Core.Services
 
         public async Task<bool> DeleteProductAsync(int id)
         {
-            await _database.DeleteAsync<ProductInfo>(id);
+            await _database.DeleteAsync<Store>(id);
             return await Task.FromResult(true);
         }
 
-        public async Task<ProductInfo> GetProductAsync(int id)
+        public async Task<Store> GetProductAsync(int id)
         {
-            return await _database.Table<ProductInfo>().Where(p => p.ID_PRODUCT == id).FirstOrDefaultAsync();
+            return await _database.Table<Store>().Where(p => p.ID_STORE == id).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<ProductInfo>> GetProductsAsync()
+        public async Task<IEnumerable<Store>> GetProductsAsync()
         {
-            return await Task.FromResult(await _database.Table<ProductInfo>().ToListAsync());
+            return await Task.FromResult(await _database.Table<Store>().ToListAsync());
         }
 
-        public async Task<bool> UpdateProductAsync(ProductInfo storeService)
+        public async Task<bool> UpdateProductAsync(Store storeService)
         {
             await _database.UpdateAsync(storeService);
             return await Task.FromResult(true);
