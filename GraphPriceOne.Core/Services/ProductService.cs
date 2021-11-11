@@ -2,6 +2,8 @@
 using SQLite;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,12 +15,33 @@ namespace GraphPriceOne.Core.Services
         public ProductService(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
-            _database.CreateTableAsync<ProductInfo>().Wait();
-            _database.CreateTableAsync<Store>().Wait();
-            _database.CreateTableAsync<Selectores>().Wait();
-            _database.CreateTableAsync<ProductPhotos>().Wait();
-            _database.CreateTableAsync<Notifications>().Wait();
-            _database.CreateTableAsync<History>().Wait();
+
+            if (!File.Exists(dbPath))
+            {
+                var StoresList = DefaultData.AllDefaultStores().ToList();
+                var SelectoresList = DefaultData.AllDefaultSelectores().ToList();
+
+                _database.CreateTableAsync<Store>();
+                _database.CreateTableAsync<Selector>();
+
+                foreach (var item in StoresList)
+                {
+                    _database.InsertAsync(item);
+                }
+                foreach (var item in SelectoresList)
+                {
+                    _database.InsertAsync(item);
+                }
+            }
+            else
+            {
+                _database.CreateTableAsync<ProductInfo>().Wait();
+                _database.CreateTableAsync<Store>().Wait();
+                _database.CreateTableAsync<Selectores>().Wait();
+                _database.CreateTableAsync<ProductPhotos>().Wait();
+                _database.CreateTableAsync<Notifications>().Wait();
+                _database.CreateTableAsync<History>().Wait();
+            }
         }
         //Insert & Update
         public async Task<bool> AddProductAsync(ProductInfo productService)
