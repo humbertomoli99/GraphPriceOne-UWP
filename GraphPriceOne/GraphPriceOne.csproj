@@ -384,6 +384,10 @@
     </SDKReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Connection\Connection.csproj">
+      <Project>{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}</Project>
+      <Name>Connection</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GraphPriceOne.Core\GraphPriceOne.Core.csproj">
       <Project>{1DFD7937-A34A-4392-A1CE-163A2242F2B0}</Project>
       <Name>GraphPriceOne.Core</Name>
