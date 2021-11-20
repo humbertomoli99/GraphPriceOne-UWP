@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphPriceOne.Tests.MSTest"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphPriceOne.Core", "GraphPriceOne.Core\GraphPriceOne.Core.csproj", "{1DFD7937-A34A-4392-A1CE-163A2242F2B0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Connection", "Connection\Connection.csproj", "{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,26 @@ Global
 		{1DFD7937-A34A-4392-A1CE-163A2242F2B0}.Release|x64.Build.0 = Release|Any CPU
 		{1DFD7937-A34A-4392-A1CE-163A2242F2B0}.Release|x86.ActiveCfg = Release|Any CPU
 		{1DFD7937-A34A-4392-A1CE-163A2242F2B0}.Release|x86.Build.0 = Release|Any CPU
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|ARM.ActiveCfg = Debug|ARM
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|ARM.Build.0 = Debug|ARM
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|ARM64.Build.0 = Debug|ARM64
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|x64.ActiveCfg = Debug|x64
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|x64.Build.0 = Debug|x64
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|x86.ActiveCfg = Debug|x86
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Debug|x86.Build.0 = Debug|x86
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|ARM.ActiveCfg = Release|ARM
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|ARM.Build.0 = Release|ARM
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|ARM64.ActiveCfg = Release|ARM64
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|ARM64.Build.0 = Release|ARM64
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|x64.ActiveCfg = Release|x64
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|x64.Build.0 = Release|x64
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|x86.ActiveCfg = Release|x86
+		{FDFE72DE-D5FE-45FF-970B-49FF2E4ACEAF}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
