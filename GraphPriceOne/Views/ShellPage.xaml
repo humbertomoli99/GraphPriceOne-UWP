@@ -99,11 +99,18 @@
                     </winui:NavigationViewItem.Icon>
                 </winui:NavigationViewItem>
 
+                <winui:NavigationViewItem x:Uid="Shell_PackageTracker" helpers:NavHelper.NavigateTo="views:PackageTrackerPage">
+                    <winui:NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE7B8;" />
+                    </winui:NavigationViewItem.Icon>
+                </winui:NavigationViewItem>
+
                 <winui:NavigationViewItem x:Uid="Shell_Export" helpers:NavHelper.NavigateTo="views:ExportPage">
                     <winui:NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xEA90;" />
                     </winui:NavigationViewItem.Icon>
                 </winui:NavigationViewItem>
+
             </winui:NavigationView.MenuItems>
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ViewModel.Selected.Content, Mode=OneWay}">
