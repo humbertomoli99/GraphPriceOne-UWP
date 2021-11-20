@@ -11,6 +11,12 @@ namespace GraphPriceOne.Core.Services
     {
         public SQLiteAsyncConnection _database;
 
+        public StoreService(string dbPath)
+        {
+            _database = new SQLiteAsyncConnection(dbPath);
+            _database.CreateTableAsync<Store>().Wait();
+        }
+
         public async Task<bool> AddStoreAsync(Store storeService)
         {
             if (storeService.ID_STORE > 0)
