@@ -22,12 +22,10 @@
                         Remove this column definitions and define columns for your data.
                         Consider adding header properties to Resources.resw
                     -->
-                    <controls:DataGridTextColumn Binding="{Binding ID_PRODUCT}" Header="OrderID" />
-                    <controls:DataGridTextColumn Binding="{Binding productName}" Header="OrderDate" />
-                    <controls:DataGridTextColumn Binding="{Binding productDescription}" Header="Company" />
-                    <controls:DataGridTextColumn Binding="{Binding productUrl}" Header="ShipTo" />
-                    <controls:DataGridTextColumn Binding="{Binding PriceTag}" Header="OrderTotal" />
-                    <controls:DataGridTextColumn Binding="{Binding priceCurrency}" Header="Status" />
+                    <controls:DataGridTextColumn Binding="{Binding ID_STORE}" Header="OrderID" />
+                    <controls:DataGridTextColumn Binding="{Binding nameStore}" Header="OrderDate" />
+                    <controls:DataGridTextColumn Binding="{Binding startUrl}" Header="Company" />
+                    <controls:DataGridTextColumn Binding="{Binding image}" Header="ShipTo" />
                 </controls:DataGrid.Columns>
             </controls:DataGrid>
         </Grid>

@@ -11,7 +11,7 @@ namespace GraphPriceOne.ViewModels
 {
     public class ExportViewModel : ObservableObject
     {
-        public ObservableCollection<ProductInfo> Source { get; } = new ObservableCollection<ProductInfo>();
+        public ObservableCollection<Store> Source { get; } = new ObservableCollection<Store>();
 
         public ExportViewModel()
         {
@@ -22,7 +22,7 @@ namespace GraphPriceOne.ViewModels
             Source.Clear();
 
             // Replace this with your actual data
-            var data = await App.ProductService.GetProductsAsync();
+            var data = await App.StoreService.GetStoresAsync();
 
             foreach (var item in data)
             {
