@@ -21,6 +21,7 @@
                 Margin="10,10,10,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
+                Click="Button_Click"
                 Content="➕ Add Shipping"
                 Style="{StaticResource AccentButtonStyle}" />
         </Grid>
