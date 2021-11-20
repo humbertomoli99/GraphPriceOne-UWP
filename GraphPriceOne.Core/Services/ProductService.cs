@@ -15,7 +15,6 @@ namespace GraphPriceOne.Core.Services
         public ProductService(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
-
             if (!File.Exists(dbPath))
             {
                 var StoresList = DefaultData.AllDefaultStores().ToList();
@@ -33,15 +32,12 @@ namespace GraphPriceOne.Core.Services
                     _database.InsertAsync(item);
                 }
             }
-            else
-            {
-                _database.CreateTableAsync<ProductInfo>().Wait();
-                _database.CreateTableAsync<Store>().Wait();
-                _database.CreateTableAsync<Selectores>().Wait();
-                _database.CreateTableAsync<ProductPhotos>().Wait();
-                _database.CreateTableAsync<Notification>().Wait();
-                _database.CreateTableAsync<History>().Wait();
-            }
+            _database.CreateTableAsync<ProductInfo>().Wait();
+            _database.CreateTableAsync<Store>().Wait();
+            _database.CreateTableAsync<Selectores>().Wait();
+            _database.CreateTableAsync<ProductPhotos>().Wait();
+            _database.CreateTableAsync<Notification>().Wait();
+            _database.CreateTableAsync<History>().Wait();
         }
         //Insert & Update
         public async Task<bool> AddProductAsync(ProductInfo productService)
