@@ -21,8 +21,8 @@ namespace GraphPriceOne.Core.Services
                 var StoresList = DefaultData.AllDefaultStores().ToList();
                 var SelectoresList = DefaultData.AllDefaultSelectores().ToList();
 
-                _database.CreateTableAsync<Store>();
-                _database.CreateTableAsync<Selector>();
+                _database.CreateTableAsync<Store>().Wait();
+                _database.CreateTableAsync<Selector>().Wait();
 
                 foreach (var item in StoresList)
                 {
