@@ -40,14 +40,30 @@ namespace GraphPriceOne.Core.Services
             _database.CreateTableAsync<History>().Wait();
         }
 
-        public Task<bool> AddHistoryAsync(History PriceTrackerService)
+        public async Task<bool> AddHistoryAsync(History PriceTrackerService)
         {
-            throw new NotImplementedException();
+            if (PriceTrackerService.ID_HISTORY > 0)
+            {
+                await _database.UpdateAsync(PriceTrackerService);
+            }
+            else
+            {
+                await _database.InsertAsync(PriceTrackerService);
+            }
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> AddNotificationAsync(Notification PriceTrackerService)
+        public async Task<bool> AddNotificationAsync(Notification PriceTrackerService)
         {
-            throw new NotImplementedException();
+            if (PriceTrackerService.ID_PRODUCT > 0)
+            {
+                await _database.UpdateAsync(PriceTrackerService);
+            }
+            else
+            {
+                await _database.InsertAsync(PriceTrackerService);
+            }
+            return await Task.FromResult(true);
         }
 
         //Insert & Update
@@ -64,24 +80,42 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(true);
         }
 
-        public Task<bool> AddSelectorAsync(Selector PriceTrackerService)
+        public async Task<bool> AddSelectorAsync(Selector PriceTrackerService)
         {
-            throw new NotImplementedException();
+            if (PriceTrackerService.ID_SELECTOR > 0)
+            {
+                await _database.UpdateAsync(PriceTrackerService);
+            }
+            else
+            {
+                await _database.InsertAsync(PriceTrackerService);
+            }
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> AddStoreAsync(Store PriceTrackerService)
+        public async Task<bool> AddStoreAsync(Store PriceTrackerService)
         {
-            throw new NotImplementedException();
+            if (PriceTrackerService.ID_STORE > 0)
+            {
+                await _database.UpdateAsync(PriceTrackerService);
+            }
+            else
+            {
+                await _database.InsertAsync(PriceTrackerService);
+            }
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> DeleteHistoryAsync(int id)
+        public async Task<bool> DeleteHistoryAsync(int id)
         {
-            throw new NotImplementedException();
+            await _database.DeleteAsync<History>(id);
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> DeleteNotificationAsync(int id)
+        public async Task<bool> DeleteNotificationAsync(int id)
         {
-            throw new NotImplementedException();
+            await _database.DeleteAsync<Notification>(id);
+            return await Task.FromResult(true);
         }
 
         public async Task<bool> DeleteProductAsync(int id)
@@ -90,34 +124,36 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(true);
         }
 
-        public Task<bool> DeleteSelectorAsync(int id)
+        public async Task<bool> DeleteSelectorAsync(int id)
         {
-            throw new NotImplementedException();
+            await _database.DeleteAsync<Selector>(id);
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> DeleteStoreAsync(int id)
+        public async Task<bool> DeleteStoreAsync(int id)
         {
-            throw new NotImplementedException();
+            await _database.DeleteAsync<Store>(id);
+            return await Task.FromResult(true);
         }
 
-        public Task<IEnumerable<History>> GetHistoriesAsync()
+        public async Task<IEnumerable<History>> GetHistoriesAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(await _database.Table<History>().ToListAsync());
         }
 
-        public Task<History> GetHistoryAsync(int id)
+        public async Task<History> GetHistoryAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _database.Table<History>().Where(p => p.ID_HISTORY == id).FirstOrDefaultAsync();
         }
 
-        public Task<Notification> GetNotificationAsync(int id)
+        public async Task<Notification> GetNotificationAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _database.Table<Notification>().Where(p => p.ID_PRODUCT == id).FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<Notification>> GetNotificationsAsync()
+        public async Task<IEnumerable<Notification>> GetNotificationsAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(await _database.Table<Notification>().ToListAsync());
         }
 
         public async Task<ProductInfo> GetProductAsync(int id)
@@ -130,34 +166,36 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(await _database.Table<ProductInfo>().ToListAsync());
         }
 
-        public Task<Selector> GetSelectorAsync(int id)
+        public async Task<Selector> GetSelectorAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _database.Table<Selector>().Where(p => p.ID_SELECTOR == id).FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<Selector>> GetSelectorsAsync()
+        public async Task<IEnumerable<Selector>> GetSelectorsAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(await _database.Table<Selector>().ToListAsync());
         }
 
-        public Task<Store> GetStoreAsync(int id)
+        public async Task<Store> GetStoreAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _database.Table<Store>().Where(p => p.ID_STORE == id).FirstOrDefaultAsync();
         }
 
-        public Task<IEnumerable<Store>> GetStoresAsync()
+        public async Task<IEnumerable<Store>> GetStoresAsync()
         {
-            throw new NotImplementedException();
+            return await Task.FromResult(await _database.Table<Store>().ToListAsync());
         }
 
-        public Task<bool> UpdateHistoryAsync(History PriceTrackerService)
+        public async Task<bool> UpdateHistoryAsync(History PriceTrackerService)
         {
-            throw new NotImplementedException();
+            await _database.UpdateAsync(PriceTrackerService);
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> UpdateNotificationAsync(Notification PriceTrackerService)
+        public async Task<bool> UpdateNotificationAsync(Notification PriceTrackerService)
         {
-            throw new NotImplementedException();
+            await _database.UpdateAsync(PriceTrackerService);
+            return await Task.FromResult(true);
         }
 
         public async Task<bool> UpdateProductAsync(ProductInfo PriceTrackerService)
@@ -167,14 +205,16 @@ namespace GraphPriceOne.Core.Services
             //throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateSelectorAsync(Selector PriceTrackerService)
+        public async Task<bool> UpdateSelectorAsync(Selector PriceTrackerService)
         {
-            throw new NotImplementedException();
+            await _database.UpdateAsync(PriceTrackerService);
+            return await Task.FromResult(true);
         }
 
-        public Task<bool> UpdateStoreAsync(Store PriceTrackerService)
+        public async Task<bool> UpdateStoreAsync(Store PriceTrackerService)
         {
-            throw new NotImplementedException();
+            await _database.UpdateAsync(PriceTrackerService);
+            return await Task.FromResult(true);
         }
     }
 }
