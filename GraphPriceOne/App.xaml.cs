@@ -12,7 +12,6 @@ namespace GraphPriceOne
     public sealed partial class App : Application
     {
         static PriceTrackerService _productService;
-        static StoreService _storeService;
         public static PriceTrackerService PriceTrackerService
         {
             get
@@ -22,17 +21,6 @@ namespace GraphPriceOne
                     _productService = new PriceTrackerService(Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Product.db3"));
                 }
                 return _productService;
-            }
-        }
-        public static StoreService StoreService
-        {
-            get
-            {
-                if (_storeService == null)
-                {
-                    _storeService = new StoreService(Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Product.db3"));
-                }
-                return _storeService;
             }
         }
         public static Frame mContentFrame { get; set; }
