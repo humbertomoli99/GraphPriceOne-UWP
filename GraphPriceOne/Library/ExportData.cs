@@ -12,7 +12,7 @@ namespace GraphPriceOne.Library
     {
         public static async void ExportDataCsv()
         {
-            var data = await App.ProductService.GetProductsAsync();
+            var data = await App.PriceTrackerService.GetProductsAsync();
 
             var folder = ApplicationData.Current.LocalFolder.Path;
             var fileName = "ProductList.csv";

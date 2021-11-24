@@ -11,15 +11,15 @@ namespace GraphPriceOne
 {
     public sealed partial class App : Application
     {
-        static ProductService _productService;
+        static PriceTrackerService _productService;
         static StoreService _storeService;
-        public static ProductService ProductService
+        public static PriceTrackerService PriceTrackerService
         {
             get
             {
                 if (_productService == null)
                 {
-                    _productService = new ProductService(Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Product.db3"));
+                    _productService = new PriceTrackerService(Path.Combine(Windows.Storage.ApplicationData.Current.LocalFolder.Path, "Product.db3"));
                 }
                 return _productService;
             }

@@ -9,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace GraphPriceOne.Core.Services
 {
-    public class ProductService : IProductRepository
+    public class PriceTrackerService : IProductRepository
     {
         public SQLiteAsyncConnection _database;
-        public ProductService(string dbPath)
+        public PriceTrackerService(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
             if (!File.Exists(dbPath))
@@ -39,6 +39,12 @@ namespace GraphPriceOne.Core.Services
             _database.CreateTableAsync<Notification>().Wait();
             _database.CreateTableAsync<History>().Wait();
         }
+
+        public Task<bool> AddHistoryAsync(History productService)
+        {
+            throw new NotImplementedException();
+        }
+
         //Insert & Update
         public async Task<bool> AddProductAsync(ProductInfo productService)
         {
@@ -53,10 +59,45 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(true);
         }
 
+        public Task<bool> AddSelectorAsync(Selector productService)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> AddStoreAsync(Store productService)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteHistoryAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> DeleteProductAsync(int id)
         {
             await _database.DeleteAsync<ProductInfo>(id);
             return await Task.FromResult(true);
+        }
+
+        public Task<bool> DeleteSelectorAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> DeleteStoreAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<History>> GetHistoriesAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<History> GetHistoryAsync(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<ProductInfo> GetProductAsync(int id)
@@ -69,11 +110,46 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(await _database.Table<ProductInfo>().ToListAsync());
         }
 
+        public Task<Selector> GetSelectorAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Selector>> GetSelectorsAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Store> GetStoreAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Store>> GetStoresAsync()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateHistoryAsync(History productService)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> UpdateProductAsync(ProductInfo productService)
         {
             await _database.UpdateAsync(productService);
             return await Task.FromResult(true);
             //throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateSelectorAsync(Selector productService)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateStoreAsync(Store productService)
+        {
+            throw new NotImplementedException();
         }
     }
 }
