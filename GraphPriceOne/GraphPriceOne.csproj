@@ -188,6 +188,9 @@
     <Compile Include="ViewModels\SettingsViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
     <Compile Include="ViewModels\StoresViewModel.cs" />
+    <Compile Include="Views\AddFirstProductMessage.xaml.cs">
+      <DependentUpon>AddFirstProductMessage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\AddStorePage.xaml.cs">
       <DependentUpon>AddStorePage.xaml</DependentUpon>
     </Compile>
@@ -249,6 +252,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Styles\TextBlock.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\AddFirstProductMessage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
