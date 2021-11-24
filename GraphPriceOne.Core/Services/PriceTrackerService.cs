@@ -40,36 +40,36 @@ namespace GraphPriceOne.Core.Services
             _database.CreateTableAsync<History>().Wait();
         }
 
-        public Task<bool> AddHistoryAsync(History productService)
+        public Task<bool> AddHistoryAsync(History PriceTrackerService)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddNotificationAsync(Notification productService)
+        public Task<bool> AddNotificationAsync(Notification PriceTrackerService)
         {
             throw new NotImplementedException();
         }
 
         //Insert & Update
-        public async Task<bool> AddProductAsync(ProductInfo productService)
+        public async Task<bool> AddProductAsync(ProductInfo PriceTrackerService)
         {
-            if (productService.ID_PRODUCT > 0)
+            if (PriceTrackerService.ID_PRODUCT > 0)
             {
-                await _database.UpdateAsync(productService);
+                await _database.UpdateAsync(PriceTrackerService);
             }
             else
             {
-                await _database.InsertAsync(productService);
+                await _database.InsertAsync(PriceTrackerService);
             }
             return await Task.FromResult(true);
         }
 
-        public Task<bool> AddSelectorAsync(Selector productService)
+        public Task<bool> AddSelectorAsync(Selector PriceTrackerService)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> AddStoreAsync(Store productService)
+        public Task<bool> AddStoreAsync(Store PriceTrackerService)
         {
             throw new NotImplementedException();
         }
@@ -150,29 +150,29 @@ namespace GraphPriceOne.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateHistoryAsync(History productService)
+        public Task<bool> UpdateHistoryAsync(History PriceTrackerService)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateNotificationAsync(Notification productService)
+        public Task<bool> UpdateNotificationAsync(Notification PriceTrackerService)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<bool> UpdateProductAsync(ProductInfo productService)
+        public async Task<bool> UpdateProductAsync(ProductInfo PriceTrackerService)
         {
-            await _database.UpdateAsync(productService);
+            await _database.UpdateAsync(PriceTrackerService);
             return await Task.FromResult(true);
             //throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateSelectorAsync(Selector productService)
+        public Task<bool> UpdateSelectorAsync(Selector PriceTrackerService)
         {
             throw new NotImplementedException();
         }
 
-        public Task<bool> UpdateStoreAsync(Store productService)
+        public Task<bool> UpdateStoreAsync(Store PriceTrackerService)
         {
             throw new NotImplementedException();
         }
