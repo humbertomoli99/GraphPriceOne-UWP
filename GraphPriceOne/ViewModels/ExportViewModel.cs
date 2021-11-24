@@ -22,7 +22,7 @@ namespace GraphPriceOne.ViewModels
             Source.Clear();
 
             // Replace this with your actual data
-            var data = await App.StoreService.GetStoresAsync();
+            var data = await App.PriceTrackerService.GetStoresAsync();
 
             foreach (var item in data)
             {
