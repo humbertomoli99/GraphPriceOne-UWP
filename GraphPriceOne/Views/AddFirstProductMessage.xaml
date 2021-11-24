@@ -9,5 +9,7 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea" />
+    <Grid x:Name="ContentArea">
+        <TextBlock />
+    </Grid>
 </Page>

@@ -31,5 +31,11 @@ namespace GraphPriceOne.Core.Services
         Task<bool> DeleteHistoryAsync(int id);
         Task<History> GetHistoryAsync(int id);
         Task<IEnumerable<History>> GetHistoriesAsync();
+
+        Task<bool> AddNotificationAsync(Notification productService);
+        Task<bool> UpdateNotificationAsync(Notification productService);
+        Task<bool> DeleteNotificationAsync(int id);
+        Task<Notification> GetNotificationAsync(int id);
+        Task<IEnumerable<Notification>> GetNotificationsAsync();
     }
 }
