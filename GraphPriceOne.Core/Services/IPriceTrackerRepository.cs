@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GraphPriceOne.Core.Services
 {
-    public interface IProductRepository
+    public interface IPriceTrackerRepository
     {
         Task<bool> AddProductAsync(ProductInfo productService);
         Task<bool> UpdateProductAsync(ProductInfo productService);

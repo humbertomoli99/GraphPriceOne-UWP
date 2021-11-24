@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GraphPriceOne.Core.Services
 {
-    public class PriceTrackerService : IProductRepository
+    public class PriceTrackerService : IPriceTrackerRepository
     {
         public SQLiteAsyncConnection _database;
         public PriceTrackerService(string dbPath)
@@ -45,6 +45,11 @@ namespace GraphPriceOne.Core.Services
             throw new NotImplementedException();
         }
 
+        public Task<bool> AddNotificationAsync(Notification productService)
+        {
+            throw new NotImplementedException();
+        }
+
         //Insert & Update
         public async Task<bool> AddProductAsync(ProductInfo productService)
         {
@@ -74,6 +79,11 @@ namespace GraphPriceOne.Core.Services
             throw new NotImplementedException();
         }
 
+        public Task<bool> DeleteNotificationAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<bool> DeleteProductAsync(int id)
         {
             await _database.DeleteAsync<ProductInfo>(id);
@@ -96,6 +106,16 @@ namespace GraphPriceOne.Core.Services
         }
 
         public Task<History> GetHistoryAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Notification> GetNotificationAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<IEnumerable<Notification>> GetNotificationsAsync()
         {
             throw new NotImplementedException();
         }
@@ -131,6 +151,11 @@ namespace GraphPriceOne.Core.Services
         }
 
         public Task<bool> UpdateHistoryAsync(History productService)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> UpdateNotificationAsync(Notification productService)
         {
             throw new NotImplementedException();
         }
