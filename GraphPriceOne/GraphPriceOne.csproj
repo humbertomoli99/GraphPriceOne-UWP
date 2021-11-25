@@ -164,6 +164,7 @@
     <Compile Include="Helpers\EnumToBooleanConverter.cs" />
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
+    <Compile Include="Library\ClipboardEvents.cs" />
     <Compile Include="Library\ExportData.cs" />
     <Compile Include="Library\ScrapingDate.cs" />
     <Compile Include="Library\TextBoxEvent.cs" />
