@@ -11,7 +11,7 @@ namespace GraphPriceOne.ViewModels
 {
     public class ProductsViewModel : ObservableObject
     {
-        public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
+        public ObservableCollection<ProductInfo> Source { get; } = new ObservableCollection<ProductInfo>();
 
         public ProductsViewModel()
         {
@@ -22,7 +22,7 @@ namespace GraphPriceOne.ViewModels
             Source.Clear();
 
             // Replace this with your actual data
-            var data = await SampleDataService.GetGridDataAsync();
+            var data = await App.PriceTrackerService.GetProductsAsync();
 
             foreach (var item in data)
             {

@@ -24,8 +24,6 @@ namespace GraphPriceOne.ViewModels
         public Visibility ListProductsVisibility { get; private set; }
         public Visibility CommandBarVisibility { get; set; }
         public bool ListLoad { get; }
-        public ObservableCollection<ProductInfo> Source { get; } = new ObservableCollection<ProductInfo>();
-
         public MainViewModel(object[] campos)
         {
             ListLoad = false;
@@ -37,18 +35,6 @@ namespace GraphPriceOne.ViewModels
             ListLoad = false;
             ShowMessageFirstProduct();
             HideButtons();
-        }
-        public async Task LoadDataAsync()
-        {
-            Source.Clear();
-
-            // Replace this with your actual data
-            var data = await App.PriceTrackerService.GetProductsAsync();
-
-            foreach (var item in data)
-            {
-                Source.Add(item);
-            }
         }
         public ICommand SelectMultiple
         {

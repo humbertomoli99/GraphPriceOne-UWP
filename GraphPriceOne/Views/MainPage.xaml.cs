@@ -10,7 +10,7 @@ namespace GraphPriceOne.Views
 {
     public sealed partial class MainPage : Page
     {
-        public MainViewModel ViewModel { get; } = new MainViewModel();
+        public ProductsViewModel ViewModel { get; } = new ProductsViewModel();
 
         private ProductDetailsViewModel selectors;
 
