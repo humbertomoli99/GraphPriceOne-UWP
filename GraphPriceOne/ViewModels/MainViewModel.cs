@@ -27,14 +27,14 @@ namespace GraphPriceOne.ViewModels
         public MainViewModel(object[] campos)
         {
             ListLoad = false;
-            ShowMessageFirstProduct();
-            HideButtons();
+            HideMessageFirstProduct();
+            ShowButtons();
         }
         public MainViewModel()
         {
             ListLoad = false;
-            ShowMessageFirstProduct();
-            HideButtons();
+            HideMessageFirstProduct();
+            ShowButtons();
         }
         public ICommand SelectMultiple
         {

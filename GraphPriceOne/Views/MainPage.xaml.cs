@@ -5,6 +5,7 @@ using GraphPriceOne.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Navigation;
 
 namespace GraphPriceOne.Views
 {
@@ -20,6 +21,12 @@ namespace GraphPriceOne.Views
             DataContext = new MainViewModel();
 
             selectors = new ProductDetailsViewModel();
+        }
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            await ViewModel.LoadDataAsync();
         }
         private void productView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

@@ -11,36 +11,202 @@
     mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <Grid>
-            <controls:DataGrid
-                x:Uid="DataTable"
-                AutoGenerateColumns="False"
-                GridLinesVisibility="Horizontal"
-                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}">
-                <controls:DataGrid.Columns>
-                    <!--
-                        TODO WTS:
-                        Remove this column definitions and define columns for your data.
-                        Consider adding header properties to Resources.resw
-                    -->
-                    <controls:DataGridTextColumn Binding="{Binding OrderID}" Header="OrderID" />
-                    <controls:DataGridTextColumn Binding="{Binding OrderDate}" Header="OrderDate" />
-                    <controls:DataGridTextColumn Binding="{Binding Company}" Header="Company" />
-                    <controls:DataGridTextColumn Binding="{Binding ShipTo}" Header="ShipTo" />
-                    <controls:DataGridTextColumn Binding="{Binding OrderTotal}" Header="OrderTotal" />
-                    <controls:DataGridTextColumn Binding="{Binding Status}" Header="Status" />
-                    <controls:DataGridTemplateColumn Header="Symbol">
-                        <controls:DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate x:DataType="model:SampleOrder">
+            <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <CommandBar Grid.Row="2" Visibility="{Binding CommandBarVisibility, Mode=TwoWay}">
+                        <AppBarButton Icon="Sort" Label="Order by">
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem
+                                        x:Name="OrderName"
+                                        Command="{Binding OrderByName}"
+                                        Text="Name" />
+                                    <MenuFlyoutItem
+                                        x:Name="OrderPrice"
+                                        Command="{Binding OrderByPrice}"
+                                        Text="Price" />
+                                    <MenuFlyoutItem
+                                        x:Name="OrderStock"
+                                        Command="{Binding OrderByStock}"
+                                        Text="Stock" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                        x:Name="Ascendant"
+                                        Command="{Binding OrderAscendant}"
+                                        Text="Ascendant" />
+                                    <MenuFlyoutItem
+                                        x:Name="Descendent"
+                                        Command="{Binding OrderDescendent}"
+                                        Text="Descendent" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem
+                                        x:Name="clearFilter"
+                                        Command="{Binding ClearFilter}"
+                                        Text="Remove Filter" />
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        <AppBarSeparator />
+                        <AppBarToggleButton
+                            x:Name="CheckBox1"
+                            Checked="CheckBox_Checked"
+                            IsChecked="False"
+                            Label="Select all"
+                            Unchecked="CheckBox_Unchecked"
+                            Visibility="{Binding DeleteStoreVisibility}">
+                            <AppBarToggleButton.Icon>
                                 <FontIcon
-                                    Margin="{StaticResource SmallLeftRightMargin}"
-                                    HorizontalAlignment="Left"
-                                    FontFamily="{ThemeResource SymbolThemeFontFamily}"
-                                    Glyph="{x:Bind Symbol}" />
-                            </DataTemplate>
-                        </controls:DataGridTemplateColumn.CellTemplate>
-                    </controls:DataGridTemplateColumn>
-                </controls:DataGrid.Columns>
-            </controls:DataGrid>
+                                    x:Name="CheckBox1Icon"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    Glyph="&#xe739;" />
+                            </AppBarToggleButton.Icon>
+                        </AppBarToggleButton>
+                        <AppBarButton
+                            Command="{Binding DeleteStore}"
+                            Icon="Delete"
+                            Label="Delete"
+                            Visibility="{Binding DeleteStoreVisibility}" />
+                        <!--<AppBarButton Label="Select all" Visibility="{Binding DeleteStoreVisibility}" Command="{Binding isCheckedAll,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe739;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>-->
+                        <AppBarButton Command="{Binding SelectMultiple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Label="Select">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE133;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarSeparator />
+                        <AppBarButton
+                            Command="{Binding AddProduct}"
+                            Icon="Add"
+                            Label="Add" />
+                        <AppBarButton
+                            Command="{Binding UpdateList}"
+                            Icon="RepeatAll"
+                            Label="Repeat" />
+                        <AppBarSeparator />
+                        <CommandBar.Content>
+                            <TextBlock Margin="10,10" Text="" />
+                        </CommandBar.Content>
+                    </CommandBar>
+                    <Grid
+                        Grid.Row="3"
+                        Margin="0,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Visibility="{Binding ListProductsVisibility, Mode=TwoWay}">
+
+                        <!--<ListView x:Name="ListViewUsers" ItemsSource="{Binding ListUsers, Mode=TwoWay}" SelectedItem="{Binding SelectedUser, Mode=TwoWay}" SelectionChanged="ListViewUsers_SelectionChanged">-->
+                        <RefreshContainer x:Name="ListViewProducts" RefreshRequested="ListViewStores_RefreshRequested">
+                            <ListView
+                                x:Name="ListProducts"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                                SelectionChanged="productView_SelectionChanged">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid
+                                            Height="100"
+                                            Margin="0,10"
+                                            AutomationProperties.Name="{Binding productName}"
+                                            Background="{ThemeResource LayerFillColorDefaultBrush}"
+                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                            BorderThickness="1,1"
+                                            CornerRadius="8">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" MinWidth="150" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <StackPanel
+                                                Grid.Column="0"
+                                                HorizontalAlignment="Stretch"
+                                                Background="White">
+                                                <Image
+                                                    Height="100"
+                                                    MaxWidth="150"
+                                                    Source="{Binding ImageLocation}"
+                                                    Stretch="Uniform" />
+                                            </StackPanel>
+                                            <StackPanel Grid.Column="1" Margin="12,10,0,0">
+                                                <TextBlock
+                                                    Margin="0,0,0,6"
+                                                    HorizontalAlignment="Left"
+                                                    FontSize="18"
+                                                    FontWeight="SemiBold"
+                                                    LineHeight="1"
+                                                    MaxLines="1"
+                                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                                    Text="{Binding productName}" />
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock
+                                                        Margin="0,0,0,0"
+                                                        HorizontalAlignment="Left"
+                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                        Text="$" />
+                                                    <TextBlock
+                                                        HorizontalAlignment="Right"
+                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                        Text="{Binding PriceTag}" />
+                                                    <TextBlock
+                                                        HorizontalAlignment="Left"
+                                                        FontFamily="Segoe UI"
+                                                        FontSize="14"
+                                                        FontWeight="Bold"
+                                                        Text=" ⋅ " />
+                                                    <TextBlock
+                                                        Margin="5,0,5,0"
+                                                        HorizontalAlignment="Left"
+                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                        Text="Stock " />
+                                                    <TextBlock
+                                                        HorizontalAlignment="Right"
+                                                        Style="{ThemeResource CaptionTextBlockStyle}"
+                                                        Text="{Binding stock}" />
+                                                </StackPanel>
+                                                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                                                    <Image
+                                                        Width="18"
+                                                        Height="18"
+                                                        Margin="0,0,10,0"
+                                                        HorizontalAlignment="Left"
+                                                        VerticalAlignment="Center"
+                                                        Source="/Assets/delivery.png"
+                                                        Stretch="UniformToFill" />
+                                                    <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{Binding shippingPrice}" />
+                                                </StackPanel>
+                                            </StackPanel>
+
+                                            <!--<StackPanel Grid.Column="0" VerticalAlignment="Center">
+                            <Ellipse Height="40" Width="40">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="{Binding Image}" Stretch="UniformToFill"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                        </StackPanel>-->
+                                            <!--<StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <TextBlock TextAlignment="Center" Text="{Binding ID_PRODUCT}"/>
+                            </StackPanel>-->
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </RefreshContainer>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+            <muxc:ProgressRing
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsActive="{Binding ListLoad}" />
         </Grid>
         <Grid>
             <Button
