@@ -35,6 +35,8 @@ namespace GraphPriceOne.ViewModels
             ListLoad = false;
             _ListView = Lista;
             GetProducts();
+            HideMessageFirstProduct();
+
         }
         public MainViewModel()
         {
