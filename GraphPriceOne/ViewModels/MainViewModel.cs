@@ -2,6 +2,9 @@
 using GraphPriceOne.Core.Services;
 using GraphPriceOne.Library;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using SQLite;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -15,26 +18,27 @@ namespace GraphPriceOne.ViewModels
         private ProductInfo ProductInfo;
         public ProductPhotos ProductImages;
         private History ProductHistory;
-        private ListView _ListView;
         private bool SelectMultipleIsEnabled;
+        private ListView _ListView;
+        public SQLiteConnection _sqlite;
 
-        private Visibility isCheckedAllVisibility;
+
+        public Visibility isCheckedAllVisibility { get; private set; }
         public Visibility DeleteStoreVisibility { get; private set; }
         public Visibility FirstProductVisibility { get; private set; }
         public Visibility ListProductsVisibility { get; private set; }
         public Visibility CommandBarVisibility { get; set; }
         public bool ListLoad { get; }
-        public MainViewModel(object[] campos)
+
+        public MainViewModel(ListView Lista)
         {
             ListLoad = false;
-            HideMessageFirstProduct();
-            ShowButtons();
+            _ListView = Lista;
+            GetProducts();
         }
         public MainViewModel()
         {
             ListLoad = false;
-            HideMessageFirstProduct();
-            ShowButtons();
         }
         public ICommand SelectMultiple
         {
@@ -43,7 +47,6 @@ namespace GraphPriceOne.ViewModels
                 return new CommandHandler(() => SelectMulti());
             }
         }
-
         private void ShowMessageFirstProduct()
         {
             FirstProductVisibility = Windows.UI.Xaml.Visibility.Visible;
@@ -73,6 +76,7 @@ namespace GraphPriceOne.ViewModels
             bool IsMultiSelect = _ListView.IsMultiSelectCheckBoxEnabled;
             int itemsSelected = _ListView.SelectedItems.Count;
             int AllItems = _ListView.Items.Count;
+
             if (AllItems > 0)
             {
                 if (SelectMultipleIsEnabled == false)
@@ -83,6 +87,26 @@ namespace GraphPriceOne.ViewModels
                 {
                     HideButtons();
                 }
+            }
+        }
+        private async void GetProducts(string order = null, bool Ascendant = false)
+        {
+            try
+            {
+                List<ProductInfo> lista = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+
+                if (lista != null && lista.Count != 0)
+                {
+                    HideMessageFirstProduct();
+                }
+                else
+                {
+                    ShowMessageFirstProduct();
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
             }
         }
     }
