@@ -21,7 +21,7 @@ namespace GraphPriceOne.Views
         {
             InitializeComponent();
 
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(ListProducts);
 
             selectors = new ProductDetailsViewModel();
         }
