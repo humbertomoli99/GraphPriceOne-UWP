@@ -145,7 +145,10 @@ namespace GraphPriceOne.Services
                 }
                 else if (e.VirtualKey == VirtualKey.Right)
                 {
-                    NavigationService.GoForward();
+                    if (NavigationService.CanGoForward)
+                    {
+                        NavigationService.GoForward();
+                    }
                 }
             }
         }
@@ -159,7 +162,10 @@ namespace GraphPriceOne.Services
             }
             else if (e.CurrentPoint.Properties.IsXButton2Pressed)
             {
-                NavigationService.GoForward();
+                if (NavigationService.CanGoForward)
+                {
+                    NavigationService.GoForward();
+                }
             }
         }
     }
