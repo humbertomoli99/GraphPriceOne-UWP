@@ -1,7 +1,9 @@
 ﻿using GraphPriceOne.Core.Models;
 using GraphPriceOne.Core.Services;
 using GraphPriceOne.Library;
+using GraphPriceOne.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
 using SQLite;
 using System;
 using System.Collections.Generic;
@@ -13,71 +15,64 @@ using Windows.UI.Xaml.Controls;
 
 namespace GraphPriceOne.ViewModels
 {
-    public class MainViewModel : ObservableObject
+    public class MainViewModel : ProductsModel
     {
-        private ProductInfo ProductInfo;
-        public ProductPhotos ProductImages;
-        private History ProductHistory;
-        private bool SelectMultipleIsEnabled;
-        private ListView _ListView;
-        public SQLiteConnection _sqlite;
-
-
-        public Visibility isCheckedAllVisibility { get; private set; }
-        public Visibility DeleteStoreVisibility { get; private set; }
-        public Visibility FirstProductVisibility { get; private set; }
-        public Visibility ListProductsVisibility { get; private set; }
-        public Visibility CommandBarVisibility { get; set; }
+        public bool SelectMultipleIsEnabled { get; set; }
         public bool ListLoad { get; }
 
+
+        public ListView ListProducts;
+
+        private string OrderBy;
+        private bool OrderDescen;
         public MainViewModel(ListView Lista)
         {
             ListLoad = false;
-            _ListView = Lista;
-            GetProducts();
+            ListProducts = Lista;
+
+            OrderBy = "id";
+            OrderDescen = false;
+
+            GetProducts(OrderBy, OrderDescen);
+
             HideMessageFirstProduct();
 
+            SelectMultiple = new RelayCommand(new Action(() => SelectMulti()));
         }
         public MainViewModel()
         {
             ListLoad = false;
         }
-        public ICommand SelectMultiple
-        {
-            get
-            {
-                return new CommandHandler(() => SelectMulti());
-            }
-        }
         private void ShowMessageFirstProduct()
         {
-            FirstProductVisibility = Windows.UI.Xaml.Visibility.Visible;
-            ListProductsVisibility = Windows.UI.Xaml.Visibility.Collapsed;
-            CommandBarVisibility = Windows.UI.Xaml.Visibility.Collapsed;
+            FirstProductVisibility = Visibility.Visible;
+            ListProductsVisibility = Visibility.Collapsed;
+            CommandBarVisibility = Visibility.Collapsed;
         }
         private void HideMessageFirstProduct()
         {
-            FirstProductVisibility = Windows.UI.Xaml.Visibility.Collapsed;
-            ListProductsVisibility = Windows.UI.Xaml.Visibility.Visible;
-            CommandBarVisibility = Windows.UI.Xaml.Visibility.Visible;
+            HideButtons();
+            FirstProductVisibility = Visibility.Collapsed;
+            ListProductsVisibility = Visibility.Visible;
+            CommandBarVisibility = Visibility.Visible;
         }
         private void HideButtons()
         {
             SelectMultipleIsEnabled = false;
-            isCheckedAllVisibility = Windows.UI.Xaml.Visibility.Collapsed;
-            DeleteStoreVisibility = Windows.UI.Xaml.Visibility.Collapsed;
+            IsCheckedAllVisibility = Visibility.Collapsed;
+            DeleteStoreVisibility = Visibility.Collapsed;
         }
         private void ShowButtons()
         {
             SelectMultipleIsEnabled = true;
-            isCheckedAllVisibility = Windows.UI.Xaml.Visibility.Visible;
-            DeleteStoreVisibility = Windows.UI.Xaml.Visibility.Visible;
+            IsCheckedAllVisibility = Visibility.Visible;
+            DeleteStoreVisibility = Visibility.Visible;
         }
         private void SelectMulti()
         {
-            bool IsMultiSelect = _ListView.IsMultiSelectCheckBoxEnabled;
-            int itemsSelected = _ListView.SelectedItems.Count;
-            int AllItems = _ListView.Items.Count;
+            bool IsMultiSelect = ListProducts.IsMultiSelectCheckBoxEnabled;
+            int itemsSelected = ListProducts.SelectedItems.Count;
+            int AllItems = ListProducts.Items.Count;
 
             if (AllItems > 0)
             {
