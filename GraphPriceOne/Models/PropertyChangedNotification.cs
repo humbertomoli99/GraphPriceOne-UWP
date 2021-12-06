@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace GraphPriceOne.Models
 {
-    public abstract class PropertyChangedNotification : ObservableObject, IDataErrorInfo
+    public abstract class PropertyChangedNotification : INotifyPropertyChanged, IDataErrorInfo
     {
         #region Fields
 
