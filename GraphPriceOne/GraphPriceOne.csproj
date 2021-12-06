@@ -170,6 +170,7 @@
     <Compile Include="Library\ScrapingDate.cs" />
     <Compile Include="Library\TextBoxEvent.cs" />
     <Compile Include="Library\UploadImage.cs" />
+    <Compile Include="Models\PropertyChangedNotification.cs" />
     <Compile Include="Models\ShareSourceData.cs" />
     <Compile Include="Models\ShareSourceItem.cs" />
     <Compile Include="Services\ActivationService.cs" />
