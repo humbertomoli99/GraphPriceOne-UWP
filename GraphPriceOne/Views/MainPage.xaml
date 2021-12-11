@@ -39,11 +39,6 @@
                             Icon="Delete"
                             Label="Delete"
                             Visibility="{Binding DeleteStoreVisibility}" />
-                        <!--<AppBarButton Label="Select all" Visibility="{Binding DeleteStoreVisibility}" Command="{Binding isCheckedAll,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe739;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>-->
                         <AppBarButton Command="{Binding SelectMultiple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Label="Select">
                             <AppBarButton.Icon>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE133;" />
