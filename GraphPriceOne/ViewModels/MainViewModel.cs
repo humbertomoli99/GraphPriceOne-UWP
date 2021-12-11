@@ -50,13 +50,16 @@ namespace GraphPriceOne.ViewModels
         }
         private void HideButtons()
         {
+            ListViewControl.SelectedItem = null;
             SelectMultipleIsEnabled = false;
+            ListViewControl.SelectionMode = ListViewSelectionMode.Single;
             IsCheckedAllVisibility = Visibility.Collapsed;
             DeleteStoreVisibility = Visibility.Collapsed;
         }
         private void ShowButtons()
         {
             SelectMultipleIsEnabled = true;
+            ListViewControl.SelectionMode = ListViewSelectionMode.Multiple;
             IsCheckedAllVisibility = Visibility.Visible;
             DeleteStoreVisibility = Visibility.Visible;
         }
