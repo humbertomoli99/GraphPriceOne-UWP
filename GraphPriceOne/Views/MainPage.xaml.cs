@@ -11,8 +11,6 @@ namespace GraphPriceOne.Views
 {
     public sealed partial class MainPage : Page
     {
-        public ProductsViewModel ViewModel { get; } = new ProductsViewModel();
-
         private ProductDetailsViewModel selectors;
 
         public MainPage()
@@ -21,12 +19,6 @@ namespace GraphPriceOne.Views
             DataContext = new MainViewModel(ListProducts);
 
             selectors = new ProductDetailsViewModel();
-        }
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-
-            await ViewModel.LoadDataAsync();
         }
         private void productView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

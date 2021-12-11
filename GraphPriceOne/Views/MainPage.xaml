@@ -104,7 +104,7 @@
                                 x:Name="ListProducts"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                                ItemsSource="{Binding ListProducts, Mode=TwoWay}"
                                 SelectionChanged="productView_SelectionChanged">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>

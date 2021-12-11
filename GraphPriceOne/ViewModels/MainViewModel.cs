@@ -19,16 +19,13 @@ namespace GraphPriceOne.ViewModels
     {
         public bool SelectMultipleIsEnabled { get; set; }
         public bool ListLoad { get; }
-
-
-        public ListView ListProducts;
+        public ListView ListViewControl { get; }
 
         private string OrderBy;
         private bool OrderDescen;
-        public MainViewModel(ListView Lista)
+        public MainViewModel(ListView ListViewControl)
         {
             ListLoad = false;
-            ListProducts = Lista;
 
             OrderBy = "id";
             OrderDescen = false;
@@ -38,10 +35,7 @@ namespace GraphPriceOne.ViewModels
             HideMessageFirstProduct();
 
             SelectMultiple = new RelayCommand(new Action(() => SelectMulti()));
-        }
-        public MainViewModel()
-        {
-            ListLoad = false;
+            this.ListViewControl = ListViewControl;
         }
         private void ShowMessageFirstProduct()
         {
@@ -70,9 +64,9 @@ namespace GraphPriceOne.ViewModels
         }
         private void SelectMulti()
         {
-            bool IsMultiSelect = ListProducts.IsMultiSelectCheckBoxEnabled;
-            int itemsSelected = ListProducts.SelectedItems.Count;
-            int AllItems = ListProducts.Items.Count;
+            bool IsMultiSelect = ListViewControl.IsMultiSelectCheckBoxEnabled;
+            int itemsSelected = ListViewControl.SelectedItems.Count;
+            int AllItems = ListViewControl.Items.Count;
 
             if (AllItems > 0)
             {
@@ -95,6 +89,11 @@ namespace GraphPriceOne.ViewModels
                 if (lista != null && lista.Count != 0)
                 {
                     HideMessageFirstProduct();
+
+                    foreach (var item in lista)
+                    {
+                        ListViewControl.Items.Add(item);
+                    }
                 }
                 else
                 {
