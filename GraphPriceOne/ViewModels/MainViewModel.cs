@@ -1,14 +1,8 @@
 ﻿using GraphPriceOne.Core.Models;
-using GraphPriceOne.Core.Services;
-using GraphPriceOne.Library;
 using GraphPriceOne.Models;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
-using SQLite;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -27,15 +21,20 @@ namespace GraphPriceOne.ViewModels
         {
             ListLoad = false;
 
-            OrderBy = "id";
-            OrderDescen = false;
-
-            GetProducts(OrderBy, OrderDescen);
-
-            HideMessageFirstProduct();
+            GetProducts("id", false);
 
             this.ListViewControl = ListViewControl;
         }
+        public ICommand SelectMultiple => new RelayCommand(new Action(() => SelectMulti()));
+        //public ICommand ClearFilter => new RelayCommand(new Action(() => ClearFilter()));
+        //public ICommand OrderDescendent => new RelayCommand(new Action(() => OrderDescendent()));
+        //public ICommand OrderAscendant => new RelayCommand(new Action(() => OrderAscendant()));
+        //public ICommand OrderByName => new RelayCommand(new Action(() => OrderByName()));
+        //public ICommand OrderByPrice => new RelayCommand(new Action(() => OrderByPrice()));
+        //public ICommand OrderByStock => new RelayCommand(new Action(() => OrderByStock()));
+        //public ICommand UpdateList => new RelayCommand(new Action(() => UpdateList()));
+        //public ICommand AddProduct => new RelayCommand(new Action(() => AddProduct()));
+        //public ICommand DeleteStore => new RelayCommand(new Action(() => DeleteStore()));
         private void ShowMessageFirstProduct()
         {
             FirstProductVisibility = Visibility.Visible;
@@ -61,8 +60,6 @@ namespace GraphPriceOne.ViewModels
             IsCheckedAllVisibility = Visibility.Visible;
             DeleteStoreVisibility = Visibility.Visible;
         }
-        public ICommand SelectMultiple => new RelayCommand(new Action(() => SelectMulti()));
-
         public void SelectMulti()
         {
             bool IsMultiSelect = ListViewControl.IsMultiSelectCheckBoxEnabled;
@@ -81,7 +78,7 @@ namespace GraphPriceOne.ViewModels
                 }
             }
         }
-        private async void GetProducts(string order = null, bool Ascendant = false)
+        private async void GetProducts(string order = "id", bool Ascendant = false)
         {
             try
             {
