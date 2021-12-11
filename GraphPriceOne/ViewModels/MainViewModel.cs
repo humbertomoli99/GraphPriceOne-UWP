@@ -34,7 +34,6 @@ namespace GraphPriceOne.ViewModels
 
             HideMessageFirstProduct();
 
-            SelectMultiple = new RelayCommand(new Action(() => SelectMulti()));
             this.ListViewControl = ListViewControl;
         }
         private void ShowMessageFirstProduct()
@@ -62,7 +61,9 @@ namespace GraphPriceOne.ViewModels
             IsCheckedAllVisibility = Visibility.Visible;
             DeleteStoreVisibility = Visibility.Visible;
         }
-        private void SelectMulti()
+        public ICommand SelectMultiple => new RelayCommand(new Action(() => SelectMulti()));
+
+        public void SelectMulti()
         {
             bool IsMultiSelect = ListViewControl.IsMultiSelectCheckBoxEnabled;
             int itemsSelected = ListViewControl.SelectedItems.Count;

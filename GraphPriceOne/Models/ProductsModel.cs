@@ -1,4 +1,6 @@
 ﻿using GraphPriceOne.Core.Models;
+using GraphPriceOne.ViewModels;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,8 +36,6 @@ namespace GraphPriceOne.Models
             set { SetValue(() => CommandBarVisibility, value); }
         }
         public Visibility ListProductsVisibility { get; set; }
-
-        public ICommand SelectMultiple { get; set; }
         public ICommand ClearFilter { get; set; }
         public ICommand OrderDescendent { get; set; }
         public ICommand OrderAscendant { get; set; }
