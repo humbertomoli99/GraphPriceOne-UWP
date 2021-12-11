@@ -36,14 +36,5 @@ namespace GraphPriceOne.Models
             set { SetValue(() => CommandBarVisibility, value); }
         }
         public Visibility ListProductsVisibility { get; set; }
-        public ICommand ClearFilter { get; set; }
-        public ICommand OrderDescendent { get; set; }
-        public ICommand OrderAscendant { get; set; }
-        public ICommand OrderByName { get; set; }
-        public ICommand OrderByPrice { get; set; }
-        public ICommand OrderByStock { get; set; }
-        public ICommand UpdateList { get; set; }
-        public ICommand AddProduct { get; set; }
-        public ICommand DeleteStore { get; set; }
     }
 }
