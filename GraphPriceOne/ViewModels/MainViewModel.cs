@@ -16,8 +16,8 @@ namespace GraphPriceOne.ViewModels
         public bool ListLoad { get; }
         public ListView ListViewControl { get; }
 
-        private string OrderBy;
-        private bool OrderDescen;
+        public string OrderBy;
+        public bool OrderDescen;
         private bool IsBusy;
 
         public MainViewModel(ListView ListViewControl)
@@ -28,6 +28,12 @@ namespace GraphPriceOne.ViewModels
 
             this.ListViewControl = ListViewControl;
         }
+        public MainViewModel()
+        {
+            ListLoad = false;
+
+            GetProducts("id", false);
+        }
         public ICommand SelectMultiple => new RelayCommand(new Action(() => SelectMulti()));
         //public ICommand ClearFilter => new RelayCommand(new Action(() => ClearFilter()));
         //public ICommand OrderDescendent => new RelayCommand(new Action(() => OrderDescendent()));
@@ -35,8 +41,8 @@ namespace GraphPriceOne.ViewModels
         //public ICommand OrderByName => new RelayCommand(new Action(() => OrderByName()));
         //public ICommand OrderByPrice => new RelayCommand(new Action(() => OrderByPrice()));
         //public ICommand OrderByStock => new RelayCommand(new Action(() => OrderByStock()));
-        //public ICommand UpdateList => new RelayCommand(new Action(() => UpdateList()));
         //public ICommand AddProduct => new RelayCommand(new Action(() => AddProduct()));
+        public ICommand UpdateList => new RelayCommand(new Action(() => GetProducts(OrderBy, OrderDescen)));
         public ICommand DeleteCommand => new RelayCommand(new Action(async () => await DeleteAsync()));
         private async Task DeleteAsync()
         {
@@ -132,7 +138,7 @@ namespace GraphPriceOne.ViewModels
                 }
             }
         }
-        private async void GetProducts(string order = "id", bool Ascendant = false)
+        public async void GetProducts(string order = "id", bool Ascendant = false)
         {
             IsBusy = true;
             try

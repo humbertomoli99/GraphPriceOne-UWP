@@ -26,7 +26,7 @@
                             IsChecked="False"
                             Label="Select all"
                             Unchecked="CheckBox_Unchecked"
-                            Visibility="{Binding DeleteStoreVisibility}">
+                            Visibility="{Binding DeleteCommandVisibility}">
                             <AppBarToggleButton.Icon>
                                 <FontIcon
                                     x:Name="CheckBox1Icon"
@@ -97,9 +97,7 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Top"
                         Visibility="{Binding ListProductsVisibility, Mode=TwoWay}">
-
-                        <!--<ListView x:Name="ListViewUsers" ItemsSource="{Binding ListUsers, Mode=TwoWay}" SelectedItem="{Binding SelectedUser, Mode=TwoWay}" SelectionChanged="ListViewUsers_SelectionChanged">-->
-                        <RefreshContainer x:Name="ListViewProducts" RefreshRequested="ListViewStores_RefreshRequested">
+                        <muxc:RefreshContainer x:Name="ListViewProducts" RefreshRequested="ListViewStores_RefreshRequested">
                             <ListView
                                 x:Name="ListProducts"
                                 HorizontalAlignment="Stretch"
@@ -193,7 +191,7 @@
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                        </RefreshContainer>
+                        </muxc:RefreshContainer>
                     </Grid>
                 </Grid>
             </ScrollViewer>

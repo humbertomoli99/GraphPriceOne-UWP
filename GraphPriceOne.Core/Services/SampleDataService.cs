@@ -496,8 +496,7 @@ namespace GraphPriceOne.Core.Services
         public static async Task<IEnumerable<DataPoint>> GetChartDataAsync()
         {
             await Task.CompletedTask;
-            return AllOrders().Select(o => new DataPoint() { Category = o.Company, Value = o.OrderTotal })
-                                  .OrderBy(dp => dp.Category);
+            return AllOrders().Select(o => new DataPoint() { Category = o.Company, Value = o.OrderTotal }).OrderBy(dp => dp.Category);
         }
     }
 }

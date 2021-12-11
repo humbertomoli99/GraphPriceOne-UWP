@@ -11,14 +11,14 @@ namespace GraphPriceOne.Views
 {
     public sealed partial class MainPage : Page
     {
-        private ProductDetailsViewModel selectors;
+        private ProductInfo selectors;
 
         public MainPage()
         {
             InitializeComponent();
             DataContext = new MainViewModel(ListProducts);
 
-            selectors = new ProductDetailsViewModel();
+            selectors = new ProductDetailsViewModel().ProductSelected;
         }
         private void productView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -45,7 +45,7 @@ namespace GraphPriceOne.Views
             if (ListProducts.SelectionMode == ListViewSelectionMode.Single && ListProducts.SelectedItem != null)
             {
                 ProductInfo obj = (ProductInfo)ListProducts.SelectedItem;
-                //selectors.PRODUCTSELECT = obj;
+                selectors = obj;
                 NavigationService.Navigate(typeof(ProductDetailsPage));
             }
         }
@@ -69,9 +69,9 @@ namespace GraphPriceOne.Views
                 ListProducts.DeselectRange(new ItemIndexRange(0, (uint)ListProducts.Items.Count));
             }
         }
-        private void ListViewStores_RefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)
+        private void ListViewStores_RefreshRequested(Microsoft.UI.Xaml.Controls.RefreshContainer sender, Microsoft.UI.Xaml.Controls.RefreshRequestedEventArgs args)
         {
-            new ProductsViewModel();
+            new MainViewModel().GetProducts(new MainViewModel().OrderBy,new MainViewModel().OrderDescen);
         }
     }
 }
