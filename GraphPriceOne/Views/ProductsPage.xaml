@@ -21,6 +21,36 @@
                         <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
                     <CommandBar Grid.Row="2" Visibility="{Binding CommandBarVisibility, Mode=TwoWay}">
+                        <AppBarToggleButton
+                            x:Name="CheckBox1"
+                            Checked="CheckBox_Checked"
+                            IsChecked="False"
+                            Label="Select all"
+                            Unchecked="CheckBox_Unchecked"
+                            Visibility="{Binding DeleteStoreVisibility}">
+                            <AppBarToggleButton.Icon>
+                                <FontIcon
+                                    x:Name="CheckBox1Icon"
+                                    FontFamily="Segoe MDL2 Assets"
+                                    Glyph="&#xe739;" />
+                            </AppBarToggleButton.Icon>
+                        </AppBarToggleButton>
+                        <AppBarButton
+                            Command="{Binding DeleteStore}"
+                            Icon="Delete"
+                            Label="Delete"
+                            Visibility="{Binding DeleteStoreVisibility}" />
+                        <!--<AppBarButton Label="Select all" Visibility="{Binding DeleteStoreVisibility}" Command="{Binding isCheckedAll,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+                <AppBarButton.Icon>
+                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe739;"/>
+                </AppBarButton.Icon>
+            </AppBarButton>-->
+                        <AppBarButton Command="{Binding SelectMultiple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Label="Select">
+                            <AppBarButton.Icon>
+                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE133;" />
+                            </AppBarButton.Icon>
+                        </AppBarButton>
+                        <AppBarSeparator />
                         <AppBarButton Icon="Sort" Label="Order by">
                             <AppBarButton.Flyout>
                                 <MenuFlyout>
@@ -52,36 +82,6 @@
                                         Text="Remove Filter" />
                                 </MenuFlyout>
                             </AppBarButton.Flyout>
-                        </AppBarButton>
-                        <AppBarSeparator />
-                        <AppBarToggleButton
-                            x:Name="CheckBox1"
-                            Checked="CheckBox_Checked"
-                            IsChecked="False"
-                            Label="Select all"
-                            Unchecked="CheckBox_Unchecked"
-                            Visibility="{Binding DeleteStoreVisibility}">
-                            <AppBarToggleButton.Icon>
-                                <FontIcon
-                                    x:Name="CheckBox1Icon"
-                                    FontFamily="Segoe MDL2 Assets"
-                                    Glyph="&#xe739;" />
-                            </AppBarToggleButton.Icon>
-                        </AppBarToggleButton>
-                        <AppBarButton
-                            Command="{Binding DeleteStore}"
-                            Icon="Delete"
-                            Label="Delete"
-                            Visibility="{Binding DeleteStoreVisibility}" />
-                        <!--<AppBarButton Label="Select all" Visibility="{Binding DeleteStoreVisibility}" Command="{Binding isCheckedAll,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe739;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>-->
-                        <AppBarButton Command="{Binding SelectMultiple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Label="Select">
-                            <AppBarButton.Icon>
-                                <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE133;" />
-                            </AppBarButton.Icon>
                         </AppBarButton>
                         <AppBarSeparator />
                         <AppBarButton
