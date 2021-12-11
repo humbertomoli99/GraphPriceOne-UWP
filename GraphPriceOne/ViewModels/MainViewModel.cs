@@ -3,6 +3,7 @@ using GraphPriceOne.Models;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -17,6 +18,8 @@ namespace GraphPriceOne.ViewModels
 
         private string OrderBy;
         private bool OrderDescen;
+        private bool IsBusy;
+
         public MainViewModel(ListView ListViewControl)
         {
             ListLoad = false;
@@ -34,7 +37,55 @@ namespace GraphPriceOne.ViewModels
         //public ICommand OrderByStock => new RelayCommand(new Action(() => OrderByStock()));
         //public ICommand UpdateList => new RelayCommand(new Action(() => UpdateList()));
         //public ICommand AddProduct => new RelayCommand(new Action(() => AddProduct()));
-        //public ICommand DeleteStore => new RelayCommand(new Action(() => DeleteStore()));
+        public ICommand DeleteCommand => new RelayCommand(new Action(async () => await DeleteAsync()));
+        private async Task DeleteAsync()
+        {
+            try
+            {
+                IList<object> itemsSelected = ListViewControl.SelectedItems;
+                if (itemsSelected.Count > 0)
+                {
+                    string itemsS = itemsSelected.Count.ToString();
+                    string content;
+                    if (itemsSelected.Count == 1)
+                    {
+                        content = $"Esta seguro de eliminar el registro?\nSe dejaran de seguir los productos relacionados con la tienda";
+                    }
+                    else
+                    {
+                        content = $"Esta seguro de eliminar los {itemsS} registros?\nSe dejaran de seguir los productos relacionados con las tiendas";
+                    }
+                    ContentDialog deleteFileDialog = new ContentDialog
+                    {
+                        Title = "Delete Stores",
+                        Content = content,
+                        PrimaryButtonText = "Delete",
+                        CloseButtonText = "Cancel"
+                    };
+                    ContentDialogResult result = await deleteFileDialog.ShowAsync();
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        foreach (var item in itemsSelected)
+                        {
+                            ProductInfo data = (ProductInfo)item;
+                            int data1 = data.ID_PRODUCT;
+
+                            await App.PriceTrackerService.DeleteProductAsync(data1);
+                        }
+                        GetProducts();
+                        HideButtons();
+                    }
+                    else if (result == ContentDialogResult.None)
+                    {
+                        HideButtons();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+            }
+        }
         private void ShowMessageFirstProduct()
         {
             FirstProductVisibility = Visibility.Visible;
@@ -54,14 +105,14 @@ namespace GraphPriceOne.ViewModels
             SelectMultipleIsEnabled = false;
             ListViewControl.SelectionMode = ListViewSelectionMode.Single;
             IsCheckedAllVisibility = Visibility.Collapsed;
-            DeleteStoreVisibility = Visibility.Collapsed;
+            DeleteCommandVisibility = Visibility.Collapsed;
         }
         private void ShowButtons()
         {
             SelectMultipleIsEnabled = true;
             ListViewControl.SelectionMode = ListViewSelectionMode.Multiple;
             IsCheckedAllVisibility = Visibility.Visible;
-            DeleteStoreVisibility = Visibility.Visible;
+            DeleteCommandVisibility = Visibility.Visible;
         }
         public void SelectMulti()
         {
@@ -83,14 +134,15 @@ namespace GraphPriceOne.ViewModels
         }
         private async void GetProducts(string order = "id", bool Ascendant = false)
         {
+            IsBusy = true;
             try
             {
                 List<ProductInfo> lista = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-
+                ListViewControl.Items.Clear();
                 if (lista != null && lista.Count != 0)
                 {
                     HideMessageFirstProduct();
-
+                    
                     foreach (var item in lista)
                     {
                         ListViewControl.Items.Add(item);
@@ -104,6 +156,10 @@ namespace GraphPriceOne.ViewModels
             catch (Exception ex)
             {
                 ex.ToString();
+            }
+            finally
+            {
+                IsBusy = false;
             }
         }
     }

@@ -35,10 +35,10 @@
                             </AppBarToggleButton.Icon>
                         </AppBarToggleButton>
                         <AppBarButton
-                            Command="{Binding DeleteStore}"
+                            Command="{Binding DeleteCommand}"
                             Icon="Delete"
                             Label="Delete"
-                            Visibility="{Binding DeleteStoreVisibility}" />
+                            Visibility="{Binding DeleteCommandVisibility}" />
                         <AppBarButton Command="{Binding SelectMultiple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Label="Select">
                             <AppBarButton.Icon>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE133;" />

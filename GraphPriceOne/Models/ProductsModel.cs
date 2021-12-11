@@ -20,10 +20,10 @@ namespace GraphPriceOne.Models
             get { return GetValue(() => IsCheckedAllVisibility); }
             set { SetValue(() => IsCheckedAllVisibility, value); }
         }
-        public Visibility DeleteStoreVisibility
+        public Visibility DeleteCommandVisibility
         {
-            get { return GetValue(() => DeleteStoreVisibility); }
-            set { SetValue(() => DeleteStoreVisibility, value); }
+            get { return GetValue(() => DeleteCommandVisibility); }
+            set { SetValue(() => DeleteCommandVisibility, value); }
         }
         public Visibility FirstProductVisibility
         {
