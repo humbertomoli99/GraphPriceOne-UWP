@@ -1,15 +1,4 @@
-﻿using GraphPriceOne.Core.Models;
-using GraphPriceOne.ViewModels;
-using Microsoft.Toolkit.Mvvm.Input;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+﻿using Windows.UI.Xaml;
 
 namespace GraphPriceOne.Models
 {
@@ -35,6 +24,10 @@ namespace GraphPriceOne.Models
             get { return GetValue(() => CommandBarVisibility); }
             set { SetValue(() => CommandBarVisibility, value); }
         }
-        public Visibility ListProductsVisibility { get; set; }
+        public Visibility ListProductsVisibility
+        {
+            get { return GetValue(() => ListProductsVisibility); }
+            set { SetValue(() => ListProductsVisibility, value); }
+        }
     }
 }

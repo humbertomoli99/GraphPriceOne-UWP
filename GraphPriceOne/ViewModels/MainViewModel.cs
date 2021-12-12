@@ -1,8 +1,11 @@
 ﻿using GraphPriceOne.Core.Models;
 using GraphPriceOne.Models;
+using GraphPriceOne.Services;
+using GraphPriceOne.Views;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
@@ -14,7 +17,8 @@ namespace GraphPriceOne.ViewModels
     {
         public bool SelectMultipleIsEnabled { get; set; }
         public bool ListLoad { get; }
-        public ListView ListViewControl { get; }
+        public ListView ListViewControl { get; set; }
+        public ObservableCollection<ProductInfo> ListViewCollection { get; set; }
 
         public string OrderBy;
         public bool OrderDescen;
@@ -24,25 +28,43 @@ namespace GraphPriceOne.ViewModels
         {
             ListLoad = false;
 
-            GetProducts("id", false);
+            ListViewCollection = new ObservableCollection<ProductInfo>();
+            _ = GetProductsAsync("id", false);
+            ShowMessageFirstProduct();
 
             this.ListViewControl = ListViewControl;
+        }
+        public void OnAppearing()
+        {
+            IsBusy = true;
         }
         public MainViewModel()
         {
             ListLoad = false;
 
-            GetProducts("id", false);
+            //GetProductsAsync("id", false);
         }
-        public ICommand SelectMultiple => new RelayCommand(new Action(() => SelectMulti()));
-        //public ICommand ClearFilter => new RelayCommand(new Action(() => ClearFilter()));
-        //public ICommand OrderDescendent => new RelayCommand(new Action(() => OrderDescendent()));
-        //public ICommand OrderAscendant => new RelayCommand(new Action(() => OrderAscendant()));
-        //public ICommand OrderByName => new RelayCommand(new Action(() => OrderByName()));
-        //public ICommand OrderByPrice => new RelayCommand(new Action(() => OrderByPrice()));
-        //public ICommand OrderByStock => new RelayCommand(new Action(() => OrderByStock()));
-        //public ICommand AddProduct => new RelayCommand(new Action(() => AddProduct()));
-        public ICommand UpdateList => new RelayCommand(new Action(() => GetProducts(OrderBy, OrderDescen)));
+        public ICommand SelectMultipleCommand => new RelayCommand(new Action(() => SelectMulti()));
+        public ICommand ClearFilterCommand => new RelayCommand(new Action(async () => await GetProductsAsync("id", false)));
+        public ICommand OrderDescendentCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, false)));
+        public ICommand OrderAscendantCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, true)));
+        public ICommand OrderByNameCommand => new RelayCommand(new Action(async () => await GetProductsAsync("name", OrderDescen)));
+        public ICommand OrderByPriceCommand => new RelayCommand(new Action(async () => await GetProductsAsync("price", OrderDescen)));
+        public ICommand OrderByStockCommand => new RelayCommand(new Action(async () => await GetProductsAsync("stock", OrderDescen)));
+        public ICommand AddProductCommand => new RelayCommand(new Action(async () => await AddProductAsync()));
+
+        private async Task AddProductAsync()
+        {
+            HideMessageFirstProduct();
+            ProductInfo item = new ProductInfo()
+            {
+                productName = "htx 1060"
+            };
+            await App.PriceTrackerService.AddProductAsync(item);
+            await GetProductsAsync(OrderBy, OrderDescen);
+        }
+
+        public ICommand UpdateListCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, OrderDescen)));
         public ICommand DeleteCommand => new RelayCommand(new Action(async () => await DeleteAsync()));
         private async Task DeleteAsync()
         {
@@ -78,7 +100,7 @@ namespace GraphPriceOne.ViewModels
 
                             await App.PriceTrackerService.DeleteProductAsync(data1);
                         }
-                        GetProducts();
+                        await GetProductsAsync();
                         HideButtons();
                     }
                     else if (result == ContentDialogResult.None)
@@ -138,30 +160,27 @@ namespace GraphPriceOne.ViewModels
                 }
             }
         }
-        public async void GetProducts(string order = "id", bool Ascendant = false)
+        public async Task GetProductsAsync(string order = "id", bool Ascendant = false)
         {
             IsBusy = true;
             try
             {
                 List<ProductInfo> lista = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-                ListViewControl.Items.Clear();
+                ListViewCollection.Clear();
+
+                foreach (var item in lista)
+                {
+                    ListViewCollection.Add(item);
+                }
+
                 if (lista != null && lista.Count != 0)
                 {
                     HideMessageFirstProduct();
-                    
-                    foreach (var item in lista)
-                    {
-                        ListViewControl.Items.Add(item);
-                    }
-                }
-                else
-                {
-                    ShowMessageFirstProduct();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                ex.ToString();
+                throw;
             }
             finally
             {
