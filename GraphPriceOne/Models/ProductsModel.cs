@@ -35,5 +35,10 @@ namespace GraphPriceOne.Models
             get { return GetValue(() => IsCheckBoxChecked); }
             set { SetValue(() => IsCheckBoxChecked, value); }
         }
+        public bool IsBusy
+        {
+            get { return GetValue(() => IsBusy); }
+            set { SetValue(() => IsBusy, value); }
+        }
     }
 }

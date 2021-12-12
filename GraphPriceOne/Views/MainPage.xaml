@@ -198,7 +198,7 @@
             <muxc:ProgressRing
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                IsActive="{Binding ListLoad}" />
+                IsActive="{Binding IsBusy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <Grid
                 Height="250"
                 MaxWidth="800"

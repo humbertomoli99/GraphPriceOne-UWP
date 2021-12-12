@@ -17,18 +17,16 @@ namespace GraphPriceOne.ViewModels
     public class MainViewModel : ProductsModel
     {
         public bool SelectMultipleIsEnabled { get; set; }
-        public bool ListLoad { get; }
         public ListView ListViewControl { get; set; }
         public ObservableCollection<ProductInfo> ListViewCollection { get; set; }
 
         public string OrderBy;
         private List<ProductInfo> lista2;
         public bool OrderDescen;
-        private bool IsBusy;
 
         public MainViewModel(ListView ListViewControl)
         {
-            ListLoad = false;
+            IsBusy = false;
 
             ListViewCollection = new ObservableCollection<ProductInfo>();
             _ = GetProductsAsync("id", false);
@@ -42,7 +40,7 @@ namespace GraphPriceOne.ViewModels
         }
         public MainViewModel()
         {
-            ListLoad = false;
+            IsBusy = false;
 
             //GetProductsAsync("id", false);
         }
@@ -58,12 +56,14 @@ namespace GraphPriceOne.ViewModels
         private async Task AddProductAsync()
         {
             HideMessageFirstProduct();
+            IsBusy = true;
             ProductInfo item = new ProductInfo()
             {
                 productName = "htx 1060"
             };
             await App.PriceTrackerService.AddProductAsync(item);
             await GetProductsAsync(OrderBy, OrderDescen);
+            IsBusy = false;
         }
 
         public ICommand UpdateListCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, OrderDescen)));
@@ -171,7 +171,7 @@ namespace GraphPriceOne.ViewModels
             {
                 ListViewCollection.Clear();
                 List<ProductInfo> lista = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-
+                IsBusy = true;
                 if (lista != null && lista.Count != 0)
                 {
                     HideMessageFirstProduct();
@@ -262,6 +262,7 @@ namespace GraphPriceOne.ViewModels
                 {
                     ShowMessageFirstProduct();
                 }
+                IsBusy = false;
             }
             catch (Exception)
             {
