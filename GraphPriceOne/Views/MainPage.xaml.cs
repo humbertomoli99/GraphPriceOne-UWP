@@ -71,7 +71,7 @@ namespace GraphPriceOne.Views
         }
         private void ListViewStores_RefreshRequested(Microsoft.UI.Xaml.Controls.RefreshContainer sender, Microsoft.UI.Xaml.Controls.RefreshRequestedEventArgs args)
         {
-            //new MainViewModel().GetProducts(new MainViewModel().OrderBy,new MainViewModel().OrderDescen);
+            new MainViewModel().GetProductsAsync(new MainViewModel().OrderBy, new MainViewModel().OrderDescen).Wait();
         }
     }
 }
