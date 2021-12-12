@@ -9,6 +9,7 @@
     xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
+
     <Grid x:Name="ContentArea">
         <Grid>
             <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
@@ -24,10 +25,10 @@
                         <AppBarToggleButton
                             x:Name="CheckBox1"
                             Checked="CheckBox_Checked"
-                            IsChecked="False"
+                            IsChecked="{Binding IsCheckBoxChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Label="Select all"
                             Unchecked="CheckBox_Unchecked"
-                            Visibility="{Binding DeleteStoreVisibility}">
+                            Visibility="{Binding DeleteCommandVisibility}">
                             <AppBarToggleButton.Icon>
                                 <FontIcon
                                     x:Name="CheckBox1Icon"
@@ -36,16 +37,11 @@
                             </AppBarToggleButton.Icon>
                         </AppBarToggleButton>
                         <AppBarButton
-                            Command="{Binding DeleteStore}"
+                            Command="{Binding DeleteCommand}"
                             Icon="Delete"
                             Label="Delete"
-                            Visibility="{Binding DeleteStoreVisibility}" />
-                        <!--<AppBarButton Label="Select all" Visibility="{Binding DeleteStoreVisibility}" Command="{Binding isCheckedAll,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                <AppBarButton.Icon>
-                    <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xe739;"/>
-                </AppBarButton.Icon>
-            </AppBarButton>-->
-                        <AppBarButton Command="{Binding SelectMultiple, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Label="Select">
+                            Visibility="{Binding DeleteCommandVisibility}" />
+                        <AppBarButton Command="{Binding SelectMultipleCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Label="Select">
                             <AppBarButton.Icon>
                                 <FontIcon FontFamily="Segoe MDL2 Assets" Glyph="&#xE133;" />
                             </AppBarButton.Icon>
@@ -56,40 +52,40 @@
                                 <MenuFlyout>
                                     <MenuFlyoutItem
                                         x:Name="OrderName"
-                                        Command="{Binding OrderByName}"
+                                        Command="{Binding OrderByNameCommand}"
                                         Text="Name" />
                                     <MenuFlyoutItem
                                         x:Name="OrderPrice"
-                                        Command="{Binding OrderByPrice}"
+                                        Command="{Binding OrderByPriceCommand}"
                                         Text="Price" />
                                     <MenuFlyoutItem
                                         x:Name="OrderStock"
-                                        Command="{Binding OrderByStock}"
+                                        Command="{Binding OrderByStockCommand}"
                                         Text="Stock" />
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem
                                         x:Name="Ascendant"
-                                        Command="{Binding OrderAscendant}"
+                                        Command="{Binding OrderAscendantCommand}"
                                         Text="Ascendant" />
                                     <MenuFlyoutItem
                                         x:Name="Descendent"
-                                        Command="{Binding OrderDescendent}"
+                                        Command="{Binding OrderDescendentCommand}"
                                         Text="Descendent" />
                                     <MenuFlyoutSeparator />
                                     <MenuFlyoutItem
                                         x:Name="clearFilter"
-                                        Command="{Binding ClearFilter}"
+                                        Command="{Binding ClearFilterCommand}"
                                         Text="Remove Filter" />
                                 </MenuFlyout>
                             </AppBarButton.Flyout>
                         </AppBarButton>
                         <AppBarSeparator />
                         <AppBarButton
-                            Command="{Binding AddProduct}"
+                            Command="{Binding AddProductCommand}"
                             Icon="Add"
                             Label="Add" />
                         <AppBarButton
-                            Command="{Binding UpdateList}"
+                            Command="{Binding UpdateListCommand}"
                             Icon="RepeatAll"
                             Label="Repeat" />
                         <AppBarSeparator />
@@ -103,14 +99,12 @@
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Top"
                         Visibility="{Binding ListProductsVisibility, Mode=TwoWay}">
-
-                        <!--<ListView x:Name="ListViewUsers" ItemsSource="{Binding ListUsers, Mode=TwoWay}" SelectedItem="{Binding SelectedUser, Mode=TwoWay}" SelectionChanged="ListViewUsers_SelectionChanged">-->
-                        <RefreshContainer x:Name="ListViewProducts" RefreshRequested="ListViewStores_RefreshRequested">
+                        <muxc:RefreshContainer x:Name="ListViewProducts" RefreshRequested="ListViewStores_RefreshRequested">
                             <ListView
                                 x:Name="ListProducts"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}"
+                                ItemsSource="{Binding ListViewCollection, Mode=TwoWay}"
                                 SelectionChanged="productView_SelectionChanged">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
@@ -184,37 +178,28 @@
                                                     <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{Binding shippingPrice}" />
                                                 </StackPanel>
                                             </StackPanel>
-
-                                            <!--<StackPanel Grid.Column="0" VerticalAlignment="Center">
-                            <Ellipse Height="40" Width="40">
-                                <Ellipse.Fill>
-                                    <ImageBrush ImageSource="{Binding Image}" Stretch="UniformToFill"/>
-                                </Ellipse.Fill>
-                            </Ellipse>
-                        </StackPanel>-->
-                                            <!--<StackPanel Grid.Column="1" VerticalAlignment="Center">
-                                <TextBlock TextAlignment="Center" Text="{Binding ID_PRODUCT}"/>
-                            </StackPanel>-->
                                         </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
-                        </RefreshContainer>
+                        </muxc:RefreshContainer>
                     </Grid>
                 </Grid>
             </ScrollViewer>
             <muxc:ProgressRing
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                IsActive="{Binding ListLoad}" />
+                IsActive="{Binding IsBusy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
         <Grid>
             <Button
                 Margin="10,10,10,10"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
+                Command="{Binding AddProductCommand}"
                 Content="➕ Add Product"
                 Style="{StaticResource AccentButtonStyle}" />
         </Grid>
     </Grid>
+
 </Page>

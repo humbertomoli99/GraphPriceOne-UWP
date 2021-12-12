@@ -11,11 +11,9 @@ namespace GraphPriceOne.Views
 {
     public sealed partial class ProductsPage : Page
     {
-        public ProductsViewModel ViewModel { get; } = new ProductsViewModel();
-
         // TODO WTS: Change the grid as appropriate to your app, adjust the column definitions on ProductsPage.xaml.
         // For more details see the documentation at https://docs.microsoft.com/windows/communitytoolkit/controls/datagrid
-        private ProductDetailsViewModel selectors;
+        private ProductInfo selectors;
 
         public ProductsPage()
         {
@@ -23,14 +21,7 @@ namespace GraphPriceOne.Views
 
             DataContext = new MainViewModel(ListProducts);
 
-            selectors = new ProductDetailsViewModel();
-        }
-
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
-
-            await ViewModel.LoadDataAsync();
+            selectors = new ProductDetailsViewModel().ProductSelected;
         }
         private void productView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -81,9 +72,9 @@ namespace GraphPriceOne.Views
                 ListProducts.DeselectRange(new ItemIndexRange(0, (uint)ListProducts.Items.Count));
             }
         }
-        private void ListViewStores_RefreshRequested(RefreshContainer sender, RefreshRequestedEventArgs args)
+        private void ListViewStores_RefreshRequested(Microsoft.UI.Xaml.Controls.RefreshContainer sender, Microsoft.UI.Xaml.Controls.RefreshRequestedEventArgs args)
         {
-            new ProductsViewModel();
+            new MainViewModel().GetProductsAsync(new MainViewModel().OrderBy,new MainViewModel().OrderDescen).Wait();
         }
     }
 }
