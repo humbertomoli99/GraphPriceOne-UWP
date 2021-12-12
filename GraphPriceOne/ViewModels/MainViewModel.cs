@@ -16,12 +16,11 @@ namespace GraphPriceOne.ViewModels
 {
     public class MainViewModel : ProductsModel
     {
-        public bool SelectMultipleIsEnabled { get; set; }
         public ListView ListViewControl { get; set; }
         public ObservableCollection<ProductInfo> ListViewCollection { get; set; }
 
-        public string OrderBy;
         private List<ProductInfo> lista2;
+        public string OrderBy;
         public bool OrderDescen;
 
         public MainViewModel(ListView ListViewControl)

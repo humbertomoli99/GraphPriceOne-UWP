@@ -1,5 +1,4 @@
 ﻿using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace GraphPriceOne.Models
 {
@@ -39,6 +38,11 @@ namespace GraphPriceOne.Models
         {
             get { return GetValue(() => IsBusy); }
             set { SetValue(() => IsBusy, value); }
+        }
+        public bool SelectMultipleIsEnabled
+        {
+            get { return GetValue(() => SelectMultipleIsEnabled); }
+            set { SetValue(() => SelectMultipleIsEnabled, value); }
         }
     }
 }
