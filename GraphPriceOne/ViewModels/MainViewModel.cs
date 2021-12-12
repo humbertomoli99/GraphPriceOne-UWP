@@ -177,6 +177,10 @@ namespace GraphPriceOne.ViewModels
                 {
                     HideMessageFirstProduct();
                 }
+                else
+                {
+                    ShowMessageFirstProduct();
+                }
             }
             catch (Exception)
             {
