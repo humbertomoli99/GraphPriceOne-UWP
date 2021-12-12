@@ -1,4 +1,5 @@
 ﻿using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 
 namespace GraphPriceOne.Models
 {
@@ -28,6 +29,11 @@ namespace GraphPriceOne.Models
         {
             get { return GetValue(() => ListProductsVisibility); }
             set { SetValue(() => ListProductsVisibility, value); }
+        }
+        public bool IsCheckBoxChecked
+        {
+            get { return GetValue(() => IsCheckBoxChecked); }
+            set { SetValue(() => IsCheckBoxChecked, value); }
         }
     }
 }

@@ -23,7 +23,7 @@
                         <AppBarToggleButton
                             x:Name="CheckBox1"
                             Checked="CheckBox_Checked"
-                            IsChecked="False"
+                            IsChecked="{Binding IsCheckBoxChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Label="Select all"
                             Unchecked="CheckBox_Unchecked"
                             Visibility="{Binding DeleteCommandVisibility}">

@@ -129,6 +129,7 @@ namespace GraphPriceOne.ViewModels
         }
         private void HideButtons()
         {
+            IsCheckBoxChecked = false;
             ListViewControl.SelectedItem = null;
             SelectMultipleIsEnabled = false;
             ListViewControl.SelectionMode = ListViewSelectionMode.Single;
@@ -137,6 +138,7 @@ namespace GraphPriceOne.ViewModels
         }
         private void ShowButtons()
         {
+            IsCheckBoxChecked = false;
             SelectMultipleIsEnabled = true;
             ListViewControl.SelectionMode = ListViewSelectionMode.Multiple;
             IsCheckedAllVisibility = Visibility.Visible;
