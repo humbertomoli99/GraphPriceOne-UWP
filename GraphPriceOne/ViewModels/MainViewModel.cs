@@ -6,6 +6,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.UI.Xaml;
@@ -21,6 +22,7 @@ namespace GraphPriceOne.ViewModels
         public ObservableCollection<ProductInfo> ListViewCollection { get; set; }
 
         public string OrderBy;
+        private List<ProductInfo> lista2;
         public bool OrderDescen;
         private bool IsBusy;
 
@@ -167,17 +169,111 @@ namespace GraphPriceOne.ViewModels
             IsBusy = true;
             try
             {
-                List<ProductInfo> lista = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                 ListViewCollection.Clear();
-
-                foreach (var item in lista)
-                {
-                    ListViewCollection.Add(item);
-                }
+                List<ProductInfo> lista = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                List<ProductInfo> ListProduct = new List<ProductInfo>();
 
                 if (lista != null && lista.Count != 0)
                 {
                     HideMessageFirstProduct();
+
+                    foreach (var item in lista)
+                    {
+                        ListProduct.Add(new ProductInfo
+                        {
+                            ID_PRODUCT = item.ID_PRODUCT,
+                            productName = item.productName,
+                            productUrl = item.productUrl,
+                            productDescription = item.productDescription,
+                            PriceTag = item.PriceTag,
+                            priceCurrency = item.priceCurrency,
+                            shippingPrice = item.shippingPrice,
+                            shippingCurrency = item.shippingCurrency,
+                            stock = item.stock
+                        });
+                    }
+
+                    if (order == "name" && Ascendant == false)
+                    {
+                        OrderBy = "name";
+                        lista2 = ListProduct.OrderByDescending(o => o.productName).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
+                    else if (order == "name" && Ascendant == true)
+                    {
+                        OrderBy = "name";
+                        lista2 = ListProduct.OrderBy(o => o.productName).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
+                    else if (order == "id" && Ascendant == false)
+                    {
+                        OrderBy = "id";
+                        lista2 = ListProduct.OrderByDescending(o => o.ID_PRODUCT).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
+                    else if (order == "id" && Ascendant == true)
+                    {
+                        OrderBy = "id";
+                        lista2 = ListProduct.OrderBy(o => o.ID_PRODUCT).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
+                    else if (order == "price" && Ascendant == false)
+                    {
+                        OrderBy = "price";
+                        lista2 = ListProduct.OrderByDescending(o => o.PriceTag).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
+                    else if (order == "price" && Ascendant == true)
+                    {
+                        OrderBy = "price";
+                        lista2 = ListProduct.OrderBy(o => o.PriceTag).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
+                    else if (order == "stock" && Ascendant == false)
+                    {
+                        OrderBy = "stock";
+                        lista2 = ListProduct.OrderByDescending(o => o.stock).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
+                    else if (order == "stock" && Ascendant == true)
+                    {
+                        OrderBy = "stock";
+                        lista2 = ListProduct.OrderBy(o => o.stock).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
+                    else
+                    {
+                        OrderBy = "id";
+                        lista2 = ListProduct.OrderByDescending(o => o.ID_PRODUCT).ToList();
+                        foreach (var item in lista2)
+                        {
+                            ListViewCollection.Add(item);
+                        }
+                    }
                 }
                 else
                 {
