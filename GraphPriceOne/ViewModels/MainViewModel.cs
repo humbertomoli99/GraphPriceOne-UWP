@@ -100,7 +100,7 @@ namespace GraphPriceOne.ViewModels
                         else if (result == ContentDialogResult.Secondary)
                         {
                             // obtener todas las url de la pagina, y pasarla por el filtro si existe la tienda con selectores
-                            //await MassShipping(url);
+                            await MassShipping(url);
                         }
                     }
                     //crear un if por si el sitemap no tiene selectores
@@ -259,6 +259,7 @@ namespace GraphPriceOne.ViewModels
             //return ListValidUrl;
             foreach (var lista2 in ListValidUrl)
             {
+                IsBusy = true;
                 await InsertProduct(lista2);
             }
             IsBusy = false;
@@ -320,7 +321,7 @@ namespace GraphPriceOne.ViewModels
                                             await App.PriceTrackerService.AddProductAsync(Product);
 
                                             var Products = await App.PriceTrackerService.GetProductsAsync();
-                                            var lastId = Products.ToList()[Products.ToList().Count - 1].ID_PRODUCT;
+                                            var lastId = (Products.ToList() == null) ? Products.ToList()[Products.ToList().Count - 1].ID_PRODUCT : 1;
 
                                             //for para añadir todas las imagenes encontradas
                                             List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl1, SelectorsOfSitemap.Images);
@@ -401,7 +402,7 @@ namespace GraphPriceOne.ViewModels
 
                             await App.PriceTrackerService.DeleteProductAsync(data1);
                         }
-                        await GetProductsAsync();
+                        await GetProductsAsync(OrderBy, OrderDescen);
                         HideButtons();
                     }
                     else if (result == ContentDialogResult.None)
@@ -556,12 +557,12 @@ namespace GraphPriceOne.ViewModels
                             ListViewCollection.Add(item);
                         }
                     }
+                    IsBusy = false;
                 }
                 else
                 {
                     ShowMessageFirstProduct();
                 }
-                IsBusy = false;
             }
             catch (Exception)
             {
