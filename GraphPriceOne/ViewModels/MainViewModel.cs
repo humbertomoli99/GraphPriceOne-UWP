@@ -1,6 +1,7 @@
 ﻿using GraphPriceOne.Core.Models;
 using GraphPriceOne.Library;
 using GraphPriceOne.Models;
+using GraphPriceOne.Services;
 using GraphPriceOne.Views;
 using HtmlAgilityPack;
 using Microsoft.Toolkit.Mvvm.Input;
@@ -95,7 +96,7 @@ namespace GraphPriceOne.ViewModels
                         ContentDialogResult result = await dialogOk.ShowAsync();
                         if (result == ContentDialogResult.Primary)
                         {
-                            App.mContentFrame.Navigate(typeof(AddStorePage));
+                            NavigationService.Navigate(typeof(AddStorePage));
                         }
                         else if (result == ContentDialogResult.Secondary)
                         {
