@@ -32,10 +32,16 @@ namespace GraphPriceOne.Core.Services
         Task<History> GetHistoryAsync(int id);
         Task<IEnumerable<History>> GetHistoriesAsync();
 
-        Task<bool> AddNotificationAsync(Notification PriceTrackerService);
-        Task<bool> UpdateNotificationAsync(Notification PriceTrackerService);
+        Task<bool> AddNotificationAsync(Notifications PriceTrackerService);
+        Task<bool> UpdateNotificationAsync(Notifications PriceTrackerService);
         Task<bool> DeleteNotificationAsync(int id);
-        Task<Notification> GetNotificationAsync(int id);
-        Task<IEnumerable<Notification>> GetNotificationsAsync();
+        Task<Notifications> GetNotificationAsync(int id);
+        Task<IEnumerable<Notifications>> GetNotificationsAsync();
+
+        Task<bool> AddImageAsync(ProductPhotos PriceTrackerService);
+        Task<bool> UpdateImageAsync(ProductPhotos PriceTrackerService);
+        Task<bool> DeleteImageAsync(int id);
+        Task<ProductPhotos> GetImageAsync(int id);
+        Task<IEnumerable<ProductPhotos>> GetImagesAsync();
     }
 }

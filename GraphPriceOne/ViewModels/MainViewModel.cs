@@ -1,7 +1,8 @@
 ﻿using GraphPriceOne.Core.Models;
+using GraphPriceOne.Library;
 using GraphPriceOne.Models;
-using GraphPriceOne.Services;
 using GraphPriceOne.Views;
+using HtmlAgilityPack;
 using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
@@ -54,19 +55,204 @@ namespace GraphPriceOne.ViewModels
 
         private async Task AddProductAsync()
         {
-            HideMessageFirstProduct();
-            IsBusy = true;
-            ProductInfo item = new ProductInfo()
+            //try
+            //{
+            //_sqlite = new SQLiteConnections();
+            string url = await ClipboardEvents.OutputClipboardTextAsync();
+
+            var Products = await App.PriceTrackerService.GetProductsAsync();
+            var query = Products.Where(s => s.productUrl.Equals(url))?.ToList();
+            //var query = _sqlite?.Connection?.Table<ProductInfo>()?.Where(s => s.productUrl.Equals(url))?.ToList();
+            var Stores = await App.PriceTrackerService.GetStoresAsync();
+            var query2 = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
+            //var query2 = _sqlite?.Connection?.Table<Store>()?.Where(s => url.Contains(s.startUrl))?.ToList();
+
+            //url no valida
+            //validar url valida para envio masivo de productos
+            if (!TextBoxEvent.IsValidURL(url))
             {
-                productName = "htx 1060"
-            };
-            await App.PriceTrackerService.AddProductAsync(item);
-            await GetProductsAsync(OrderBy, OrderDescen);
-            IsBusy = false;
+                ContentDialog dialogError = new ContentDialog()
+                {
+                    Title = "Add a new product",
+                    PrimaryButtonText = "OK, THANKS",
+                    CloseButtonText = "CANCEL",
+                    Content = "Copy a URL to begin\n" + "Copy the URL of the product, then select Add Product to start tracking the product's price."
+                };
+                ContentDialogResult result = await dialogError.ShowAsync();
+            }
+            else
+            {
+                //no sitemap
+                if (query2.Count == 0 || query2 == null)
+                {
+                    ContentDialog dialogOk = new ContentDialog()
+                    {
+                        Title = "No selectors assigned to Store",
+                        PrimaryButtonText = "OK",
+                        SecondaryButtonText = "MASS SHIPPING",
+                        CloseButtonText = "CANCEL",
+                        Content = "The store has no assigned sectors."
+                    };
+                    ContentDialogResult result = await dialogOk.ShowAsync();
+                    if (result == ContentDialogResult.Primary)
+                    {
+                        App.mContentFrame.Navigate(typeof(AddStorePage));
+                    }
+                    else if (result == ContentDialogResult.Secondary)
+                    {
+                        // obtener todas las url de la pagina, y pasarla por el filtro si existe la tienda con selectores
+                        //await MassShipping(url);
+                    }
+                }
+                //crear un if por si el sitemap no tiene selectores
+                else
+                {
+                    //ya registrado
+                    if (query.Count > 0)
+                    {
+                        ContentDialog dialogOk = new ContentDialog()
+                        {
+                            Title = "This product is already registered",
+                            PrimaryButtonText = "OK",
+                            Content = "The product is registered and will continue to be tracked."
+                        };
+                        ContentDialogResult result = await dialogOk.ShowAsync();
+                    }
+                    else
+                    {
+                        HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(url);
+                        ScrapingDate.EnlaceImage icon = ScrapingDate.GetMetaIcon(HtmlUrl);
+
+                        var id_sitemap = query2.First().ID_STORE;
+                        var Selectores = await App.PriceTrackerService.GetSelectorsAsync();
+                        var SitemapOfSelector = Selectores.Where(s => s.ID_SELECTOR.Equals(id_sitemap))?.ToList()?.First();
+
+                        //string urlimage = ScrapingDate.DownloadImage(url, imagen, @"\Products\","holaxd");
+
+
+                        Product = new ProductInfo()
+                        {
+                            ID_STORE = id_sitemap,
+                            productName = ScrapingDate.GetTitle(HtmlUrl, SitemapOfSelector.Title),
+                            productUrl = url,
+                            productDescription = ScrapingDate.GetDescription(HtmlUrl, SitemapOfSelector.Description, SitemapOfSelector.DescriptionGetAttribute),
+                            stock = ScrapingDate.GetStock(HtmlUrl, SitemapOfSelector.Stock, SitemapOfSelector.StockGetAttribute),
+                            PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapOfSelector.Price, SitemapOfSelector.PriceGetAttribute),
+                            //Image = ScrapingDate.DownloadImage(url, imagen, @"\Products\", LastID.ToString()),
+                            shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapOfSelector.Shipping, SitemapOfSelector.ShippingGetAttribute)
+                        };
+
+                        var shipping = Product.shippingCurrency + " " + Product.shippingPrice;
+                        if (Product.shippingPrice == 0)
+                        {
+                            shipping = "Free shipping";
+                        }
+                        else if (Product.shippingCurrency == null)
+                        {
+                            shipping = "$" + Product.shippingPrice;
+                        }
+
+                        var currency = Product.priceCurrency;
+                        if (Product.priceCurrency == null)
+                        {
+                            currency = "$";
+                        }
+
+                        var content = Product.productName + "\n\n" +
+                            "Price: " + currency + Product.PriceTag + "\n" +
+                            "Shipping: " + shipping + "\n" +
+                            "Store ID: " + Product.ID_STORE;
+
+                        ContentDialog dialogOk = new ContentDialog()
+                        {
+                            Title = "Add a new product",
+                            PrimaryButtonText = "ADD PRODUCT",
+                            SecondaryButtonText = "MASS SHIPPING",
+                            CloseButtonText = "CANCEL",
+                            Content = content
+                        };
+                        ContentDialogResult result = await dialogOk.ShowAsync();
+
+                        if (result == ContentDialogResult.Primary)
+                        {
+                            await App.PriceTrackerService.AddProductAsync(Product);
+
+                            var lastId = (Products.ToList() == null) ? Products.ToList()[Products.ToList().Count - 1].ID_PRODUCT : 1;
+
+                            // si hay 0 items es 1;
+                            //for para añadir todas las imagenes encontradas
+                            List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl, SitemapOfSelector.Images);
+
+                            string[] imagenes = ScrapingDate.DownloadImage(url, imagen, @"\Products\", lastId.ToString());
+                            if (imagenes != null)
+                            {
+                                foreach (var item in imagenes)
+                                {
+                                    ProductImages = new ProductPhotos()
+                                    {
+                                        PhotoSrc = item,
+                                        ID_PRODUCT = lastId,
+
+                                    };
+                                    await App.PriceTrackerService.AddImageAsync(ProductImages);
+                                }
+                            }
+
+                            ProductHistory = new History()
+                            {
+                                PRODUCT_ID = lastId,
+                                productDate = DateTime.UtcNow.ToString(),
+                                STORE_ID = id_sitemap,
+                                stock = ScrapingDate.GetStock(HtmlUrl, SitemapOfSelector.Stock, SitemapOfSelector.StockGetAttribute),
+                                priceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapOfSelector.Price, SitemapOfSelector.PriceGetAttribute),
+                                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapOfSelector.Shipping, SitemapOfSelector.ShippingGetAttribute)
+                            };
+
+                            await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
+
+                            HideMessageFirstProduct();
+                            await GetProductsAsync();
+                        }
+                        else if (result == ContentDialogResult.Secondary)
+                        {
+                            HideMessageFirstProduct();
+                            //await MassShipping(url);
+                        }
+                    }
+                }
+            }
+            //_sqlite.Connection.Close();
+            //}
+            //catch (Exception ex)
+            //{
+            //    //Console.WriteLine(ex.ToString());
+
+            //    ContentDialog dialogOk1 = new ContentDialog()
+            //    {
+            //        Title = "Exception",
+            //        PrimaryButtonText = "ok",
+            //        Content = ex.ToString()
+            //    };
+            //    await dialogOk1.ShowAsync();
+            //}
+            //HideMessageFirstProduct();
+            //IsBusy = true;
+            //ProductInfo item = new ProductInfo()
+            //{
+            //    productName = "htx 1060"
+            //};
+            //await App.PriceTrackerService.AddProductAsync(item);
+            //await GetProductsAsync(OrderBy, OrderDescen);
+            //IsBusy = false;
         }
 
         public ICommand UpdateListCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, OrderDescen)));
         public ICommand DeleteCommand => new RelayCommand(new Action(async () => await DeleteAsync()));
+
+        public History ProductHistory { get; private set; }
+        public ProductPhotos ProductImages { get; private set; }
+        public ProductInfo Product { get; private set; }
+
         private async Task DeleteAsync()
         {
             try

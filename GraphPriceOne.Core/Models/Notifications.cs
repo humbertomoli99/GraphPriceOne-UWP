@@ -5,11 +5,12 @@ using System.Text;
 
 namespace GraphPriceOne.Core.Models
 {
-    public class Notification
+    public class Notifications
     {
         [PrimaryKey, AutoIncrement]
-        public int ID_PRODUCT { get; set; }
+        public int ID_Notification { get; set; }
+        public int PRODUCT_ID { get; set; }
         public int Title { get; set; }
-        public int Message { get; set; }
+        public string Message { get; set; }
     }
 }

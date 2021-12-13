@@ -36,7 +36,7 @@ namespace GraphPriceOne.Core.Services
             _database.CreateTableAsync<Store>().Wait();
             _database.CreateTableAsync<Selectores>().Wait();
             _database.CreateTableAsync<ProductPhotos>().Wait();
-            _database.CreateTableAsync<Notification>().Wait();
+            _database.CreateTableAsync<Notifications>().Wait();
             _database.CreateTableAsync<History>().Wait();
         }
 
@@ -53,9 +53,22 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> AddNotificationAsync(Notification PriceTrackerService)
+        public async Task<bool> AddImageAsync(ProductPhotos PriceTrackerService)
         {
-            if (PriceTrackerService.ID_PRODUCT > 0)
+            if (PriceTrackerService.ID_PHOTO > 0)
+            {
+                await _database.UpdateAsync(PriceTrackerService);
+            }
+            else
+            {
+                await _database.InsertAsync(PriceTrackerService);
+            }
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> AddNotificationAsync(Notifications PriceTrackerService)
+        {
+            if (PriceTrackerService.PRODUCT_ID > 0)
             {
                 await _database.UpdateAsync(PriceTrackerService);
             }
@@ -112,9 +125,15 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(true);
         }
 
+        public async Task<bool> DeleteImageAsync(int id)
+        {
+            await _database.DeleteAsync<ProductPhotos>(id);
+            return await Task.FromResult(true);
+        }
+
         public async Task<bool> DeleteNotificationAsync(int id)
         {
-            await _database.DeleteAsync<Notification>(id);
+            await _database.DeleteAsync<Notifications>(id);
             return await Task.FromResult(true);
         }
 
@@ -146,14 +165,24 @@ namespace GraphPriceOne.Core.Services
             return await _database.Table<History>().Where(p => p.ID_HISTORY == id).FirstOrDefaultAsync();
         }
 
-        public async Task<Notification> GetNotificationAsync(int id)
+        public async Task<ProductPhotos> GetImageAsync(int id)
         {
-            return await _database.Table<Notification>().Where(p => p.ID_PRODUCT == id).FirstOrDefaultAsync();
+            return await _database.Table<ProductPhotos>().Where(p => p.ID_PHOTO == id).FirstOrDefaultAsync();
         }
 
-        public async Task<IEnumerable<Notification>> GetNotificationsAsync()
+        public async Task<IEnumerable<ProductPhotos>> GetImagesAsync()
         {
-            return await Task.FromResult(await _database.Table<Notification>().ToListAsync());
+            return await Task.FromResult(await _database.Table<ProductPhotos>().ToListAsync());
+        }
+
+        public async Task<Notifications> GetNotificationAsync(int id)
+        {
+            return await _database.Table<Notifications>().Where(p => p.PRODUCT_ID == id).FirstOrDefaultAsync();
+        }
+
+        public async Task<IEnumerable<Notifications>> GetNotificationsAsync()
+        {
+            return await Task.FromResult(await _database.Table<Notifications>().ToListAsync());
         }
 
         public async Task<ProductInfo> GetProductAsync(int id)
@@ -192,7 +221,13 @@ namespace GraphPriceOne.Core.Services
             return await Task.FromResult(true);
         }
 
-        public async Task<bool> UpdateNotificationAsync(Notification PriceTrackerService)
+        public async Task<bool> UpdateImageAsync(ProductPhotos PriceTrackerService)
+        {
+            await _database.UpdateAsync(PriceTrackerService);
+            return await Task.FromResult(true);
+        }
+
+        public async Task<bool> UpdateNotificationAsync(Notifications PriceTrackerService)
         {
             await _database.UpdateAsync(PriceTrackerService);
             return await Task.FromResult(true);
