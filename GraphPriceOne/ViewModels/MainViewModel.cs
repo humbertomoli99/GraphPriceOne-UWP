@@ -215,7 +215,7 @@ namespace GraphPriceOne.ViewModels
                             else if (result == ContentDialogResult.Secondary)
                             {
                                 HideMessageFirstProduct();
-                                //await MassShipping(url);
+                                await MassShipping(url);
                             }
                         }
                     }
@@ -234,7 +234,132 @@ namespace GraphPriceOne.ViewModels
             }
             IsBusy = false;
         }
+        private async Task MassShipping(string url)
+        {
+            HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(url);
+            //obtener la url de productos masivos
+            // obtener atributo href de todas las url
+            //obtener todas las url de el html
+            //crear un objeto con todas las url encontradas
+            List<string> ListUrl = ScrapingDate.GetUrls(HtmlUrl);
+            ListUrl = ListUrl.Distinct().ToList();
+            IsBusy = true;
+            List<string> ListValidUrl = new List<string>();
+            foreach (var list in ListUrl)
+            {
+                var Stores = await App.PriceTrackerService.GetStoresAsync();
+                var query2 = Stores.Where(s => list.Contains(s.startUrl))?.ToList();
+                //revisar cuales url son validas(que tienen store)
+                if (query2.Count > 0)
+                {
+                    ListValidUrl.Add(list);
+                }
+            }
+            //_sqlite.Connection.Close();
+            //return ListValidUrl;
+            foreach (var lista2 in ListValidUrl)
+            {
+                await InsertProduct(lista2);
+            }
+            IsBusy = false;
+            await GetProductsAsync(OrderBy, OrderDescen);
+            //crear un objeto de las url validas
+            //crear un for para añadir todas las urls con la validacion y 1 primer historial
+        }
+        public async Task InsertProduct(string url)
+        {
+            var Stores = await App.PriceTrackerService.GetStoresAsync();
+            var query2 = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
+            //var query2 = _sqlite?.Connection?.Table<Store>()?.Where(s => url.Contains(s.startUrl))?.ToList();
 
+            HtmlNode HtmlUrl1 = await ScrapingDate.LoadPageAsync(url);
+
+            var id_sitemap = query2.First().ID_STORE;
+
+            var Selectors = await App.PriceTrackerService.GetSelectorsAsync();
+            var SelectorsOfSitemap = Selectors.Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();
+            // descarga de imagen provisional
+            //List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl1, Selectores.Images);
+            //string urlimage = ScrapingDate.DownloadImage(url, imagen, @"\Products\","holaxd");
+
+            Product = new ProductInfo()
+            {
+                ID_STORE = id_sitemap,
+                productName = ScrapingDate.GetTitle(HtmlUrl1, SelectorsOfSitemap.Title),
+                productUrl = url,
+                productDescription = ScrapingDate.GetDescription(HtmlUrl1, SelectorsOfSitemap.Description, SelectorsOfSitemap.DescriptionGetAttribute),
+                stock = ScrapingDate.GetStock(HtmlUrl1, SelectorsOfSitemap.Stock, SelectorsOfSitemap.StockGetAttribute),
+                PriceTag = ScrapingDate.GetPrice(HtmlUrl1, SelectorsOfSitemap.Price, SelectorsOfSitemap.PriceGetAttribute),
+                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SelectorsOfSitemap.Shipping, SelectorsOfSitemap.ShippingGetAttribute),
+                //Image = ScrapingDate.DownloadImage(url, imagen, @"\Products\", LastID.ToString()),
+            };
+
+            if (SelectorsOfSitemap.TitleNotNull == 1 && Product.productName != null ||
+                SelectorsOfSitemap.TitleNotNull == 0)
+            {
+                if (SelectorsOfSitemap.DescriptionNotNull == 1 && Product.productDescription != null ||
+                    SelectorsOfSitemap.DescriptionNotNull == 0)
+                {
+                    if (SelectorsOfSitemap.ImagesNotNull == 1 && Product.Image != null || SelectorsOfSitemap.ImagesNotNull == 0)
+                    {
+                        if (SelectorsOfSitemap.PriceNotNull == 1 &&
+                            Product.PriceTag != null || SelectorsOfSitemap.PriceNotNull == 0)
+                        {
+                            if (SelectorsOfSitemap.PriceCurrencyNotNull == 1 &&
+                                Product.priceCurrency != null || SelectorsOfSitemap.PriceCurrencyNotNull == 0)
+                            {
+                                if (SelectorsOfSitemap.ShippingNotNull == 1 &&
+                                    Product.shippingPrice != null || SelectorsOfSitemap.ShippingNotNull == 0)
+                                {
+                                    if (SelectorsOfSitemap.ShippingCurrencyNotNull == 1 &&
+                                        Product.shippingCurrency != null || SelectorsOfSitemap.ShippingCurrencyNotNull == 0)
+                                    {
+                                        if (SelectorsOfSitemap.StockNotNull == 1 &&
+                                            Product.stock != null || SelectorsOfSitemap.StockNotNull == 0)
+                                        {
+                                            await App.PriceTrackerService.AddProductAsync(Product);
+
+                                            var Products = await App.PriceTrackerService.GetProductsAsync();
+                                            var lastId = Products.ToList()[Products.ToList().Count - 1].ID_PRODUCT;
+
+                                            //for para añadir todas las imagenes encontradas
+                                            List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl1, SelectorsOfSitemap.Images);
+
+                                            string[] imagenes = ScrapingDate.DownloadImage(url, imagen, @"\Products\", lastId.ToString());
+                                            if (imagenes != null)
+                                            {
+                                                foreach (var item in imagenes)
+                                                {
+                                                    ProductImages = new ProductPhotos()
+                                                    {
+                                                        PhotoSrc = item,
+                                                        ID_PRODUCT = lastId,
+
+                                                    };
+                                                    await App.PriceTrackerService.AddImageAsync(ProductImages);
+                                                }
+                                            }
+
+                                            ProductHistory = new History()
+                                            {
+                                                PRODUCT_ID = lastId,
+                                                productDate = DateTime.UtcNow.ToString(),
+                                                STORE_ID = id_sitemap,
+                                                stock = ScrapingDate.GetStock(HtmlUrl1, SelectorsOfSitemap.Stock, SelectorsOfSitemap.StockGetAttribute),
+                                                priceTag = ScrapingDate.GetPrice(HtmlUrl1, SelectorsOfSitemap.Price, SelectorsOfSitemap.PriceGetAttribute),
+                                                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SelectorsOfSitemap.Shipping, SelectorsOfSitemap.ShippingGetAttribute)
+                                            };
+                                            await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
+                                            await GetProductsAsync(OrderBy, OrderDescen);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
         public ICommand UpdateListCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, OrderDescen)));
         public ICommand DeleteCommand => new RelayCommand(new Action(async () => await DeleteAsync()));
 
