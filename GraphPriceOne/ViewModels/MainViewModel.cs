@@ -35,15 +35,9 @@ namespace GraphPriceOne.ViewModels
 
             this.ListViewControl = ListViewControl;
         }
-        public void OnAppearing()
-        {
-            IsBusy = true;
-        }
         public MainViewModel()
         {
-            IsBusy = false;
 
-            //GetProductsAsync("id", false);
         }
         public ICommand SelectMultipleCommand => new RelayCommand(new Action(() => SelectMulti()));
         public ICommand ClearFilterCommand => new RelayCommand(new Action(async () => await GetProductsAsync("id", false)));
