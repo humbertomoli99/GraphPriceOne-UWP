@@ -246,9 +246,9 @@ namespace GraphPriceOne.ViewModels
             foreach (var list in ListUrl)
             {
                 var Sitemaps = await App.PriceTrackerService.GetStoresAsync();
-                var UrlShop = Sitemaps.Where(s => list.Contains(s.startUrl))?.ToList();
+                var ValidSitemaps = Sitemaps.Where(s => list.Contains(s.startUrl))?.ToList();
                 //revisar cuales url son validas(que tienen store)
-                if (UrlShop.Count > 0)
+                if (ValidSitemaps.Count > 0)
                 {
                     ListValidUrl.Add(list);
                 }
@@ -266,11 +266,11 @@ namespace GraphPriceOne.ViewModels
         public async Task InsertProduct(string url)
         {
             var Sitemaps = await App.PriceTrackerService.GetStoresAsync();
-            var UrlShop = Sitemaps.Where(s => url.Contains(s.startUrl))?.ToList();
+            var ValidSitemaps = Sitemaps.Where(s => url.Contains(s.startUrl))?.ToList();
 
             HtmlNode HtmlUrl1 = await ScrapingDate.LoadPageAsync(url);
 
-            var id_sitemap = UrlShop.First().ID_STORE;
+            var id_sitemap = ValidSitemaps.First().ID_STORE;
 
             var Selectors = await App.PriceTrackerService.GetSelectorsAsync();
             var SitemapSelectors = Selectors.Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();

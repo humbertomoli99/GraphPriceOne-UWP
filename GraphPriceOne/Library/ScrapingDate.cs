@@ -35,8 +35,8 @@ namespace GraphPriceOne.Library
                     HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(item.productUrl);
                     ScrapingDate.EnlaceImage icon = ScrapingDate.GetMetaIcon(HtmlUrl);
 
-                    var Sitemap = await App.PriceTrackerService.GetStoresAsync();
-                    var ValidSitemaps = Sitemap.Where(s => item.productUrl.Contains(s.startUrl)).ToList();
+                    var Sitemaps = await App.PriceTrackerService.GetStoresAsync();
+                    var ValidSitemaps = Sitemaps.Where(s => item.productUrl.Contains(s.startUrl)).ToList();
 
                     if (ValidSitemaps.Count != 0)
                     {
