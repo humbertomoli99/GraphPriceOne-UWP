@@ -470,10 +470,9 @@ namespace GraphPriceOne.ViewModels
                 if (lista != null && lista.Count != 0)
                 {
                     HideMessageFirstProduct();
-
+                    OrderBy = order;
                     if (order == "name" && Ascendant == false)
                     {
-                        OrderBy = "name";
                         lista2 = lista.OrderByDescending(o => o.productName).ToList();
                         foreach (var item in lista2)
                         {
@@ -482,7 +481,6 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "name" && Ascendant == true)
                     {
-                        OrderBy = "name";
                         lista2 = lista.OrderBy(o => o.productName).ToList();
                         foreach (var item in lista2)
                         {
@@ -491,7 +489,6 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "id" && Ascendant == false)
                     {
-                        OrderBy = "id";
                         lista2 = lista.OrderByDescending(o => o.ID_PRODUCT).ToList();
                         foreach (var item in lista2)
                         {
@@ -500,7 +497,6 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "id" && Ascendant == true)
                     {
-                        OrderBy = "id";
                         lista2 = lista.OrderBy(o => o.ID_PRODUCT).ToList();
                         foreach (var item in lista2)
                         {
@@ -509,7 +505,6 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "price" && Ascendant == false)
                     {
-                        OrderBy = "price";
                         lista2 = lista.OrderByDescending(o => o.PriceTag).ToList();
                         foreach (var item in lista2)
                         {
@@ -518,7 +513,6 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "price" && Ascendant == true)
                     {
-                        OrderBy = "price";
                         lista2 = lista.OrderBy(o => o.PriceTag).ToList();
                         foreach (var item in lista2)
                         {
@@ -527,7 +521,6 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "stock" && Ascendant == false)
                     {
-                        OrderBy = "stock";
                         lista2 = lista.OrderByDescending(o => o.stock).ToList();
                         foreach (var item in lista2)
                         {
@@ -536,7 +529,6 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "stock" && Ascendant == true)
                     {
-                        OrderBy = "stock";
                         lista2 = lista.OrderBy(o => o.stock).ToList();
                         foreach (var item in lista2)
                         {
@@ -545,7 +537,6 @@ namespace GraphPriceOne.ViewModels
                     }
                     else
                     {
-                        OrderBy = "id";
                         lista2 = lista.OrderByDescending(o => o.ID_PRODUCT).ToList();
                         foreach (var item in lista2)
                         {
