@@ -275,8 +275,6 @@ namespace GraphPriceOne.ViewModels
             var Selectors = await App.PriceTrackerService.GetSelectorsAsync();
             var SitemapSelectors = Selectors.Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();
             // descarga de imagen provisional
-            //List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl1, Selectores.Images);
-            //string urlimage = ScrapingDate.DownloadImage(url, imagen, @"\Products\","holaxd");
 
             Product = new ProductInfo()
             {
@@ -287,7 +285,6 @@ namespace GraphPriceOne.ViewModels
                 stock = ScrapingDate.GetStock(HtmlUrl1, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
                 PriceTag = ScrapingDate.GetPrice(HtmlUrl1, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
                 shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute),
-                //Image = ScrapingDate.DownloadImage(url, imagen, @"\Products\", LastID.ToString()),
             };
 
             if (SitemapSelectors.TitleNotNull == 1 && Product.productName != null ||
