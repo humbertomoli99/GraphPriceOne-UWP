@@ -456,7 +456,6 @@ namespace GraphPriceOne.ViewModels
                 IsBusy = true;
                 ListViewCollection.Clear();
                 List<ProductInfo> ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-                IsBusy = true;
                 if (ProductsList != null && ProductsList.Count != 0)
                 {
                     HideMessageFirstProduct();
