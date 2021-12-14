@@ -451,81 +451,16 @@ namespace GraphPriceOne.ViewModels
         }
         public async Task GetProductsAsync(string order = "id", bool Ascendant = false)
         {
-            IsBusy = true;
             try
             {
+                IsBusy = true;
                 ListViewCollection.Clear();
                 List<ProductInfo> ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                 IsBusy = true;
                 if (ProductsList != null && ProductsList.Count != 0)
                 {
                     HideMessageFirstProduct();
-                    OrderBy = order;
-                    if (order == "name" && Ascendant == false)
-                    {
-                        OrderedList = ProductsList.OrderByDescending(o => o.productName).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    else if (order == "name" && Ascendant == true)
-                    {
-                        OrderedList = ProductsList.OrderBy(o => o.productName).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    else if (order == "id" && Ascendant == false)
-                    {
-                        OrderedList = ProductsList.OrderByDescending(o => o.ID_PRODUCT).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    else if (order == "id" && Ascendant == true)
-                    {
-                        OrderedList = ProductsList.OrderBy(o => o.ID_PRODUCT).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    else if (order == "price" && Ascendant == false)
-                    {
-                        OrderedList = ProductsList.OrderByDescending(o => o.PriceTag).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    else if (order == "price" && Ascendant == true)
-                    {
-                        OrderedList = ProductsList.OrderBy(o => o.PriceTag).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    else if (order == "stock" && Ascendant == false)
-                    {
-                        OrderedList = ProductsList.OrderByDescending(o => o.stock).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    else if (order == "stock" && Ascendant == true)
-                    {
-                        OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    IsBusy = false;
+                    OrderList(ProductsList, order, Ascendant);
                 }
                 else
                 {
@@ -539,6 +474,74 @@ namespace GraphPriceOne.ViewModels
             finally
             {
                 IsBusy = false;
+            }
+        }
+        private void OrderList(List<ProductInfo> ProductsList, string order = "id", bool Ascendant = false)
+        {
+            OrderBy = order;
+            if (order == "name" && Ascendant == false)
+            {
+                OrderedList = ProductsList.OrderByDescending(o => o.productName).ToList();
+                foreach (var item in OrderedList)
+                {
+                    ListViewCollection.Add(item);
+                }
+            }
+            else if (order == "name" && Ascendant == true)
+            {
+                OrderedList = ProductsList.OrderBy(o => o.productName).ToList();
+                foreach (var item in OrderedList)
+                {
+                    ListViewCollection.Add(item);
+                }
+            }
+            else if (order == "id" && Ascendant == false)
+            {
+                OrderedList = ProductsList.OrderByDescending(o => o.ID_PRODUCT).ToList();
+                foreach (var item in OrderedList)
+                {
+                    ListViewCollection.Add(item);
+                }
+            }
+            else if (order == "id" && Ascendant == true)
+            {
+                OrderedList = ProductsList.OrderBy(o => o.ID_PRODUCT).ToList();
+                foreach (var item in OrderedList)
+                {
+                    ListViewCollection.Add(item);
+                }
+            }
+            else if (order == "price" && Ascendant == false)
+            {
+                OrderedList = ProductsList.OrderByDescending(o => o.PriceTag).ToList();
+                foreach (var item in OrderedList)
+                {
+                    ListViewCollection.Add(item);
+                }
+            }
+            else if (order == "price" && Ascendant == true)
+            {
+                OrderedList = ProductsList.OrderBy(o => o.PriceTag).ToList();
+                foreach (var item in OrderedList)
+                {
+                    ListViewCollection.Add(item);
+                }
+            }
+            else if (order == "stock" && Ascendant == false)
+            {
+                OrderedList = ProductsList.OrderByDescending(o => o.stock).ToList();
+                foreach (var item in OrderedList)
+                {
+                    ListViewCollection.Add(item);
+                }
+            }
+            else if (order == "stock" && Ascendant == true)
+            {
+                OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
+                foreach (var item in OrderedList)
+                {
+                    ListViewCollection.Add(item);
+                }
             }
         }
     }
