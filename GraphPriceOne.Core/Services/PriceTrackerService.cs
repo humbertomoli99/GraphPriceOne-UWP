@@ -68,7 +68,7 @@ namespace GraphPriceOne.Core.Services
 
         public async Task<bool> AddNotificationAsync(Notifications PriceTrackerService)
         {
-            if (PriceTrackerService.PRODUCT_ID > 0)
+            if (PriceTrackerService.ID_Notification > 0)
             {
                 await _database.UpdateAsync(PriceTrackerService);
             }
