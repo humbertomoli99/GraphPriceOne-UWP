@@ -460,7 +460,7 @@ namespace GraphPriceOne.ViewModels
                 if (ProductsList != null && ProductsList.Count != 0)
                 {
                     HideMessageFirstProduct();
-                    OrderList(ProductsList, order, Ascendant);
+                    ShowOrderedList(ProductsList, order, Ascendant);
                 }
                 else
                 {
@@ -476,7 +476,7 @@ namespace GraphPriceOne.ViewModels
                 IsBusy = false;
             }
         }
-        private void OrderList(List<ProductInfo> ProductsList, string order = "id", bool Ascendant = false)
+        private void ShowOrderedList(List<ProductInfo> ProductsList, string order = "id", bool Ascendant = false)
         {
             OrderBy = order;
             if (order == "name" && Ascendant == false)
