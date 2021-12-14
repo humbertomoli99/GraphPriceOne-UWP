@@ -43,7 +43,7 @@ namespace GraphPriceOne.ViewModels
 
         }
         public ICommand SelectMultipleCommand => new RelayCommand(new Action(() => SelectMulti()));
-        public ICommand ClearFilterCommand => new RelayCommand(new Action(async () => await GetProductsAsync("id", false)));
+        public ICommand ClearFilterCommand => new RelayCommand(new Action(async () => await GetProductsAsync()));
         public ICommand OrderDescendentCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, false)));
         public ICommand OrderAscendantCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, true)));
         public ICommand OrderByNameCommand => new RelayCommand(new Action(async () => await GetProductsAsync("name", OrderDescen)));
@@ -520,14 +520,6 @@ namespace GraphPriceOne.ViewModels
                     else if (order == "stock" && Ascendant == true)
                     {
                         OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
-                        foreach (var item in OrderedList)
-                        {
-                            ListViewCollection.Add(item);
-                        }
-                    }
-                    else
-                    {
-                        OrderedList = ProductsList.OrderByDescending(o => o.ID_PRODUCT).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
