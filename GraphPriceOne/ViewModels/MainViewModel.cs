@@ -20,6 +20,7 @@ namespace GraphPriceOne.ViewModels
     {
         public ListView ListViewControl { get; set; }
         public ObservableCollection<ProductInfo> ListViewCollection { get; set; }
+        public List<ProductInfo> ProductsList { get; private set; }
         public History ProductHistory { get; private set; }
         public ProductPhotos ProductImages { get; private set; }
         public ProductInfo Product { get; private set; }
@@ -454,11 +455,11 @@ namespace GraphPriceOne.ViewModels
             try
             {
                 IsBusy = true;
-                List<ProductInfo> ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                 if (ProductsList != null && ProductsList.Count != 0)
                 {
                     HideMessageFirstProduct();
-                    await ShowOrderedList(order, Ascendant);
+                    ShowOrderedList(order, Ascendant);
                 }
                 else
                 {
@@ -474,10 +475,8 @@ namespace GraphPriceOne.ViewModels
                 IsBusy = false;
             }
         }
-        private async Task ShowOrderedList(string order = "id", bool Ascendant = false)
+        private void ShowOrderedList(string order = "id", bool Ascendant = false)
         {
-            List<ProductInfo> ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-
             OrderBy = order;
             ListViewCollection.Clear();
             if (order == "name" && Ascendant == false)
