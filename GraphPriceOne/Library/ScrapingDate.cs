@@ -390,7 +390,6 @@ namespace GraphPriceOne.Library
             String withDoubleQuotes = XPath.Replace("\"", "'");
             //conversion de string a numeros sin ningun string
 
-            //string selector = DocumentNode?.SelectSingleNode(withDoubleQuotes)?.InnerHtml?.ToString();
             if (GetAttribute == string.Empty || GetAttribute == null)
             {
                 string selector = DocumentNode?.QuerySelector(withDoubleQuotes)?.InnerHtml?.ToString();
