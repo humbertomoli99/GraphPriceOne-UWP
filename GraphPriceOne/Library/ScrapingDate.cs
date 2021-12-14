@@ -27,49 +27,39 @@ namespace GraphPriceOne.Library
         {
             try
             {
-                //_sqlite = new SQLiteConnections();
-                //var lista = _sqlite.Connection.Table<Product>().ToList();
-
-                var lista = await App.PriceTrackerService.GetProductsAsync();
+                var Products = await App.PriceTrackerService.GetProductsAsync();
 
                 var i = 1;
-                foreach (var item in lista)
+                foreach (var item in Products)
                 {
                     HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(item.productUrl);
                     ScrapingDate.EnlaceImage icon = ScrapingDate.GetMetaIcon(HtmlUrl);
 
-                    //var storeSelector = _sqlite?.Connection?.Table<Store>()?.Where(s => item.productUrl.Contains(s.startUrl))?.ToList();
+                    var Sitemap = await App.PriceTrackerService.GetStoresAsync();
+                    var ValidSitemaps = Sitemap.Where(s => item.productUrl.Contains(s.startUrl)).ToList();
 
-                    var StoreOfSelector = await App.PriceTrackerService.GetStoresAsync();
-                    var storeSelector = StoreOfSelector.ToList().Where(s => item.productUrl.Contains(s.startUrl)).ToList();
-
-                    if (storeSelector.Count != 0)
+                    if (ValidSitemaps.Count != 0)
                     {
-                        var id_sitemap = storeSelector.First().ID_STORE;
-
-                        //var Selectores = _sqlite.Connection.Table<Selector>().Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();
-
-                        var Selectores = await App.PriceTrackerService.GetSelectorsAsync();
-                        var FirstSelector = Selectores.ToList().Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();
+                        var id_sitemap = ValidSitemaps.First().ID_STORE;
+                        var Selectors = await App.PriceTrackerService.GetSelectorsAsync();
+                        var SitemapSelectors = Selectors.Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();
 
                         ProductHistory = new History()
                         {
                             STORE_ID = id_sitemap,
                             PRODUCT_ID = item.ID_PRODUCT,
                             productDate = DateTime.UtcNow.ToString(),
-                            stock = ScrapingDate.GetStock(HtmlUrl, FirstSelector.Stock, FirstSelector.StockGetAttribute),
-                            priceTag = ScrapingDate.GetPrice(HtmlUrl, FirstSelector.Price, FirstSelector.PriceGetAttribute),
-                            shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, FirstSelector.Shipping, FirstSelector.ShippingGetAttribute)
+                            stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                            priceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
+                            shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                         };
 
                         await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
-                        //_sqlite.Connection.Insert(ProductHistory);
 
-                        System.Diagnostics.Debug.WriteLine(i + " to " + lista.ToList().Count);
+                        System.Diagnostics.Debug.WriteLine(i + " to " + Products.ToList().Count);
                         i++;
                     }
                 }
-                //_sqlite.Connection.Close();
                 return "Task completed";
             }
             catch (Exception ex)
@@ -81,16 +71,12 @@ namespace GraphPriceOne.Library
         {
             try
             {
-                //_sqlite = new SQLiteConnections();
-                //var lista2 = _sqlite.Connection.Table<ProductInfo>().ToList();
                 var Products = await App.PriceTrackerService.GetProductsAsync();
                 var i = 1;
                 Notifications Notify = new Notifications();
                 foreach (var item in Products)
                 {
                     //detectar precio anterior
-                    //var productHistory = _sqlite.Connection.Table<History>().Where(s => s.PRODUCT_ID.Equals(item.ID_PRODUCT)).ToList();
-
                     var Histories = await App.PriceTrackerService.GetHistoriesAsync();
                     var HistorySelected = Histories.ToList().Where(s => s.PRODUCT_ID.Equals(item.ID_PRODUCT)).ToList();
 
@@ -101,28 +87,25 @@ namespace GraphPriceOne.Library
                         var newPrice = HistorySelected[lastItem].priceTag;
                         var previousPrice = HistorySelected[lastItem - 1].priceTag;
 
-                        //var product = _sqlite.Connection.Table<Product>().Where(s => s.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList().First();
-                        var productSelected = Products.Where(s => s.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList().First();
+                        var ProductSelected = Products.Where(s => s.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList().First();
 
                         if (newPrice < previousPrice)
                         {
-                            ShowToastNotification("📉 Dropped \n" + productSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
-                            Notify.Message = "📉 Dropped \n" + productSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
-                            Notify.PRODUCT_ID = productSelected.ID_PRODUCT;
+                            ShowToastNotification("📉 Dropped \n" + ProductSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
+                            Notify.Message = "📉 Dropped \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
+                            Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
                         }
                         else if (newPrice > previousPrice)
                         {
-                            ShowToastNotification("📈 Increased \n" + productSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
-                            Notify.Message = "📈 Increased \n" + productSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
-                            Notify.PRODUCT_ID = productSelected.ID_PRODUCT;
+                            ShowToastNotification("📈 Increased \n" + ProductSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
+                            Notify.Message = "📈 Increased \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
+                            Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
                         }
                         await App.PriceTrackerService.AddNotificationAsync(Notify);
-                        //_sqlite.Connection.Insert(Notify);
                         System.Diagnostics.Debug.WriteLine(i + " to " + Products.ToList().Count);
                         i++;
                     }
                 }
-                //_sqlite.Connection.Close();
             }
             catch (Exception ex)
             {

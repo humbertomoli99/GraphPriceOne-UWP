@@ -62,8 +62,7 @@ namespace GraphPriceOne.ViewModels
                 var Products = await App.PriceTrackerService.GetProductsAsync();
                 var query = Products.Where(s => s.productUrl.Equals(url))?.ToList();
                 var Stores = await App.PriceTrackerService.GetStoresAsync();
-                var query2 = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
-                //var query2 = _sqlite?.Connection?.Table<Store>()?.Where(s => url.Contains(s.startUrl))?.ToList();
+                var UrlShop = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
 
                 //url no valida
                 //validar url valida para envio masivo de productos
@@ -81,7 +80,7 @@ namespace GraphPriceOne.ViewModels
                 else
                 {
                     //no sitemap
-                    if (query2.Count == 0 || query2 == null)
+                    if (UrlShop.Count == 0 || UrlShop == null)
                     {
                         ContentDialog dialogOk = new ContentDialog()
                         {
@@ -121,7 +120,7 @@ namespace GraphPriceOne.ViewModels
                             HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(url);
                             ScrapingDate.EnlaceImage icon = ScrapingDate.GetMetaIcon(HtmlUrl);
 
-                            var id_sitemap = query2.First().ID_STORE;
+                            var id_sitemap = UrlShop.First().ID_STORE;
                             var Selectores = await App.PriceTrackerService.GetSelectorsAsync();
                             var SitemapSelectors = Selectores.Where(s => s.ID_SELECTOR.Equals(id_sitemap))?.ToList()?.First();
 
@@ -246,20 +245,18 @@ namespace GraphPriceOne.ViewModels
             List<string> ListValidUrl = new List<string>();
             foreach (var list in ListUrl)
             {
-                var Stores = await App.PriceTrackerService.GetStoresAsync();
-                var query2 = Stores.Where(s => list.Contains(s.startUrl))?.ToList();
+                var Sitemaps = await App.PriceTrackerService.GetStoresAsync();
+                var UrlShop = Sitemaps.Where(s => list.Contains(s.startUrl))?.ToList();
                 //revisar cuales url son validas(que tienen store)
-                if (query2.Count > 0)
+                if (UrlShop.Count > 0)
                 {
                     ListValidUrl.Add(list);
                 }
             }
-            //_sqlite.Connection.Close();
-            //return ListValidUrl;
-            foreach (var lista2 in ListValidUrl)
+            foreach (var item in ListValidUrl)
             {
                 IsBusy = true;
-                await InsertProduct(lista2);
+                await InsertProduct(item);
             }
             IsBusy = false;
             await GetProductsAsync(OrderBy, OrderDescen);
@@ -268,16 +265,15 @@ namespace GraphPriceOne.ViewModels
         }
         public async Task InsertProduct(string url)
         {
-            var Stores = await App.PriceTrackerService.GetStoresAsync();
-            var query2 = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
-            //var query2 = _sqlite?.Connection?.Table<Store>()?.Where(s => url.Contains(s.startUrl))?.ToList();
+            var Sitemaps = await App.PriceTrackerService.GetStoresAsync();
+            var UrlShop = Sitemaps.Where(s => url.Contains(s.startUrl))?.ToList();
 
             HtmlNode HtmlUrl1 = await ScrapingDate.LoadPageAsync(url);
 
-            var id_sitemap = query2.First().ID_STORE;
+            var id_sitemap = UrlShop.First().ID_STORE;
 
             var Selectors = await App.PriceTrackerService.GetSelectorsAsync();
-            var SelectorsOfSitemap = Selectors.Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();
+            var SitemapSelectors = Selectors.Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();
             // descarga de imagen provisional
             //List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl1, Selectores.Images);
             //string urlimage = ScrapingDate.DownloadImage(url, imagen, @"\Products\","holaxd");
@@ -285,37 +281,37 @@ namespace GraphPriceOne.ViewModels
             Product = new ProductInfo()
             {
                 ID_STORE = id_sitemap,
-                productName = ScrapingDate.GetTitle(HtmlUrl1, SelectorsOfSitemap.Title),
+                productName = ScrapingDate.GetTitle(HtmlUrl1, SitemapSelectors.Title),
                 productUrl = url,
-                productDescription = ScrapingDate.GetDescription(HtmlUrl1, SelectorsOfSitemap.Description, SelectorsOfSitemap.DescriptionGetAttribute),
-                stock = ScrapingDate.GetStock(HtmlUrl1, SelectorsOfSitemap.Stock, SelectorsOfSitemap.StockGetAttribute),
-                PriceTag = ScrapingDate.GetPrice(HtmlUrl1, SelectorsOfSitemap.Price, SelectorsOfSitemap.PriceGetAttribute),
-                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SelectorsOfSitemap.Shipping, SelectorsOfSitemap.ShippingGetAttribute),
+                productDescription = ScrapingDate.GetDescription(HtmlUrl1, SitemapSelectors.Description, SitemapSelectors.DescriptionGetAttribute),
+                stock = ScrapingDate.GetStock(HtmlUrl1, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                PriceTag = ScrapingDate.GetPrice(HtmlUrl1, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
+                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute),
                 //Image = ScrapingDate.DownloadImage(url, imagen, @"\Products\", LastID.ToString()),
             };
 
-            if (SelectorsOfSitemap.TitleNotNull == 1 && Product.productName != null ||
-                SelectorsOfSitemap.TitleNotNull == 0)
+            if (SitemapSelectors.TitleNotNull == 1 && Product.productName != null ||
+                SitemapSelectors.TitleNotNull == 0)
             {
-                if (SelectorsOfSitemap.DescriptionNotNull == 1 && Product.productDescription != null ||
-                    SelectorsOfSitemap.DescriptionNotNull == 0)
+                if (SitemapSelectors.DescriptionNotNull == 1 && Product.productDescription != null ||
+                    SitemapSelectors.DescriptionNotNull == 0)
                 {
-                    if (SelectorsOfSitemap.ImagesNotNull == 1 && Product.Image != null || SelectorsOfSitemap.ImagesNotNull == 0)
+                    if (SitemapSelectors.ImagesNotNull == 1 && Product.Image != null || SitemapSelectors.ImagesNotNull == 0)
                     {
-                        if (SelectorsOfSitemap.PriceNotNull == 1 &&
-                            Product.PriceTag != null || SelectorsOfSitemap.PriceNotNull == 0)
+                        if (SitemapSelectors.PriceNotNull == 1 &&
+                            Product.PriceTag != null || SitemapSelectors.PriceNotNull == 0)
                         {
-                            if (SelectorsOfSitemap.PriceCurrencyNotNull == 1 &&
-                                Product.priceCurrency != null || SelectorsOfSitemap.PriceCurrencyNotNull == 0)
+                            if (SitemapSelectors.PriceCurrencyNotNull == 1 &&
+                                Product.priceCurrency != null || SitemapSelectors.PriceCurrencyNotNull == 0)
                             {
-                                if (SelectorsOfSitemap.ShippingNotNull == 1 &&
-                                    Product.shippingPrice != null || SelectorsOfSitemap.ShippingNotNull == 0)
+                                if (SitemapSelectors.ShippingNotNull == 1 &&
+                                    Product.shippingPrice != null || SitemapSelectors.ShippingNotNull == 0)
                                 {
-                                    if (SelectorsOfSitemap.ShippingCurrencyNotNull == 1 &&
-                                        Product.shippingCurrency != null || SelectorsOfSitemap.ShippingCurrencyNotNull == 0)
+                                    if (SitemapSelectors.ShippingCurrencyNotNull == 1 &&
+                                        Product.shippingCurrency != null || SitemapSelectors.ShippingCurrencyNotNull == 0)
                                     {
-                                        if (SelectorsOfSitemap.StockNotNull == 1 &&
-                                            Product.stock != null || SelectorsOfSitemap.StockNotNull == 0)
+                                        if (SitemapSelectors.StockNotNull == 1 &&
+                                            Product.stock != null || SitemapSelectors.StockNotNull == 0)
                                         {
                                             await App.PriceTrackerService.AddProductAsync(Product);
 
@@ -323,7 +319,7 @@ namespace GraphPriceOne.ViewModels
                                             var lastId = (Products.ToList().Count == 0) ? 1 : Products.ToList()[Products.ToList().Count - 1].ID_PRODUCT;
 
                                             //for para añadir todas las imagenes encontradas
-                                            List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl1, SelectorsOfSitemap.Images);
+                                            List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl1, SitemapSelectors.Images);
 
                                             string[] imagenes = ScrapingDate.DownloadImage(url, imagen, @"\Products\", lastId.ToString());
                                             if (imagenes != null)
@@ -345,9 +341,9 @@ namespace GraphPriceOne.ViewModels
                                                 PRODUCT_ID = lastId,
                                                 productDate = DateTime.UtcNow.ToString(),
                                                 STORE_ID = id_sitemap,
-                                                stock = ScrapingDate.GetStock(HtmlUrl1, SelectorsOfSitemap.Stock, SelectorsOfSitemap.StockGetAttribute),
-                                                priceTag = ScrapingDate.GetPrice(HtmlUrl1, SelectorsOfSitemap.Price, SelectorsOfSitemap.PriceGetAttribute),
-                                                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SelectorsOfSitemap.Shipping, SelectorsOfSitemap.ShippingGetAttribute)
+                                                stock = ScrapingDate.GetStock(HtmlUrl1, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                                                priceTag = ScrapingDate.GetPrice(HtmlUrl1, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
+                                                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                                             };
                                             await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
                                             await GetProductsAsync(OrderBy, OrderDescen);
@@ -462,15 +458,15 @@ namespace GraphPriceOne.ViewModels
             try
             {
                 ListViewCollection.Clear();
-                List<ProductInfo> lista = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                List<ProductInfo> ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                 IsBusy = true;
-                if (lista != null && lista.Count != 0)
+                if (ProductsList != null && ProductsList.Count != 0)
                 {
                     HideMessageFirstProduct();
                     OrderBy = order;
                     if (order == "name" && Ascendant == false)
                     {
-                        OrderedList = lista.OrderByDescending(o => o.productName).ToList();
+                        OrderedList = ProductsList.OrderByDescending(o => o.productName).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
@@ -478,7 +474,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "name" && Ascendant == true)
                     {
-                        OrderedList = lista.OrderBy(o => o.productName).ToList();
+                        OrderedList = ProductsList.OrderBy(o => o.productName).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
@@ -486,7 +482,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "id" && Ascendant == false)
                     {
-                        OrderedList = lista.OrderByDescending(o => o.ID_PRODUCT).ToList();
+                        OrderedList = ProductsList.OrderByDescending(o => o.ID_PRODUCT).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
@@ -494,7 +490,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "id" && Ascendant == true)
                     {
-                        OrderedList = lista.OrderBy(o => o.ID_PRODUCT).ToList();
+                        OrderedList = ProductsList.OrderBy(o => o.ID_PRODUCT).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
@@ -502,7 +498,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "price" && Ascendant == false)
                     {
-                        OrderedList = lista.OrderByDescending(o => o.PriceTag).ToList();
+                        OrderedList = ProductsList.OrderByDescending(o => o.PriceTag).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
@@ -510,7 +506,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "price" && Ascendant == true)
                     {
-                        OrderedList = lista.OrderBy(o => o.PriceTag).ToList();
+                        OrderedList = ProductsList.OrderBy(o => o.PriceTag).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
@@ -518,7 +514,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "stock" && Ascendant == false)
                     {
-                        OrderedList = lista.OrderByDescending(o => o.stock).ToList();
+                        OrderedList = ProductsList.OrderByDescending(o => o.stock).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
@@ -526,7 +522,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else if (order == "stock" && Ascendant == true)
                     {
-                        OrderedList = lista.OrderBy(o => o.stock).ToList();
+                        OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
@@ -534,7 +530,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else
                     {
-                        OrderedList = lista.OrderByDescending(o => o.ID_PRODUCT).ToList();
+                        OrderedList = ProductsList.OrderByDescending(o => o.ID_PRODUCT).ToList();
                         foreach (var item in OrderedList)
                         {
                             ListViewCollection.Add(item);
