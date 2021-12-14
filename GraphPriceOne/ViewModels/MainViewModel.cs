@@ -123,7 +123,7 @@ namespace GraphPriceOne.ViewModels
 
                             var id_sitemap = query2.First().ID_STORE;
                             var Selectores = await App.PriceTrackerService.GetSelectorsAsync();
-                            var SitemapOfSelector = Selectores.Where(s => s.ID_SELECTOR.Equals(id_sitemap))?.ToList()?.First();
+                            var SitemapSelectors = Selectores.Where(s => s.ID_SELECTOR.Equals(id_sitemap))?.ToList()?.First();
 
                             //string urlimage = ScrapingDate.DownloadImage(url, imagen, @"\Products\","holaxd");
 
@@ -131,13 +131,13 @@ namespace GraphPriceOne.ViewModels
                             Product = new ProductInfo()
                             {
                                 ID_STORE = id_sitemap,
-                                productName = ScrapingDate.GetTitle(HtmlUrl, SitemapOfSelector.Title),
+                                productName = ScrapingDate.GetTitle(HtmlUrl, SitemapSelectors.Title),
                                 productUrl = url,
-                                productDescription = ScrapingDate.GetDescription(HtmlUrl, SitemapOfSelector.Description, SitemapOfSelector.DescriptionGetAttribute),
-                                stock = ScrapingDate.GetStock(HtmlUrl, SitemapOfSelector.Stock, SitemapOfSelector.StockGetAttribute),
-                                PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapOfSelector.Price, SitemapOfSelector.PriceGetAttribute),
+                                productDescription = ScrapingDate.GetDescription(HtmlUrl, SitemapSelectors.Description, SitemapSelectors.DescriptionGetAttribute),
+                                stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                                PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
                                 //Image = ScrapingDate.DownloadImage(url, imagen, @"\Products\", LastID.ToString()),
-                                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapOfSelector.Shipping, SitemapOfSelector.ShippingGetAttribute)
+                                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                             };
 
                             var shipping = Product.shippingCurrency + " " + Product.shippingPrice;
@@ -179,7 +179,7 @@ namespace GraphPriceOne.ViewModels
 
                                 // si hay 0 items es 1;
                                 //for para añadir todas las imagenes encontradas
-                                List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl, SitemapOfSelector.Images);
+                                List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl, SitemapSelectors.Images);
 
                                 string[] imagenes = ScrapingDate.DownloadImage(url, imagen, @"\Products\", lastId.ToString());
                                 if (imagenes != null)
@@ -201,9 +201,9 @@ namespace GraphPriceOne.ViewModels
                                     PRODUCT_ID = lastId,
                                     productDate = DateTime.UtcNow.ToString(),
                                     STORE_ID = id_sitemap,
-                                    stock = ScrapingDate.GetStock(HtmlUrl, SitemapOfSelector.Stock, SitemapOfSelector.StockGetAttribute),
-                                    priceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapOfSelector.Price, SitemapOfSelector.PriceGetAttribute),
-                                    shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapOfSelector.Shipping, SitemapOfSelector.ShippingGetAttribute)
+                                    stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                                    priceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
+                                    shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                                 };
 
                                 await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
