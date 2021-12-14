@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GraphPriceOne.Library;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -45,10 +46,12 @@ namespace GraphPriceOne.BackgroundTasks
 
             _deferral = taskInstance.GetDeferral();
 
-            return Task.Run(() =>
+            return Task.Run(async () =>
             {
                 //// TODO WTS: Insert the code that should be executed in the background task here.
                 //// This sample initializes a timer that counts to 100 in steps of 10.  It updates Message each time.
+                await ScrapingDate.NotifyPriceChangeAsync();
+                await ScrapingDate.GetHistory();
 
                 //// Documentation:
                 ////      * General: https://docs.microsoft.com/windows/uwp/launch-resume/support-your-app-with-background-tasks
