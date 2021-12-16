@@ -313,8 +313,8 @@ namespace GraphPriceOne.ViewModels
                                         {
                                             await App.PriceTrackerService.AddProductAsync(Product);
 
-                                            var Products = await App.PriceTrackerService.GetProductsAsync();
-                                            var lastId = (Products.ToList().Count == 0) ? 1 : Products.ToList()[Products.ToList().Count - 1].ID_PRODUCT;
+                                            List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                                            var lastId = (Products.Count == 0) ? 1 : Products[Products.Count - 1].ID_PRODUCT;
 
                                             //for para añadir todas las imagenes encontradas
                                             List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl1, SitemapSelectors.Images);
@@ -328,7 +328,6 @@ namespace GraphPriceOne.ViewModels
                                                     {
                                                         PhotoSrc = item,
                                                         ID_PRODUCT = lastId,
-
                                                     };
                                                     await App.PriceTrackerService.AddImageAsync(ProductImages);
                                                 }
