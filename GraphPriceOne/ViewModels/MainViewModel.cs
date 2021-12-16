@@ -34,7 +34,7 @@ namespace GraphPriceOne.ViewModels
             IsBusy = false;
 
             ListViewCollection = new ObservableCollection<ProductInfo>();
-            _ = GetProductsAsync("id", false);
+            _ = GetProductsAsync();
             ShowMessageFirstProduct();
 
             this.ListViewControl = ListViewControl;
