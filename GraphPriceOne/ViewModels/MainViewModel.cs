@@ -21,8 +21,8 @@ namespace GraphPriceOne.ViewModels
         public ListView ListViewControl { get; set; }
         public ObservableCollection<ProductsModel> ListViewCollection { get; set; }
         public List<ProductInfo> ProductsList { get; private set; }
-        public History ProductHistory { get; private set; }
         public ProductPhotos ProductImages { get; private set; }
+        public History ProductHistory { get; private set; }
         public ProductInfo Product { get; private set; }
 
         private List<ProductInfo> OrderedList;
@@ -475,7 +475,7 @@ namespace GraphPriceOne.ViewModels
                 IsBusy = false;
             }
         }
-        private void ShowOrderedList(string order = "id", bool Ascendant = false)
+        private async void ShowOrderedList(string order = "id", bool Ascendant = false)
         {
             OrderBy = order;
             ListViewCollection.Clear();
@@ -514,18 +514,57 @@ namespace GraphPriceOne.ViewModels
 
             foreach(var item in OrderedList)
             {
+                string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
 
-                ListViewCollection.Add(new ProductsModel() {
+                List<ProductPhotos> Images = (List<ProductPhotos>)await App.PriceTrackerService.GetImagesAsync();
+                var ProductImages = Images.Where(Img => Img.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList();
+
+                var Histories = (List<History>)await App.PriceTrackerService.GetHistoriesAsync();
+                var ProductHistory = Histories.Where(u => u.PRODUCT_ID.Equals(item.ID_PRODUCT)).ToList();
+
+                var LastItem = ProductHistory.Count - 1;
+
+                if (ProductImages != null && ProductImages.Count != 0)
+                {
+                    ImageLocation = LocalState + ProductImages.First().PhotoSrc;
+                }
+                //shipping currency
+                shippingCurrency = (shippingCurrency == null) ? "$" : shippingCurrency;
+                //shipping price
+                if (item.shippingPrice == 0)
+                {
+                    shippingPrice = "Free Shipping";
+                }
+                else if (item.shippingPrice == null)
+                {
+                    shippingPrice = "Not Available";
+                }
+                else
+                {
+                    shippingPrice = shippingCurrency + ProductHistory[LastItem].shippingPrice;
+                }
+                //get stock
+                if (item.stock == null)
+                {
+                    stock = "Not Available";
+                }
+                else
+                {
+                    stock = ProductHistory[LastItem].stock.ToString();
+                }
+
+                ListViewCollection.Add(new ProductsModel()
+                {
                     ID_PRODUCT = item.ID_PRODUCT,
                     productName = item.productName,
                     productDescription = item.productDescription,
                     productUrl = item.productUrl,
-                    PriceTag = item.PriceTag,
+                    PriceTag = ProductHistory[LastItem].priceTag,
                     priceCurrency = item.priceCurrency,
-                    shippingPrice = item.shippingPrice.ToString(),
-                    shippingCurrency = item.shippingCurrency,
-                    stock = (item.stock == 0)?"No stock" : item.stock.ToString(),
-                    ImageLocation = item.Image,
+                    shippingPrice = shippingPrice,
+                    shippingCurrency = shippingCurrency,
+                    stock = stock,
+                    ImageLocation = ImageLocation
                 });
             }
         }
