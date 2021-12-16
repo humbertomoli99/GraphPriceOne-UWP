@@ -19,7 +19,7 @@ namespace GraphPriceOne.ViewModels
     public class MainViewModel : ProductsModel
     {
         public ListView ListViewControl { get; set; }
-        public ObservableCollection<ProductInfo> ListViewCollection { get; set; }
+        public ObservableCollection<ProductsModel> ListViewCollection { get; set; }
         public List<ProductInfo> ProductsList { get; private set; }
         public History ProductHistory { get; private set; }
         public ProductPhotos ProductImages { get; private set; }
@@ -33,7 +33,7 @@ namespace GraphPriceOne.ViewModels
         {
             IsBusy = false;
 
-            ListViewCollection = new ObservableCollection<ProductInfo>();
+            ListViewCollection = new ObservableCollection<ProductsModel>();
             _ = GetProductsAsync("id", false);
             ShowMessageFirstProduct();
 
@@ -511,9 +511,22 @@ namespace GraphPriceOne.ViewModels
             {
                 OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
             }
+
             foreach(var item in OrderedList)
             {
-                ListViewCollection.Add(item);
+
+                ListViewCollection.Add(new ProductsModel() {
+                    ID_PRODUCT = item.ID_PRODUCT,
+                    productName = item.productName,
+                    productDescription = item.productDescription,
+                    productUrl = item.productUrl,
+                    PriceTag = item.PriceTag,
+                    priceCurrency = item.priceCurrency,
+                    shippingPrice = item.shippingPrice.ToString(),
+                    shippingCurrency = item.shippingCurrency,
+                    stock = (item.stock == 0)?"No stock" : item.stock.ToString(),
+                    ImageLocation = item.Image,
+                });
             }
         }
     }
