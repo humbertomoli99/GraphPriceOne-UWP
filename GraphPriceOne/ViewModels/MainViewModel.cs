@@ -23,9 +23,7 @@ namespace GraphPriceOne.ViewModels
         public List<ProductInfo> ProductsList { get; private set; }
         public ProductPhotos ProductImages { get; private set; }
         public History ProductHistory { get; private set; }
-        public ProductInfo Product { get; private set; }
-
-        private List<ProductInfo> OrderedList;
+        private List<ProductInfo> OrderedList { get; set; }
         public string OrderBy;
         public bool OrderDescen;
 
@@ -62,6 +60,7 @@ namespace GraphPriceOne.ViewModels
 
                 var Products = await App.PriceTrackerService.GetProductsAsync();
                 var query = Products.Where(s => s.productUrl.Equals(url))?.ToList();
+
                 var Stores = await App.PriceTrackerService.GetStoresAsync();
                 var UrlShop = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
 
@@ -123,12 +122,9 @@ namespace GraphPriceOne.ViewModels
 
                             var id_sitemap = UrlShop.First().ID_STORE;
                             var Selectores = await App.PriceTrackerService.GetSelectorsAsync();
+
                             var SitemapSelectors = Selectores.Where(s => s.ID_SELECTOR.Equals(id_sitemap))?.ToList()?.First();
-
-                            //string urlimage = ScrapingDate.DownloadImage(url, imagen, @"\Products\","holaxd");
-
-
-                            Product = new ProductInfo()
+                            ProductInfo Product = new ProductInfo()
                             {
                                 ID_STORE = id_sitemap,
                                 productName = ScrapingDate.GetTitle(HtmlUrl, SitemapSelectors.Title),
@@ -136,10 +132,8 @@ namespace GraphPriceOne.ViewModels
                                 productDescription = ScrapingDate.GetDescription(HtmlUrl, SitemapSelectors.Description, SitemapSelectors.DescriptionGetAttribute),
                                 stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
                                 PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
-                                //Image = ScrapingDate.DownloadImage(url, imagen, @"\Products\", LastID.ToString()),
                                 shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                             };
-
                             var shipping = Product.shippingCurrency + " " + Product.shippingPrice;
                             if (Product.shippingPrice == 0)
                             {
@@ -196,7 +190,7 @@ namespace GraphPriceOne.ViewModels
                                     }
                                 }
 
-                                ProductHistory = new History()
+                                History ProductHistory = new History()
                                 {
                                     PRODUCT_ID = lastId,
                                     productDate = DateTime.UtcNow.ToString(),
@@ -277,7 +271,7 @@ namespace GraphPriceOne.ViewModels
             var SitemapSelectors = Selectors.Where(s => s.ID_SELECTOR.Equals(id_sitemap)).ToList().First();
             // descarga de imagen provisional
 
-            Product = new ProductInfo()
+            ProductInfo Product = new ProductInfo()
             {
                 ID_STORE = id_sitemap,
                 productName = ScrapingDate.GetTitle(HtmlUrl1, SitemapSelectors.Title),
@@ -333,7 +327,7 @@ namespace GraphPriceOne.ViewModels
                                                 }
                                             }
 
-                                            ProductHistory = new History()
+                                            History ProductHistory = new History()
                                             {
                                                 PRODUCT_ID = lastId,
                                                 productDate = DateTime.UtcNow.ToString(),
@@ -458,7 +452,7 @@ namespace GraphPriceOne.ViewModels
                 if (ProductsList != null && ProductsList.Count != 0)
                 {
                     HideMessageFirstProduct();
-                    ShowOrderedList(order, Ascendant);
+                    await ShowOrderedList(order, Ascendant);
                 }
                 else
                 {
@@ -474,7 +468,7 @@ namespace GraphPriceOne.ViewModels
                 IsBusy = false;
             }
         }
-        private async void ShowOrderedList(string order = "id", bool Ascendant = false)
+        private async Task ShowOrderedList(string order = "id", bool Ascendant = false)
         {
             OrderBy = order;
             ListViewCollection.Clear();
@@ -510,61 +504,63 @@ namespace GraphPriceOne.ViewModels
             {
                 OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
             }
-
-            foreach(var item in OrderedList)
+            if (OrderedList != null)
             {
-                string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+                foreach (var item in OrderedList)
+                {
+                    string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
 
-                List<ProductPhotos> Images = (List<ProductPhotos>)await App.PriceTrackerService.GetImagesAsync();
-                var ProductImages = Images.Where(Img => Img.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList();
+                    List<ProductPhotos> Images = (List<ProductPhotos>)await App.PriceTrackerService.GetImagesAsync();
+                    var ProductImages = Images.Where(Img => Img.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList();
 
-                List<History> Histories = (List<History>)await App.PriceTrackerService.GetHistoriesAsync();
-                var ProductHistory = Histories.Where(u => u.PRODUCT_ID.Equals(item.ID_PRODUCT)).ToList();
+                    List<History> Histories = (List<History>)await App.PriceTrackerService.GetHistoriesAsync();
+                    var ProductHistory = Histories.Where(u => u.PRODUCT_ID.Equals(item.ID_PRODUCT)).ToList();
 
-                var LastItem = ProductHistory.Count - 1;
+                    var LastItem = ProductHistory.Count - 1;
 
-                if (ProductImages != null && ProductImages.Count != 0)
-                {
-                    ImageLocation = LocalState + ProductImages.First().PhotoSrc;
-                }
-                //shipping currency
-                shippingCurrency = (shippingCurrency == null) ? "$" : shippingCurrency;
-                //shipping price
-                if (item.shippingPrice == 0)
-                {
-                    shippingPrice = "Free Shipping";
-                }
-                else if (item.shippingPrice == null)
-                {
-                    shippingPrice = "Not Available";
-                }
-                else
-                {
-                    shippingPrice = shippingCurrency + ProductHistory[LastItem].shippingPrice;
-                }
-                //get stock
-                if (item.stock == null)
-                {
-                    stock = "Not Available";
-                }
-                else
-                {
-                    stock = ProductHistory[LastItem].stock.ToString();
-                }
+                    if (ProductImages != null && ProductImages.Count != 0)
+                    {
+                        ImageLocation = LocalState + ProductImages.First().PhotoSrc;
+                    }
+                    //shipping currency
+                    shippingCurrency = (shippingCurrency == null) ? "$" : shippingCurrency;
+                    //shipping price
+                    if (item.shippingPrice == 0)
+                    {
+                        shippingPrice = "Free Shipping";
+                    }
+                    else if (item.shippingPrice == null)
+                    {
+                        shippingPrice = "Not Available";
+                    }
+                    else
+                    {
+                        shippingPrice = shippingCurrency + ProductHistory[LastItem].shippingPrice;
+                    }
+                    //get stock
+                    if (item.stock == null)
+                    {
+                        stock = "Not Available";
+                    }
+                    else
+                    {
+                        stock = ProductHistory[LastItem].stock.ToString();
+                    }
 
-                ListViewCollection.Add(new ProductsModel()
-                {
-                    ID_PRODUCT = item.ID_PRODUCT,
-                    productName = item.productName,
-                    productDescription = item.productDescription,
-                    productUrl = item.productUrl,
-                    PriceTag = ProductHistory[LastItem].priceTag,
-                    priceCurrency = item.priceCurrency,
-                    shippingPrice = shippingPrice,
-                    shippingCurrency = shippingCurrency,
-                    stock = stock,
-                    ImageLocation = ImageLocation
-                });
+                    ListViewCollection.Add(new ProductsModel()
+                    {
+                        ID_PRODUCT = item.ID_PRODUCT,
+                        productName = item.productName,
+                        productDescription = item.productDescription,
+                        productUrl = item.productUrl,
+                        PriceTag = ProductHistory[LastItem].priceTag,
+                        priceCurrency = item.priceCurrency,
+                        shippingPrice = shippingPrice,
+                        shippingCurrency = shippingCurrency,
+                        stock = stock,
+                        ImageLocation = ImageLocation
+                    });
+                }
             }
         }
     }
