@@ -519,7 +519,7 @@ namespace GraphPriceOne.ViewModels
                 List<ProductPhotos> Images = (List<ProductPhotos>)await App.PriceTrackerService.GetImagesAsync();
                 var ProductImages = Images.Where(Img => Img.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList();
 
-                var Histories = (List<History>)await App.PriceTrackerService.GetHistoriesAsync();
+                List<History> Histories = (List<History>)await App.PriceTrackerService.GetHistoriesAsync();
                 var ProductHistory = Histories.Where(u => u.PRODUCT_ID.Equals(item.ID_PRODUCT)).ToList();
 
                 var LastItem = ProductHistory.Count - 1;
