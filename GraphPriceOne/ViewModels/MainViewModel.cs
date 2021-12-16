@@ -382,7 +382,7 @@ namespace GraphPriceOne.ViewModels
                     {
                         foreach (var item in itemsSelected)
                         {
-                            ProductInfo data = (ProductInfo)item;
+                            ProductsModel data = (ProductsModel)item;
                             int data1 = data.ID_PRODUCT;
 
                             await App.PriceTrackerService.DeleteProductAsync(data1);
