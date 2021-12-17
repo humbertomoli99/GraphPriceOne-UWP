@@ -12,14 +12,14 @@ namespace GraphPriceOne.Views
 {
     public sealed partial class MainPage : Page
     {
-        private ProductsModel selectors;
+        private ProductDetailsViewModel selectors;
 
         public MainPage()
         {
             InitializeComponent();
             DataContext = new MainViewModel(ListProducts);
 
-            selectors = new ProductDetailsViewModel().ProductSelected;
+            selectors = new ProductDetailsViewModel();
         }
         private void productView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -46,7 +46,7 @@ namespace GraphPriceOne.Views
             if (ListProducts.SelectionMode == ListViewSelectionMode.Single && ListProducts.SelectedItem != null)
             {
                 ProductsModel obj = (ProductsModel)ListProducts.SelectedItem;
-                selectors = obj;
+                selectors.ProductSelected = obj;
                 NavigationService.Navigate(typeof(ProductDetailsPage));
             }
         }

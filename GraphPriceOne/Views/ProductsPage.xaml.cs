@@ -14,7 +14,7 @@ namespace GraphPriceOne.Views
     {
         // TODO WTS: Change the grid as appropriate to your app, adjust the column definitions on ProductsPage.xaml.
         // For more details see the documentation at https://docs.microsoft.com/windows/communitytoolkit/controls/datagrid
-        private ProductsModel selectors;
+        private ProductDetailsViewModel selectors;
 
         public ProductsPage()
         {
@@ -22,7 +22,7 @@ namespace GraphPriceOne.Views
 
             DataContext = new MainViewModel(ListProducts);
 
-            selectors = new ProductDetailsViewModel().ProductSelected;
+            selectors = new ProductDetailsViewModel();
         }
         private void productView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -49,7 +49,7 @@ namespace GraphPriceOne.Views
             if (ListProducts.SelectionMode == ListViewSelectionMode.Single && ListProducts.SelectedItem != null)
             {
                 ProductsModel obj = (ProductsModel)ListProducts.SelectedItem;
-                selectors = obj;
+                selectors.ProductSelected = obj;
                 NavigationService.Navigate(typeof(ProductDetailsPage));
             }
         }
