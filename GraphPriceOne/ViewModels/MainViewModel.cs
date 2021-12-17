@@ -26,7 +26,6 @@ namespace GraphPriceOne.ViewModels
         public History ProductHistory { get; private set; }
         public string OrderBy;
         public bool OrderDescen;
-        private ProductInfo Product;
 
         public MainViewModel(ListView ListViewControl)
         {
@@ -222,13 +221,7 @@ namespace GraphPriceOne.ViewModels
             catch (Exception ex)
             {
                 IsBusy = false;
-                ContentDialog dialogOk1 = new ContentDialog()
-                {
-                    Title = "Exception",
-                    PrimaryButtonText = "ok",
-                    Content = ex.ToString()
-                };
-                await dialogOk1.ShowAsync();
+                await ExceptionDialog(ex);
             }
             IsBusy = false;
         }
@@ -397,7 +390,7 @@ namespace GraphPriceOne.ViewModels
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                await ExceptionDialog(ex);
             }
         }
         private void ShowMessageFirstProduct()
@@ -464,9 +457,9 @@ namespace GraphPriceOne.ViewModels
                     ShowMessageFirstProduct();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                await ExceptionDialog(ex);
             }
             finally
             {
@@ -570,8 +563,18 @@ namespace GraphPriceOne.ViewModels
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                await ExceptionDialog(ex);
             }
+        }
+        private async Task ExceptionDialog(Exception ex)
+        {
+            ContentDialog ExcepcionMessage = new ContentDialog()
+            {
+                Title = "Exception",
+                PrimaryButtonText = "Ok",
+                Content = ex.ToString()
+            };
+            await ExcepcionMessage.ShowAsync();
         }
     }
 }
