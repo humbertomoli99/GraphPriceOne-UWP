@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 using GraphPriceOne.Core.Models;
 using GraphPriceOne.Core.Services;
-
+using GraphPriceOne.Models;
 using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace GraphPriceOne.ViewModels
@@ -16,7 +16,7 @@ namespace GraphPriceOne.ViewModels
         public ProductDetailsViewModel()
         {
         }
-        public MainViewModel ProductSelected;
+        public ProductsModel ProductSelected;
         public async Task LoadDataAsync()
         {
             Source.Clear();
