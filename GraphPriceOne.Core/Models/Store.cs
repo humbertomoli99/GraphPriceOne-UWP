@@ -7,7 +7,7 @@ namespace GraphPriceOne.Core.Models
 {
     public class Store
     {
-        [PrimaryKey, AutoIncrement]
+        [PrimaryKey]
         public int ID_STORE { get; set; }
         public string nameStore { get; set; }
         public string startUrl { get; set; }
