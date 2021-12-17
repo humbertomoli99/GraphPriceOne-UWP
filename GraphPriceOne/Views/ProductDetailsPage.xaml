@@ -9,24 +9,153 @@
     muxc:BackdropMaterial.ApplyToRootOrPageBackground="True"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
-        <Grid Background="{ThemeResource SystemControlPageBackgroundChromeLowBrush}">
-            <tc:RadCartesianChart x:Uid="CartesianChart">
-                <tc:RadCartesianChart.HorizontalAxis>
-                    <tc:CategoricalAxis />
-                </tc:RadCartesianChart.HorizontalAxis>
-                <tc:RadCartesianChart.VerticalAxis>
-                    <tc:LinearAxis />
-                </tc:RadCartesianChart.VerticalAxis>
-                <tc:BarSeries ItemsSource="{x:Bind ViewModel.Source, Mode=OneWay}" ShowLabels="True">
-                    <tc:BarSeries.CategoryBinding>
-                        <tc:PropertyNameDataPointBinding PropertyName="Category" />
-                    </tc:BarSeries.CategoryBinding>
-                    <tc:BarSeries.ValueBinding>
-                        <tc:PropertyNameDataPointBinding PropertyName="Value" />
-                    </tc:BarSeries.ValueBinding>
-                </tc:BarSeries>
-            </tc:RadCartesianChart>
+    <ScrollViewer x:Name="ContentArea">
+        <Grid MinWidth="200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+                <RowDefinition Height="auto" />
+            </Grid.RowDefinitions>
+            <Grid
+                Grid.Row="0"
+                MinWidth="250"
+                MaxWidth="800"
+                Margin="0,20,0,0"
+                Padding="15"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1,1,1,1"
+                CornerRadius="5,5,5,5">
+                <Grid Grid.Row="0" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <TextBlock
+                        Grid.Row="0"
+                        Style="{StaticResource SubtitleTextBlockStyle}"
+                        Text="{Binding productName}" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Style="{StaticResource TitleTextBlockStyle}"
+                        Text="{Binding PriceTag}" />
+                    <StackPanel Grid.Row="2" Orientation="Horizontal">
+                        <Image
+                            Width="18"
+                            Height="18"
+                            Margin="0,0,10,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Source="/Assets/delivery.png"
+                            Stretch="UniformToFill" />
+                        <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{Binding shippingPrice}" />
+                    </StackPanel>
+                    <HyperlinkButton
+                        Grid.Row="3"
+                        HorizontalAlignment="Right"
+                        Content="Buy Now"
+                        NavigateUri="{Binding productUrl}" />
+                    <TextBlock
+                        Grid.Row="3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Text="{Binding stock}" />
+                    <!--<TextBlock Grid.Row="3" Style="{StaticResource BodyStrongTextBlockStyle}" Text="{Binding shippingPrice}"/>-->
+                </Grid>
+            </Grid>
+            <TextBlock
+                Grid.Row="1"
+                MaxWidth="800"
+                Margin="5,20,0,5"
+                Style="{StaticResource SubtitleTextBlockStyle}"
+                Text="Price History" />
+
+            <Grid
+                Grid.Row="2"
+                MinWidth="250"
+                MaxWidth="800"
+                Margin="0,0,0,0"
+                Padding="15"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1,1,1,1"
+                CornerRadius="5,5,5,5">
+
+
+                <TextBlock
+                    Grid.Row="0"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Text="{Binding productHistory}" />
+            </Grid>
+            <!--  TextWrapping="Wrap"  -->
+            <TextBlock
+                Grid.Row="3"
+                MaxWidth="800"
+                Margin="5,20,0,5"
+                Style="{StaticResource SubtitleTextBlockStyle}"
+                Text="Images" />
+            <Grid
+                Grid.Row="4"
+                MinWidth="250"
+                MaxWidth="800"
+                Margin="0,0,0,0"
+                Padding="15"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1,1,1,1"
+                CornerRadius="5,5,5,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <FlipView
+                    x:Name="flip"
+                    Grid.Row="1"
+                    Height="400"
+                    MinWidth="250"
+                    MaxHeight="450"
+                    Background="White"
+                    BorderBrush="Black"
+                    BorderThickness="1"
+                    ItemsSource="{Binding ListImages, Mode=OneWay}"
+                    SizeChanged="FlipView_SizeChanged">
+                    <Image
+                        VerticalAlignment="Stretch"
+                        Source="{Binding ImagePath}"
+                        Stretch="Uniform" />
+                </FlipView>
+                <!--  TextWrapping="Wrap"  -->
+            </Grid>
+            <TextBlock
+                Grid.Row="5"
+                MaxWidth="800"
+                Margin="5,20,0,5"
+                Style="{StaticResource SubtitleTextBlockStyle}"
+                Text="Description" />
+            <Grid
+                Grid.Row="6"
+                MinWidth="250"
+                MaxWidth="800"
+                Margin="0,0,0,0"
+                Padding="15"
+                Background="{ThemeResource LayerFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1,1,1,1"
+                CornerRadius="5,5,5,5">
+                <TextBlock
+                    Grid.Row="0"
+                    Style="{StaticResource BodyTextBlockStyle}"
+                    Text="{Binding productDescription}" />
+                <!--  TextWrapping="Wrap"  -->
+            </Grid>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Page>

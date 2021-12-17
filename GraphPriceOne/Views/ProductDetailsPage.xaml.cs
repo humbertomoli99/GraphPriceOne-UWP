@@ -24,5 +24,10 @@ namespace GraphPriceOne.Views
 
             await ViewModel.LoadDataAsync();
         }
+
+        private void FlipView_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        {
+            this.flip.Height = this.ActualWidth * 0.5625;
+        }
     }
 }
