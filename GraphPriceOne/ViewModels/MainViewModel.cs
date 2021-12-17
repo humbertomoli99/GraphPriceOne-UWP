@@ -20,19 +20,23 @@ namespace GraphPriceOne.ViewModels
     {
         public ListView ListViewControl { get; set; }
         public ObservableCollection<ProductsModel> ListViewCollection { get; set; }
-        public List<ProductInfo> ProductsList { get; private set; }
         public ProductPhotos ProductImages { get; private set; }
-        public History ProductHistory { get; private set; }
         private List<ProductInfo> OrderedList { get; set; }
+
+        public History ProductHistory { get; private set; }
         public string OrderBy;
         public bool OrderDescen;
+        private ProductInfo Product;
 
         public MainViewModel(ListView ListViewControl)
         {
             IsBusy = false;
 
             ListViewCollection = new ObservableCollection<ProductsModel>();
-            _ = GetProductsAsync("id", false);
+            OrderBy = "id";
+            OrderDescen = false;
+            _ = GetProductsAsync();
+
             ShowMessageFirstProduct();
 
             this.ListViewControl = ListViewControl;
@@ -43,13 +47,13 @@ namespace GraphPriceOne.ViewModels
         }
         public ICommand SelectMultipleCommand => new RelayCommand(new Action(() => SelectMulti()));
         public ICommand ClearFilterCommand => new RelayCommand(new Action(async () => await GetProductsAsync()));
-        public ICommand OrderDescendentCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, false)));
-        public ICommand OrderAscendantCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, true)));
-        public ICommand OrderByNameCommand => new RelayCommand(new Action(async () => await GetProductsAsync("name", OrderDescen)));
-        public ICommand OrderByPriceCommand => new RelayCommand(new Action(async () => await GetProductsAsync("price", OrderDescen)));
-        public ICommand OrderByStockCommand => new RelayCommand(new Action(async () => await GetProductsAsync("stock", OrderDescen)));
+        public ICommand OrderDescendentCommand => new RelayCommand(new Action(async () => await ShowOrderedList(OrderBy, false)));
+        public ICommand OrderAscendantCommand => new RelayCommand(new Action(async () => await ShowOrderedList(OrderBy, true)));
+        public ICommand OrderByNameCommand => new RelayCommand(new Action(async () => await ShowOrderedList("name", OrderDescen)));
+        public ICommand OrderByPriceCommand => new RelayCommand(new Action(async () => await ShowOrderedList("price", OrderDescen)));
+        public ICommand OrderByStockCommand => new RelayCommand(new Action(async () => await ShowOrderedList("stock", OrderDescen)));
         public ICommand AddProductCommand => new RelayCommand(new Action(async () => await AddProductAsync()));
-        public ICommand UpdateListCommand => new RelayCommand(new Action(async () => await GetProductsAsync(OrderBy, OrderDescen)));
+        public ICommand UpdateListCommand => new RelayCommand(new Action(async () => await ShowOrderedList(OrderBy, OrderDescen)));
         public ICommand DeleteCommand => new RelayCommand(new Action(async () => await DeleteAsync()));
         private async Task AddProductAsync()
         {
@@ -58,7 +62,7 @@ namespace GraphPriceOne.ViewModels
             {
                 string url = await ClipboardEvents.OutputClipboardTextAsync();
 
-                var Products = await App.PriceTrackerService.GetProductsAsync();
+                List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                 var query = Products.Where(s => s.productUrl.Equals(url))?.ToList();
 
                 var Stores = await App.PriceTrackerService.GetStoresAsync();
@@ -169,7 +173,8 @@ namespace GraphPriceOne.ViewModels
                             {
                                 await App.PriceTrackerService.AddProductAsync(Product);
 
-                                var lastId = (Products.ToList().Count == 0) ? 1 : Products.ToList()[Products.ToList().Count - 1].ID_PRODUCT;
+                                List<ProductInfo> Products2 = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                                var lastId = Products2[Products2.Count - 1].ID_PRODUCT;
 
                                 // si hay 0 items es 1;
                                 //for para añadir todas las imagenes encontradas
@@ -180,7 +185,7 @@ namespace GraphPriceOne.ViewModels
                                 {
                                     foreach (var item in imagenes)
                                     {
-                                        ProductImages = new ProductPhotos()
+                                        ProductPhotos ProductImages = new ProductPhotos()
                                         {
                                             PhotoSrc = item,
                                             ID_PRODUCT = lastId,
@@ -203,7 +208,7 @@ namespace GraphPriceOne.ViewModels
                                 await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
 
                                 HideMessageFirstProduct();
-                                await GetProductsAsync(OrderBy, OrderDescen);
+                                await GetProductsAsync();
                             }
                             else if (result == ContentDialogResult.Secondary)
                             {
@@ -254,7 +259,7 @@ namespace GraphPriceOne.ViewModels
                 await InsertProduct(item);
             }
             IsBusy = false;
-            await GetProductsAsync(OrderBy, OrderDescen);
+            await GetProductsAsync();
             //crear un objeto de las url validas
             //crear un for para añadir todas las urls con la validacion y 1 primer historial
         }
@@ -318,7 +323,7 @@ namespace GraphPriceOne.ViewModels
                                             {
                                                 foreach (var item in imagenes)
                                                 {
-                                                    ProductImages = new ProductPhotos()
+                                                    ProductPhotos ProductImages = new ProductPhotos()
                                                     {
                                                         PhotoSrc = item,
                                                         ID_PRODUCT = lastId,
@@ -337,7 +342,7 @@ namespace GraphPriceOne.ViewModels
                                                 shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                                             };
                                             await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
-                                            await GetProductsAsync(OrderBy, OrderDescen);
+                                            await GetProductsAsync();
                                         }
                                     }
                                 }
@@ -381,7 +386,7 @@ namespace GraphPriceOne.ViewModels
 
                             await App.PriceTrackerService.DeleteProductAsync(data1);
                         }
-                        await GetProductsAsync(OrderBy, OrderDescen);
+                        await GetProductsAsync();
                         HideButtons();
                     }
                     else if (result == ContentDialogResult.None)
@@ -443,16 +448,16 @@ namespace GraphPriceOne.ViewModels
                 }
             }
         }
-        public async Task GetProductsAsync(string order = "id", bool Ascendant = false)
+        public async Task GetProductsAsync()
         {
             try
             {
                 IsBusy = true;
-                ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                List<ProductInfo> ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                 if (ProductsList != null && ProductsList.Count != 0)
                 {
                     HideMessageFirstProduct();
-                    await ShowOrderedList(order, Ascendant);
+                    await ShowOrderedList(OrderBy, OrderDescen);
                 }
                 else
                 {
@@ -470,42 +475,43 @@ namespace GraphPriceOne.ViewModels
         }
         private async Task ShowOrderedList(string order = "id", bool Ascendant = false)
         {
-            OrderBy = order;
-            ListViewCollection.Clear();
-            if (order == "name" && Ascendant == false)
+            try
             {
-                OrderedList = ProductsList.OrderByDescending(o => o.productName).ToList();
-            }
-            else if (order == "name" && Ascendant == true)
-            {
-                OrderedList = ProductsList.OrderBy(o => o.productName).ToList();
-            }
-            else if (order == "id" && Ascendant == false)
-            {
-                OrderedList = ProductsList.OrderByDescending(o => o.ID_PRODUCT).ToList();
-            }
-            else if (order == "id" && Ascendant == true)
-            {
-                OrderedList = ProductsList.OrderBy(o => o.ID_PRODUCT).ToList();
-            }
-            else if (order == "price" && Ascendant == false)
-            {
-                OrderedList = ProductsList.OrderByDescending(o => o.PriceTag).ToList();
-            }
-            else if (order == "price" && Ascendant == true)
-            {
-                OrderedList = ProductsList.OrderBy(o => o.PriceTag).ToList();
-            }
-            else if (order == "stock" && Ascendant == false)
-            {
-                OrderedList = ProductsList.OrderByDescending(o => o.stock).ToList();
-            }
-            else if (order == "stock" && Ascendant == true)
-            {
-                OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
-            }
-            if (OrderedList != null)
-            {
+                OrderBy = order;
+                ListViewCollection.Clear();
+                List<ProductInfo> ProductsList = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                if (order == "name" && Ascendant == false)
+                {
+                    OrderedList = ProductsList.OrderByDescending(o => o.productName).ToList();
+                }
+                else if (order == "name" && Ascendant == true)
+                {
+                    OrderedList = ProductsList.OrderBy(o => o.productName).ToList();
+                }
+                else if (order == "id" && Ascendant == false)
+                {
+                    OrderedList = ProductsList.OrderByDescending(o => o.ID_PRODUCT).ToList();
+                }
+                else if (order == "id" && Ascendant == true)
+                {
+                    OrderedList = ProductsList.OrderBy(o => o.ID_PRODUCT).ToList();
+                }
+                else if (order == "price" && Ascendant == false)
+                {
+                    OrderedList = ProductsList.OrderByDescending(o => o.PriceTag).ToList();
+                }
+                else if (order == "price" && Ascendant == true)
+                {
+                    OrderedList = ProductsList.OrderBy(o => o.PriceTag).ToList();
+                }
+                else if (order == "stock" && Ascendant == false)
+                {
+                    OrderedList = ProductsList.OrderByDescending(o => o.stock).ToList();
+                }
+                else if (order == "stock" && Ascendant == true)
+                {
+                    OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
+                }
                 foreach (var item in OrderedList)
                 {
                     string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
@@ -516,7 +522,7 @@ namespace GraphPriceOne.ViewModels
                     List<History> Histories = (List<History>)await App.PriceTrackerService.GetHistoriesAsync();
                     var ProductHistory = Histories.Where(u => u.PRODUCT_ID.Equals(item.ID_PRODUCT)).ToList();
 
-                    var LastItem = ProductHistory.Count - 1;
+                    var LastHistory = ProductHistory.Count - 1;
 
                     if (ProductImages != null && ProductImages.Count != 0)
                     {
@@ -535,7 +541,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else
                     {
-                        shippingPrice = shippingCurrency + ProductHistory[LastItem].shippingPrice;
+                        shippingPrice = shippingCurrency + ProductHistory[LastHistory].shippingPrice;
                     }
                     //get stock
                     if (item.stock == null)
@@ -544,7 +550,7 @@ namespace GraphPriceOne.ViewModels
                     }
                     else
                     {
-                        stock = ProductHistory[LastItem].stock.ToString();
+                        stock = ProductHistory[LastHistory].stock.ToString();
                     }
 
                     ListViewCollection.Add(new ProductsModel()
@@ -553,7 +559,7 @@ namespace GraphPriceOne.ViewModels
                         productName = item.productName,
                         productDescription = item.productDescription,
                         productUrl = item.productUrl,
-                        PriceTag = ProductHistory[LastItem].priceTag,
+                        PriceTag = ProductHistory[LastHistory].priceTag,
                         priceCurrency = item.priceCurrency,
                         shippingPrice = shippingPrice,
                         shippingCurrency = shippingCurrency,
@@ -561,6 +567,10 @@ namespace GraphPriceOne.ViewModels
                         ImageLocation = ImageLocation
                     });
                 }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
             }
         }
     }

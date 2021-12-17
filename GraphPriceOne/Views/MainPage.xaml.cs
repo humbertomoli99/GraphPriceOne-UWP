@@ -1,5 +1,6 @@
 ﻿using System;
 using GraphPriceOne.Core.Models;
+using GraphPriceOne.Models;
 using GraphPriceOne.Services;
 using GraphPriceOne.ViewModels;
 using Windows.UI.Xaml;
@@ -11,7 +12,7 @@ namespace GraphPriceOne.Views
 {
     public sealed partial class MainPage : Page
     {
-        private ProductInfo selectors;
+        private ProductsModel selectors;
 
         public MainPage()
         {
@@ -44,7 +45,7 @@ namespace GraphPriceOne.Views
             }
             if (ListProducts.SelectionMode == ListViewSelectionMode.Single && ListProducts.SelectedItem != null)
             {
-                ProductInfo obj = (ProductInfo)ListProducts.SelectedItem;
+                ProductsModel obj = (ProductsModel)ListProducts.SelectedItem;
                 selectors = obj;
                 NavigationService.Navigate(typeof(ProductDetailsPage));
             }
@@ -71,7 +72,7 @@ namespace GraphPriceOne.Views
         }
         private void ListViewStores_RefreshRequested(Microsoft.UI.Xaml.Controls.RefreshContainer sender, Microsoft.UI.Xaml.Controls.RefreshRequestedEventArgs args)
         {
-            new MainViewModel().GetProductsAsync(new MainViewModel().OrderBy, new MainViewModel().OrderDescen).Wait();
+            new MainViewModel().GetProductsAsync().Wait();
         }
     }
 }
