@@ -64,6 +64,8 @@ namespace GraphPriceOne.ViewModels
                 List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                 var query = Products.Where(s => s.productUrl.Equals(url))?.ToList();
 
+                bool IsRegistered = ((Products.Where(s => s.productUrl.Equals(url))?.ToList().Count) > 0) ? true : false;
+
                 var Stores = await App.PriceTrackerService.GetStoresAsync();
                 var UrlShop = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
 
@@ -108,7 +110,7 @@ namespace GraphPriceOne.ViewModels
                     else
                     {
                         //ya registrado
-                        if (query.Count > 0)
+                        if(IsRegistered)
                         {
                             ContentDialog dialogOk = new ContentDialog()
                             {
