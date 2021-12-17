@@ -16,7 +16,7 @@ namespace GraphPriceOne.ViewModels
         public ProductDetailsViewModel()
         {
         }
-        public ProductsModel ProductSelected;
+        public ProductsModel SelectedProduct;
         public async Task LoadDataAsync()
         {
             Source.Clear();
