@@ -9,21 +9,22 @@ namespace GraphPriceOne.Views
 {
     public sealed partial class ProductDetailsPage : Page
     {
-        public ProductDetailsViewModel ViewModel { get; } = new ProductDetailsViewModel();
+        //public ProductDetailsViewModel ViewModel { get; } = new ProductDetailsViewModel();
 
         // TODO WTS: Change the chart as appropriate to your app.
         // For help see http://docs.telerik.com/windows-universal/controls/radchart/getting-started
         public ProductDetailsPage()
         {
             InitializeComponent();
+            DataContext = new ProductDetailsViewModel();
         }
 
-        protected override async void OnNavigatedTo(NavigationEventArgs e)
-        {
-            base.OnNavigatedTo(e);
+        //protected override async void OnNavigatedTo(NavigationEventArgs e)
+        //{
+        //    base.OnNavigatedTo(e);
 
-            await ViewModel.LoadDataAsync();
-        }
+        //    //await ViewModel.LoadDataAsync();
+        //}
 
         private void FlipView_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
         {
