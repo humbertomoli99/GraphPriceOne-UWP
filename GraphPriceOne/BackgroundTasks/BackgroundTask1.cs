@@ -31,7 +31,7 @@ namespace GraphPriceOne.BackgroundTasks
                 // TODO WTS: Define the trigger for your background task and set any (optional) conditions
                 // More details at https://docs.microsoft.com/windows/uwp/launch-resume/create-and-register-an-inproc-background-task
                 builder.SetTrigger(new TimeTrigger(15, false));
-                builder.AddCondition(new SystemCondition(SystemConditionType.UserPresent));
+                //builder.AddCondition(new SystemCondition(SystemConditionType.UserPresent));
 
                 builder.Register();
             }
@@ -63,7 +63,7 @@ namespace GraphPriceOne.BackgroundTasks
                 //// You can do this via "BackgroundTaskService.GetBackgroundTasksRegistration"
 
                 _taskInstance = taskInstance;
-                ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(SampleTimerCallback), TimeSpan.FromSeconds(1));
+                //ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(SampleTimerCallback), TimeSpan.FromSeconds(1));
             });
         }
 
