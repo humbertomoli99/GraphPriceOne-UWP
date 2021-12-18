@@ -89,19 +89,22 @@ namespace GraphPriceOne.Library
 
                         var ProductSelected = Products.Where(s => s.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList().First();
 
-                        if (newPrice < previousPrice)
+                        if(newPrice != previousPrice)
                         {
-                            ShowToastNotification("📉 Dropped \n" + ProductSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
-                            Notify.Message = "📉 Dropped \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
-                            Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
+                            if (newPrice < previousPrice)
+                            {
+                                ShowToastNotification("📉 Dropped \n" + ProductSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
+                                Notify.Message = "📉 Dropped \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
+                                Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
+                            }
+                            else if (newPrice > previousPrice)
+                            {
+                                ShowToastNotification("📈 Increased \n" + ProductSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
+                                Notify.Message = "📈 Increased \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
+                                Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
+                            }
+                            await App.PriceTrackerService.AddNotificationAsync(Notify);
                         }
-                        else if (newPrice > previousPrice)
-                        {
-                            ShowToastNotification("📈 Increased \n" + ProductSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
-                            Notify.Message = "📈 Increased \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
-                            Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
-                        }
-                        await App.PriceTrackerService.AddNotificationAsync(Notify);
                         System.Diagnostics.Debug.WriteLine(i + " to " + Products.ToList().Count);
                         i++;
                     }
