@@ -512,6 +512,7 @@ namespace GraphPriceOne.ViewModels
 
                     var LastHistory = ProductHistory.Count - 1;
 
+                    ImageLocation = "";
                     if (ProductImages != null && ProductImages.Count != 0)
                     {
                         ImageLocation = LocalState + ProductImages.First().PhotoSrc;
