@@ -55,7 +55,7 @@ namespace GraphPriceOne.Models
             get { return GetValue(() => DeleteStoreVisibility); }
             set { SetValue(() => DeleteStoreVisibility, value); }
         }
-        public Nullable<bool> isCheckedAll
+        public bool? isCheckedAll
         {
             get { return GetValue(() => isCheckedAll); }
             set { SetValue(() => isCheckedAll, value); }
