@@ -8,11 +8,11 @@ namespace GraphPriceOne.Views
 {
     public sealed partial class AddStorePage : Page
     {
-        public AddStoreViewModel ViewModel { get; } = new AddStoreViewModel();
-
         public AddStorePage()
         {
             InitializeComponent();
+            Object[] campos = { StoreName, StoreURL };
+            DataContext = new AddStoreViewModel(campos);
         }
     }
 }
