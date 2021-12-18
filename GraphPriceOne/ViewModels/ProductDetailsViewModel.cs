@@ -1,18 +1,16 @@
-﻿using System;
+﻿using GraphPriceOne.Library;
+using GraphPriceOne.Models;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-
-using GraphPriceOne.Core.Models;
-using GraphPriceOne.Core.Services;
-using GraphPriceOne.Library;
-using GraphPriceOne.Models;
-using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace GraphPriceOne.ViewModels
 {
     public class ProductDetailsViewModel : ProductDetailsModel
     {
+
         public ProductDetailsViewModel()
         {
             if (SelectedProduct != null)
@@ -51,13 +49,24 @@ namespace GraphPriceOne.ViewModels
             var Images = await App.PriceTrackerService.GetImagesAsync();
             var ProductImages = Images.Where(u => u.ID_PRODUCT.Equals(Product.ID_PRODUCT)).ToList();
 
-            var srcImage = "";
-            if (ProductImages != null && ProductImages.Count != 0)
+            //ImagePath = new ObservableCollection<string>()
+            //{
+            //    ProductImages.First().PhotoSrc,
+            //    LocalState + ProductImages.First().PhotoSrc
+            //};
+            ListImages = new ObservableCollection<string>() { };
+            foreach (var item in ProductImages)
             {
-                srcImage = LocalState + ProductImages.First().PhotoSrc;
+                //ListImages = new ObservableCollection<string>() { LocalState + ProductImages.First().PhotoSrc };
+                ListImages.Add(LocalState + item.PhotoSrc);
             }
 
-            ImagePath = srcImage;
+            //if (ProductImages != null && ProductImages.Count != 0)
+            //{
+            //    //srcImage = LocalState + ProductImages.First().PhotoSrc;
+            //}
+
+            //ImagePath = srcImage;
 
             if (Product.shippingPrice == 0)
             {

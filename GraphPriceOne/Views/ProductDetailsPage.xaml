@@ -125,12 +125,16 @@
                     Background="White"
                     BorderBrush="Black"
                     BorderThickness="1"
-                    ItemsSource="{Binding ListImages, Mode=OneWay}"
+                    ItemsSource="{Binding ListImages, Mode=TwoWay}"
                     SizeChanged="FlipView_SizeChanged">
-                    <Image
-                        VerticalAlignment="Stretch"
-                        Source="{Binding ImagePath}"
-                        Stretch="Uniform" />
+                    <FlipView.ItemTemplate>
+                        <DataTemplate>
+                            <Image
+                                VerticalAlignment="Stretch"
+                                Source="{Binding}"
+                                Stretch="Uniform" />
+                        </DataTemplate>
+                    </FlipView.ItemTemplate>
                 </FlipView>
                 <!--  TextWrapping="Wrap"  -->
             </Grid>

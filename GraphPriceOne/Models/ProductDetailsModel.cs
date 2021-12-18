@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,11 +30,10 @@ namespace GraphPriceOne.Models
             get { return GetValue(() => productHistory); }
             set { SetValue(() => productHistory, value); }
         }
-
-        public string ImagePath
+        public ObservableCollection<string> ListImages
         {
-            get { return GetValue(() => ImagePath); }
-            set { SetValue(() => ImagePath, value); }
+            get { return GetValue(() => ListImages); }
+            set { SetValue(() => ListImages, value); }
         }
         public string productDescription
         {
