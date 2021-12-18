@@ -50,7 +50,7 @@ namespace GraphPriceOne.BackgroundTasks
             {
                 //// TODO WTS: Insert the code that should be executed in the background task here.
                 //// This sample initializes a timer that counts to 100 in steps of 10.  It updates Message each time.
-                await ScrapingDate.GetHistory();
+                //await ScrapingDate.GetHistory();
                 await ScrapingDate.NotifyPriceChangeAsync();
 
                 //// Documentation:
