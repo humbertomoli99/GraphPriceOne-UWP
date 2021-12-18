@@ -63,7 +63,7 @@ namespace GraphPriceOne.BackgroundTasks
                 //// You can do this via "BackgroundTaskService.GetBackgroundTasksRegistration"
 
                 _taskInstance = taskInstance;
-                //ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(SampleTimerCallback), TimeSpan.FromSeconds(1));
+                ThreadPoolTimer.CreatePeriodicTimer(new TimerElapsedHandler(SampleTimerCallback), TimeSpan.FromSeconds(1));
             });
         }
 
