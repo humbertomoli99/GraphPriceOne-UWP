@@ -1,7 +1,5 @@
 ﻿using GraphPriceOne.Library;
 using GraphPriceOne.Models;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -49,24 +47,11 @@ namespace GraphPriceOne.ViewModels
             var Images = await App.PriceTrackerService.GetImagesAsync();
             var ProductImages = Images.Where(u => u.ID_PRODUCT.Equals(Product.ID_PRODUCT)).ToList();
 
-            //ImagePath = new ObservableCollection<string>()
-            //{
-            //    ProductImages.First().PhotoSrc,
-            //    LocalState + ProductImages.First().PhotoSrc
-            //};
             ListImages = new ObservableCollection<string>() { };
             foreach (var item in ProductImages)
             {
-                //ListImages = new ObservableCollection<string>() { LocalState + ProductImages.First().PhotoSrc };
                 ListImages.Add(LocalState + item.PhotoSrc);
             }
-
-            //if (ProductImages != null && ProductImages.Count != 0)
-            //{
-            //    //srcImage = LocalState + ProductImages.First().PhotoSrc;
-            //}
-
-            //ImagePath = srcImage;
 
             if (Product.shippingPrice == 0)
             {
