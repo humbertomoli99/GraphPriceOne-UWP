@@ -65,15 +65,7 @@ namespace GraphPriceOne.ViewModels
             {
                 shippingPrice = shippingCurrency + ProductHistory[lastItem].shippingPrice;
             }
-
-            if (Product.stock == null)
-            {
-                stock = "Stock: Not Available";
-            }
-            else
-            {
-                stock = "Stock: " + ProductHistory[lastItem].stock;
-            }
+            stock = (Product.stock == null)? "Stock: Not Available" : "Stock: " + ProductHistory[lastItem].stock;
         }
     }
 }
