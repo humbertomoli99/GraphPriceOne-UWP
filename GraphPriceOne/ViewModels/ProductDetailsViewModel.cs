@@ -52,19 +52,8 @@ namespace GraphPriceOne.ViewModels
             {
                 ListImages.Add(LocalState + item.PhotoSrc);
             }
-
-            if (Product.shippingPrice == 0)
-            {
-                shippingPrice = "Free Shipping";
-            }
-            else if (Product.shippingPrice == null)
-            {
-                shippingPrice = "Not Available";
-            }
-            else
-            {
-                shippingPrice = shippingCurrency + ProductHistory[lastItem].shippingPrice;
-            }
+            shippingPrice = "Nota Available";
+            shippingPrice = (Product.shippingPrice == 0)? "Free Shipping" : shippingCurrency + ProductHistory[lastItem].shippingPrice;
             stock = (Product.stock == null)? "Stock: Not Available" : "Stock: " + ProductHistory[lastItem].stock;
         }
     }
