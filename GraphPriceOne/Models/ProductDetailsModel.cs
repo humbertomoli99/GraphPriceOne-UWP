@@ -9,8 +9,8 @@ namespace GraphPriceOne.Models
 {
     public class ProductDetailsModel : PropertyChangedNotification
     {
-        private static ProductsModel ProductSelect;
-        public ProductsModel SelectedProduct
+        private static int ProductSelect;
+        public int SelectedProduct
         {
             get { return ProductSelect; }
             set { ProductSelect = value; }

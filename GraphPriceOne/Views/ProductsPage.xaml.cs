@@ -49,7 +49,7 @@ namespace GraphPriceOne.Views
             if (ListProducts.SelectionMode == ListViewSelectionMode.Single && ListProducts.SelectedItem != null)
             {
                 ProductsModel obj = (ProductsModel)ListProducts.SelectedItem;
-                selectors.SelectedProduct = obj;
+                selectors.SelectedProduct = obj.ID_PRODUCT;
                 NavigationService.Navigate(typeof(ProductDetailsPage));
             }
         }

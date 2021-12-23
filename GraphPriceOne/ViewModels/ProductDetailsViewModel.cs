@@ -11,7 +11,7 @@ namespace GraphPriceOne.ViewModels
 
         public ProductDetailsViewModel()
         {
-            if (SelectedProduct != null)
+            if (SelectedProduct != 0)
             {
                 _ = GetProductsAsync();
             }
@@ -20,13 +20,13 @@ namespace GraphPriceOne.ViewModels
         private async Task GetProductsAsync()
         {
             var Histories = await App.PriceTrackerService.GetHistoriesAsync();
-            var ProductHistory = Histories.Where(u => u.PRODUCT_ID.Equals(SelectedProduct.ID_PRODUCT)).ToList();
+            var ProductHistory = Histories.Where(u => u.PRODUCT_ID.Equals(SelectedProduct)).ToList();
             foreach (var item in ProductHistory)
             {
                 productHistory += "Price: " + item.priceTag + "  Shipping: " + item.shippingPrice + "  Stock: " + item.stock + "   Date: " + item.productDate + "\n";
             }
-            ID_PRODUCT = SelectedProduct.ID_PRODUCT;
-            var Product = await App.PriceTrackerService.GetProductAsync(SelectedProduct.ID_PRODUCT);
+            ID_PRODUCT = SelectedProduct;
+            var Product = await App.PriceTrackerService.GetProductAsync(SelectedProduct);
 
             productName = Product.productName;
             productUrl = Product.productUrl;
