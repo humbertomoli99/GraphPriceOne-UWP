@@ -13,10 +13,15 @@ namespace GraphPriceOne.Models
             get { return GetValue(() => IsBusy); }
             set { SetValue(() => IsBusy, value); }
         }
-        public int ID_PRODUCT
+        public int ID_Notification
         {
-            get { return GetValue(() => ID_PRODUCT); }
-            set { SetValue(() => ID_PRODUCT, value); }
+            get { return GetValue(() => ID_Notification); }
+            set { SetValue(() => ID_Notification, value); }
+        }
+        public int PRODUCT_ID
+        {
+            get { return GetValue(() => PRODUCT_ID); }
+            set { SetValue(() => PRODUCT_ID, value); }
         }
         public string ProductName
         {

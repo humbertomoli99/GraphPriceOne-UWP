@@ -130,8 +130,12 @@
                                             </Grid>
                                             <Grid Grid.Row="1" Padding="8">
                                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                    <Button Margin="0" Content="🛒 Buy Now" />
-                                                    <Button Margin="8,0" Content="❌ Delete" />
+                                                    <HyperlinkButton Content="🛒 Buy Now" NavigateUri="{Binding ProductUrl}" />
+                                                    <Button
+                                                        Margin="8,0"
+                                                        Command="{Binding ElementName=ListNotifications, Path=DataContext.RemoveItemCommand}"
+                                                        CommandParameter="{Binding}"
+                                                        Content="❌ Delete" />
                                                 </StackPanel>
                                             </Grid>
                                         </Grid>

@@ -30,16 +30,15 @@ namespace GraphPriceOne.Views
         public NotificationsPage()
         {
             this.InitializeComponent();
-            DataContext = new NotificationsViewModel(ListNotifications);
+            DataContext = new NotificationsViewModel();
             selectors = new ProductDetailsViewModel();
-
         }
         private void NotificationsView_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ListNotifications.SelectionMode == ListViewSelectionMode.Single && ListNotifications.SelectedItem != null)
             {
                 NotificationsModel obj = (NotificationsModel)ListNotifications.SelectedItem;
-                selectors.SelectedProduct = obj.ID_PRODUCT;
+                selectors.SelectedProduct = obj.PRODUCT_ID;
                 NavigationService.Navigate(typeof(ProductDetailsPage));
             }
         }
