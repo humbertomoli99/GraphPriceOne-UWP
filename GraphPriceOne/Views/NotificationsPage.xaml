@@ -46,7 +46,7 @@
                                                 <RowDefinition Height="Auto" />
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
-                                            <Grid Grid.Row="0" Padding="0,0,0,10">
+                                            <Grid Grid.Row="0">
                                                 <Grid>
                                                     <Grid.RowDefinitions>
                                                         <RowDefinition Height="Auto" />
@@ -128,11 +128,7 @@
                                                     </StackPanel>
                                                 </Grid>
                                             </Grid>
-                                            <Grid
-                                                Grid.Row="1"
-                                                Padding="10"
-                                                BorderBrush="gray"
-                                                BorderThickness="0,1,0,0">
+                                            <Grid Grid.Row="1" Padding="8">
                                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
                                                     <Button Margin="0" Content="🛒 Buy Now" />
                                                     <Button Margin="8,0" Content="❌ Delete" />
