@@ -103,6 +103,8 @@ namespace GraphPriceOne.Library
                                 Notify.Message = "📈 Increased \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
                                 Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
                             }
+                            Notify.NewPrice = (double)newPrice;
+                            Notify.PreviousPrice = (double)previousPrice;
                             await App.PriceTrackerService.AddNotificationAsync(Notify);
                         }
                         System.Diagnostics.Debug.WriteLine(i + " to " + Products.ToList().Count);
