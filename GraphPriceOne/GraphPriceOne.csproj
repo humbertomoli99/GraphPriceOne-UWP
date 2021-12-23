@@ -177,6 +177,7 @@
     <Compile Include="Library\UploadImage.cs" />
     <Compile Include="Models\AddSelectorsModel.cs" />
     <Compile Include="Models\AddStoreModel.cs" />
+    <Compile Include="Models\NotificationsModel.cs" />
     <Compile Include="Models\ProductDetailsModel.cs" />
     <Compile Include="Models\ProductsModel.cs" />
     <Compile Include="Models\PropertyChangedNotification.cs" />
@@ -198,6 +199,7 @@
     <Compile Include="ViewModels\BaseProductViewModel.cs" />
     <Compile Include="ViewModels\ExportViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\NotificationsViewModel.cs" />
     <Compile Include="ViewModels\ProductDetailsViewModel.cs" />
     <Compile Include="ViewModels\ProductsViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModel.cs" />

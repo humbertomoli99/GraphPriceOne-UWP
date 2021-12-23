@@ -11,10 +11,145 @@
 
     <Grid x:Name="ContentArea">
         <Grid>
-            <!--
-                The SystemControlPageBackgroundChromeLowBrush background represents where you should place your content.
-                Place your content here.
-            -->
+            <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid
+                        Grid.Row="3"
+                        Margin="0,0,0,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Visibility="{Binding ListNotificationsVisibility, Mode=TwoWay}">
+                        <muxc:RefreshContainer x:Name="ListViewNotifications" RefreshRequested="ListViewNotifications_RefreshRequested">
+                            <ListView
+                                x:Name="ListNotifications"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                ItemsSource="{Binding ListViewCollection, Mode=TwoWay}"
+                                SelectionChanged="NotificationsView_SelectionChanged"
+                                SelectionMode="Single">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid
+                                            Margin="0,10"
+                                            Background="{ThemeResource LayerFillColorDefaultBrush}"
+                                            BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                                            BorderThickness="1,1"
+                                            CornerRadius="8">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto" />
+                                                <RowDefinition Height="Auto" />
+                                            </Grid.RowDefinitions>
+                                            <Grid Grid.Row="0" Padding="0,0,0,10">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" MinWidth="150" />
+                                                        <ColumnDefinition Width="*" />
+                                                        <ColumnDefinition Width="*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <StackPanel
+                                                        Grid.Column="0"
+                                                        HorizontalAlignment="Stretch"
+                                                        Background="White">
+                                                        <Image
+                                                            Height="100"
+                                                            MaxWidth="150"
+                                                            Source="{Binding ImageLocation}"
+                                                            Stretch="Uniform" />
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Column="1" Margin="12,10,0,0">
+                                                        <TextBlock
+                                                            Margin="0,0,0,6"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="18"
+                                                            FontWeight="SemiBold"
+                                                            LineHeight="1"
+                                                            MaxLines="1"
+                                                            Style="{ThemeResource BaseTextBlockStyle}"
+                                                            Text="{Binding ProductName}" />
+                                                        <TextBlock
+                                                            Margin="0,0,0,6"
+                                                            HorizontalAlignment="Left"
+                                                            FontSize="18"
+                                                            FontWeight="SemiBold"
+                                                            LineHeight="1"
+                                                            MaxLines="1"
+                                                            Style="{ThemeResource BaseTextBlockStyle}"
+                                                            Text="{Binding ProductDescription}" />
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <TextBlock
+                                                                Margin="0,0,0,0"
+                                                                HorizontalAlignment="Left"
+                                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                Text="$" />
+                                                            <TextBlock
+                                                                HorizontalAlignment="Right"
+                                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                Text="{Binding PriceTag}" />
+                                                            <TextBlock
+                                                                HorizontalAlignment="Left"
+                                                                FontFamily="Segoe UI"
+                                                                FontSize="14"
+                                                                FontWeight="Bold"
+                                                                Text=" ⋅ " />
+                                                            <TextBlock
+                                                                Margin="5,0,5,0"
+                                                                HorizontalAlignment="Left"
+                                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                Text="Stock " />
+                                                            <TextBlock
+                                                                HorizontalAlignment="Right"
+                                                                Style="{ThemeResource CaptionTextBlockStyle}"
+                                                                Text="{Binding Stock}" />
+                                                        </StackPanel>
+                                                        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
+                                                            <Image
+                                                                Width="18"
+                                                                Height="18"
+                                                                Margin="0,0,10,0"
+                                                                HorizontalAlignment="Left"
+                                                                VerticalAlignment="Center"
+                                                                Source="/Assets/delivery.png"
+                                                                Stretch="UniformToFill" />
+                                                            <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{Binding ShippingPrice}" />
+                                                        </StackPanel>
+                                                    </StackPanel>
+                                                    <StackPanel Grid.Row="1" Grid.Column="0">
+                                                        <NavigationViewItemSeparator />
+                                                    </StackPanel>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid
+                                                Grid.Row="1"
+                                                Padding="10"
+                                                BorderBrush="gray"
+                                                BorderThickness="0,1,0,0">
+                                                <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
+                                                    <Button Margin="0" Content="🛒 Buy Now" />
+                                                    <Button Margin="8,0" Content="❌ Delete" />
+                                                </StackPanel>
+                                            </Grid>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </muxc:RefreshContainer>
+                    </Grid>
+                </Grid>
+            </ScrollViewer>
+            <muxc:ProgressRing
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                IsActive="{Binding IsBusy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </Grid>
     </Grid>
 </Page>

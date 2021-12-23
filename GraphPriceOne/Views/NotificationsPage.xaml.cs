@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GraphPriceOne.Models;
+using GraphPriceOne.Services;
+using GraphPriceOne.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,9 +25,27 @@ namespace GraphPriceOne.Views
     /// </summary>
     public sealed partial class NotificationsPage : Page
     {
+        private ProductDetailsViewModel selectors;
+
         public NotificationsPage()
         {
             this.InitializeComponent();
+            DataContext = new NotificationsViewModel(ListNotifications);
+            selectors = new ProductDetailsViewModel();
+
+        }
+        private void NotificationsView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ListNotifications.SelectionMode == ListViewSelectionMode.Single && ListNotifications.SelectedItem != null)
+            {
+                NotificationsModel obj = (NotificationsModel)ListNotifications.SelectedItem;
+                selectors.SelectedProduct = obj.ID_PRODUCT;
+                NavigationService.Navigate(typeof(ProductDetailsPage));
+            }
+        }
+        private void ListViewNotifications_RefreshRequested(Microsoft.UI.Xaml.Controls.RefreshContainer sender, Microsoft.UI.Xaml.Controls.RefreshRequestedEventArgs args)
+        {
+
         }
     }
 }
