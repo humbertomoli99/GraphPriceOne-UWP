@@ -52,28 +52,17 @@ namespace GraphPriceOne.ViewModels
             {
                 ListImages.Add(LocalState + item.PhotoSrc);
             }
-
-            if (Product.shippingPrice == 0)
-            {
-                shippingPrice = "Free Shipping";
-            }
-            else if (Product.shippingPrice == null)
+            
+            if(Product.shippingPrice == null)
             {
                 shippingPrice = "Not Available";
             }
             else
             {
-                shippingPrice = shippingCurrency + ProductHistory[lastItem].shippingPrice;
+                shippingPrice = (Product.shippingPrice <= 0)? "Free Shipping" : shippingCurrency + ProductHistory[lastItem].shippingPrice;
             }
-
-            if (Product.stock == null)
-            {
-                stock = "Stock: Not Available";
-            }
-            else
-            {
-                stock = "Stock: " + ProductHistory[lastItem].stock;
-            }
+            
+            stock = (Product.stock == null)? "Stock: Not Available" : "Stock: " + ProductHistory[lastItem].stock;
         }
     }
 }
