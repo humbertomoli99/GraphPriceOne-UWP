@@ -294,7 +294,7 @@ namespace GraphPriceOne.Library
                 }
                 return null;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return null;
             }
