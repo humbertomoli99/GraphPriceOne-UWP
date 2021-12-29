@@ -24,8 +24,7 @@
                         Grid.Row="3"
                         Margin="0,0,0,0"
                         HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        Visibility="{Binding ListNotificationsVisibility, Mode=TwoWay}">
+                        VerticalAlignment="Top">
                         <muxc:RefreshContainer x:Name="ListViewNotifications" RefreshRequested="ListViewNotifications_RefreshRequested">
                             <ListView
                                 x:Name="ListNotifications"
@@ -130,11 +129,14 @@
                                             </Grid>
                                             <Grid Grid.Row="1" Padding="8">
                                                 <StackPanel HorizontalAlignment="Left" Orientation="Horizontal">
-                                                    <HyperlinkButton Content="🛒 Buy Now" NavigateUri="{Binding ProductUrl}" />
+                                                    <Button
+                                                        Command="{Binding ElementName=ListNotifications, Path=DataContext.BuyNowCommand}"
+                                                        CommandParameter="{Binding ProductUrl}"
+                                                        Content="🛒 Buy Now" />
                                                     <Button
                                                         Margin="8,0"
                                                         Command="{Binding ElementName=ListNotifications, Path=DataContext.RemoveItemCommand}"
-                                                        CommandParameter="{Binding}"
+                                                        CommandParameter="{Binding ID_Notification}"
                                                         Content="❌ Delete" />
                                                 </StackPanel>
                                             </Grid>
