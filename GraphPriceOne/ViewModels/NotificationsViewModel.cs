@@ -4,9 +4,7 @@ using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.System;
@@ -30,6 +28,7 @@ namespace GraphPriceOne.ViewModels
 
         private async Task BuyNow(string Url_Product)
         {
+            //DOCUMENTATION https://docs.microsoft.com/en-us/windows/uwp/launch-resume/launch-default-app
             var success = await Launcher.LaunchUriAsync(new Uri(Url_Product));
 
             if (success)
@@ -59,32 +58,46 @@ namespace GraphPriceOne.ViewModels
 
         private async Task GetNotificationsAsync()
         {
-            //var Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-
-            var NotificationsList = (List<Notifications>)await App.PriceTrackerService.GetNotificationsAsync();
-            //List<NotificationsModel> ListaExit = new List<NotificationsModel>();
-            ListViewCollection.Clear();
-            foreach (var item in NotificationsList)
+            try
             {
+                string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+                var NotificationsList = (List<Notifications>)await App.PriceTrackerService.GetNotificationsAsync();
 
-                //var Product = (ProductInfo)Products.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID));
+                ListViewCollection.Clear();
 
-                //var Images = await App.PriceTrackerService.GetImagesAsync();
-                //var ProductImage = Images.Where(u => u.ID_PRODUCT.Equals(Product.ID_PRODUCT)).FirstOrDefault();
-
-                //string mensaje = item.Message?.Replace("\n", "");
-                var message = "📉 Dropped " + item.PRODUCT_ID + " (" + item.PreviousPrice + " to " + item.NewPrice + ")";
-                ListViewCollection.Add(new NotificationsModel()
+                foreach (var item in NotificationsList)
                 {
-                    PRODUCT_ID = item.PRODUCT_ID,
-                    ID_Notification = item.ID_Notification,
-                    ProductName = item.PRODUCT_ID.ToString(),
-                    ProductDescription = message,
-                    NewPrice = item.NewPrice,
-                    PreviousPrice = item.PreviousPrice,
-                    ProductUrl = "https://www.youtube.com/",
-                    ImageLocation = ""
-                });
+                    //var Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                    //var Product = (ProductInfo)Products.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID));
+
+                    List<ProductPhotos> Images = (List<ProductPhotos>)await App.PriceTrackerService.GetImagesAsync();
+                    var ProductImages = Images.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID)).ToList();
+
+                    //string mensaje = item.Message?.Replace("\n", "");
+                    var message = "📉 Dropped " + item.PRODUCT_ID + " (" + item.PreviousPrice + " to " + item.NewPrice + ")";
+
+                    ImageLocation = "";
+                    if (ProductImages != null && ProductImages.Count != 0)
+                    {
+                        ImageLocation = LocalState + ProductImages.First().PhotoSrc;
+                    }
+
+                    ListViewCollection.Add(new NotificationsModel()
+                    {
+                        PRODUCT_ID = item.PRODUCT_ID,
+                        ID_Notification = item.ID_Notification,
+                        ProductName = message,
+                        ProductDescription = message,
+                        NewPrice = item.NewPrice,
+                        PreviousPrice = item.PreviousPrice,
+                        ProductUrl = "https://www.youtube.com/",
+                        ImageLocation = ImageLocation
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                await ExceptionDialog(ex.ToString());
             }
         }
     }
