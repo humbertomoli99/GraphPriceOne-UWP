@@ -50,7 +50,7 @@ namespace GraphPriceOne.Views
             //Register a handler for when the window changes focus
             Window.Current.Activated += Current_Activated;
 
-            timer = new Timer(timerCallback, null, (int)TimeSpan.FromMinutes(1).TotalMilliseconds, Timeout.Infinite);
+            timer = new Timer(timerCallback, null, (int)TimeSpan.FromMinutes(15).TotalMilliseconds, Timeout.Infinite);
 
         }
         private async void timerCallback(object state)
