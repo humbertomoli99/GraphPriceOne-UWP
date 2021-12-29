@@ -25,10 +25,10 @@ namespace GraphPriceOne.ViewModels
             _ = GetNotificationsAsync();
 
         }
-        public ICommand RemoveItemCommand => new RelayCommand<NotificationsModel>(new Action<NotificationsModel>(async e => await RemoveItem(e)));
-        private async Task RemoveItem(NotificationsModel item)
+        public ICommand RemoveItemCommand => new RelayCommand<int>(new Action<int>(async e => await RemoveItem(e)));
+        private async Task RemoveItem(int id_item)
         {
-            await App.PriceTrackerService.DeleteNotificationAsync(item.ID_Notification);
+            await App.PriceTrackerService.DeleteNotificationAsync(id_item);
             await GetNotificationsAsync();
         }
 
