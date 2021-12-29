@@ -84,43 +84,6 @@
                                                             MaxLines="1"
                                                             Style="{ThemeResource BaseTextBlockStyle}"
                                                             Text="{Binding ProductDescription}" />
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <TextBlock
-                                                                Margin="0,0,0,0"
-                                                                HorizontalAlignment="Left"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="$" />
-                                                            <TextBlock
-                                                                HorizontalAlignment="Right"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding PriceTag}" />
-                                                            <TextBlock
-                                                                HorizontalAlignment="Left"
-                                                                FontFamily="Segoe UI"
-                                                                FontSize="14"
-                                                                FontWeight="Bold"
-                                                                Text=" ⋅ " />
-                                                            <TextBlock
-                                                                Margin="5,0,5,0"
-                                                                HorizontalAlignment="Left"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="Stock " />
-                                                            <TextBlock
-                                                                HorizontalAlignment="Right"
-                                                                Style="{ThemeResource CaptionTextBlockStyle}"
-                                                                Text="{Binding Stock}" />
-                                                        </StackPanel>
-                                                        <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal">
-                                                            <Image
-                                                                Width="18"
-                                                                Height="18"
-                                                                Margin="0,0,10,0"
-                                                                HorizontalAlignment="Left"
-                                                                VerticalAlignment="Center"
-                                                                Source="/Assets/delivery.png"
-                                                                Stretch="UniformToFill" />
-                                                            <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{Binding ShippingPrice}" />
-                                                        </StackPanel>
                                                     </StackPanel>
                                                     <StackPanel Grid.Row="1" Grid.Column="0">
                                                         <NavigationViewItemSeparator />
