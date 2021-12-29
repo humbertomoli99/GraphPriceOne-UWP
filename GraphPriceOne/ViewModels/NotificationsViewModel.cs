@@ -67,8 +67,8 @@ namespace GraphPriceOne.ViewModels
 
                 foreach (var item in NotificationsList)
                 {
-                    //var Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-                    //var Product = (ProductInfo)Products.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID));
+                    List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                    var Product = Products.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID)).ToList();
 
                     List<ProductPhotos> Images = (List<ProductPhotos>)await App.PriceTrackerService.GetImagesAsync();
                     var ProductImages = Images.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID)).ToList();
@@ -86,11 +86,11 @@ namespace GraphPriceOne.ViewModels
                     {
                         PRODUCT_ID = item.PRODUCT_ID,
                         ID_Notification = item.ID_Notification,
-                        ProductName = message,
+                        ProductName = Product.FirstOrDefault().productName,
                         ProductDescription = message,
                         NewPrice = item.NewPrice,
                         PreviousPrice = item.PreviousPrice,
-                        ProductUrl = "https://www.youtube.com/",
+                        ProductUrl = Product.FirstOrDefault().productUrl,
                         ImageLocation = ImageLocation
                     });
                 }
