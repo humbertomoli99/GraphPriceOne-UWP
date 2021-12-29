@@ -85,5 +85,10 @@ namespace GraphPriceOne.Models
             get { return GetValue(() => StoreName); }
             set { SetValue(() => StoreName, value); }
         }
+        public string Stock
+        {
+            get { return GetValue(() => Stock); }
+            set { SetValue(() => Stock, value); }
+        }
     }
 }
