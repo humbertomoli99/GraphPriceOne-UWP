@@ -72,7 +72,7 @@ namespace GraphPriceOne.Library
             try
             {
                 var Products = await App.PriceTrackerService.GetProductsAsync();
-                var i = 1;
+                int i = 1;
                 Notifications Notify = new Notifications();
                 foreach (var item in Products)
                 {
@@ -82,29 +82,27 @@ namespace GraphPriceOne.Library
 
                     if (HistorySelected.Count > 2)
                     {
-                        var lastItem = HistorySelected.Count - 1;
+                        int lastItem = HistorySelected.Count - 1;
 
-                        var newPrice = HistorySelected[lastItem].priceTag;
-                        var previousPrice = HistorySelected[lastItem - 1].priceTag;
+                        double? newPrice = HistorySelected[lastItem].priceTag;
+                        double? previousPrice = HistorySelected[lastItem - 1].priceTag;
 
-                        var ProductSelected = Products.Where(s => s.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList().First();
+                        ProductInfo ProductSelected = Products.Where(s => s.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList().First();
 
-                        if(newPrice != previousPrice)
+                        if (newPrice != previousPrice)
                         {
-                            if (newPrice < previousPrice)
-                            {
-                                ShowToastNotification("📉 Dropped \n" + ProductSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
-                                Notify.Message = "📉 Dropped \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
-                                Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
-                            }
-                            else if (newPrice > previousPrice)
-                            {
-                                ShowToastNotification("📈 Increased \n" + ProductSelected.productName, "\n (" + previousPrice + " to " + newPrice + ")");
-                                Notify.Message = "📈 Increased \n" + ProductSelected.productName + "\n (" + previousPrice + " to " + newPrice + ")";
-                                Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
-                            }
+                            var drop = (newPrice < previousPrice) ? "📉 Dropped" : "📈 Increased";
+
+                            var titleNotification = drop + "\n" + ProductSelected.productName;
+                            var contentNotification = "\n (" + previousPrice + " to " + newPrice + ")";
+
+                            ShowToastNotification(titleNotification, contentNotification);
+
+                            Notify.Message = titleNotification + contentNotification;
+                            Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
                             Notify.NewPrice = (double)newPrice;
                             Notify.PreviousPrice = (double)previousPrice;
+
                             await App.PriceTrackerService.AddNotificationAsync(Notify);
                         }
                         System.Diagnostics.Debug.WriteLine(i + " to " + Products.ToList().Count);
