@@ -62,10 +62,14 @@ namespace GraphPriceOne.ViewModels
             {
                 string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
                 var NotificationsList = (List<Notifications>)await App.PriceTrackerService.GetNotificationsAsync();
+                List<Notifications> OrderedList = new List<Notifications>();
 
                 ListViewCollection.Clear();
+                OrderedList.Clear();
 
-                foreach (var item in NotificationsList)
+                OrderedList = NotificationsList.OrderByDescending(o => o.ID_Notification).ToList();
+
+                foreach (var item in OrderedList)
                 {
                     List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                     var Product = Products.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID)).ToList();
