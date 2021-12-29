@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+using GraphPriceOne.Library;
 using GraphPriceOne.Services;
 using GraphPriceOne.ViewModels;
 using Windows.ApplicationModel.Core;
@@ -14,6 +16,7 @@ namespace GraphPriceOne.Views
     public sealed partial class ShellPage : Page
     {
         public ShellViewModel ViewModel { get; } = new ShellViewModel();
+        private Timer timer;
 
         public ShellPage()
         {
@@ -46,6 +49,20 @@ namespace GraphPriceOne.Views
 
             //Register a handler for when the window changes focus
             Window.Current.Activated += Current_Activated;
+
+            timer = new Timer(timerCallback, null, (int)TimeSpan.FromMinutes(1).TotalMilliseconds, Timeout.Infinite);
+
+        }
+        private async void timerCallback(object state)
+        {
+            // do some work not connected with UI
+            
+            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
+                async () => {
+                    _ = await ScrapingDate.GetHistory();
+
+                    // do some work on UI here;
+                });
         }
         private void CoreTitleBar_LayoutMetricsChanged(CoreApplicationViewTitleBar sender, object args)
         {
