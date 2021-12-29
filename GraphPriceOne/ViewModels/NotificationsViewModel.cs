@@ -74,7 +74,8 @@ namespace GraphPriceOne.ViewModels
                     var ProductImages = Images.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID)).ToList();
 
                     //string mensaje = item.Message?.Replace("\n", "");
-                    var message = "📉 Dropped " + item.PRODUCT_ID + " (" + item.PreviousPrice + " to " + item.NewPrice + ")";
+                    var drop = (item.NewPrice < item.PreviousPrice ) ? "📉 Dropped" : "📈 Increased";
+                    var message = drop + " (" + item.PreviousPrice + " to " + item.NewPrice + ")";
 
                     ImageLocation = "";
                     if (ProductImages != null && ProductImages.Count != 0)
