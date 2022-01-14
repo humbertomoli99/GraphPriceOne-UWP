@@ -533,7 +533,7 @@ namespace GraphPriceOne.ViewModels
                         shippingPrice = (item.shippingPrice <= 0)? "Free Shipping" : shippingCurrency + ProductHistory[LastHistory].shippingPrice;
                     }
                     //Stock
-                    stock = (item.stock == null)? "Stock: Not Available" : "Stock: " + ProductHistory[LastHistory].stock;
+                    stock = (item.stock == null)? "Not Available" : ProductHistory[LastHistory].stock.ToString();
                     
                     ListViewCollection.Add(new ProductsModel()
                     {
