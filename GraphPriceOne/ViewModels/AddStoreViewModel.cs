@@ -112,7 +112,7 @@ namespace GraphPriceOne.ViewModels
             }
             else
             {
-                _imageSrc = ScrapingDate.DownloadMetaIcon(startUrl, MetaIcon, @"\Stores\", nameStore);
+                _imageSrc = ScrapingDate.DownloadMetaIcon(startUrl, MetaIcon, @"\Stores\", nameStore).ToString();
             }
             //}
 

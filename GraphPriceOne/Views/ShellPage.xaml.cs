@@ -59,7 +59,7 @@ namespace GraphPriceOne.Views
             
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
                 async () => {
-                    _ = await ScrapingDate.GetHistory();
+                    await ScrapingDate.GetHistory();
 
                     // do some work on UI here;
                 });

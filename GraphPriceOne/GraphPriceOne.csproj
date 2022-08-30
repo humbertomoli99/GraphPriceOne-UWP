@@ -118,16 +118,16 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CsvHelper">
-      <Version>27.2.1</Version>
+      <Version>28.0.1</Version>
     </PackageReference>
     <PackageReference Include="Fizzler.Systems.HtmlAgilityPack">
       <Version>1.2.1</Version>
     </PackageReference>
     <PackageReference Include="HtmlAgilityPack">
-      <Version>1.11.42</Version>
+      <Version>1.11.45</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
-      <Version>6.2.13</Version>
+      <Version>6.2.14</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Services.Store.Engagement">
       <Version>10.1901.28001</Version>
@@ -148,7 +148,7 @@
       <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.UI.Xaml">
-      <Version>2.7.1</Version>
+      <Version>2.8.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
       <Version>2.0.1</Version>
@@ -171,6 +171,7 @@
     <Compile Include="Helpers\NavHelper.cs" />
     <Compile Include="Helpers\SettingsStorageExtensions.cs" />
     <Compile Include="Library\ClipboardEvents.cs" />
+    <Compile Include="Library\Dialogs.cs" />
     <Compile Include="Library\ExportData.cs" />
     <Compile Include="Library\ScrapingDate.cs" />
     <Compile Include="Library\TextBoxEvent.cs" />

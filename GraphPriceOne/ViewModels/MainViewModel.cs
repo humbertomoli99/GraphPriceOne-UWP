@@ -211,7 +211,7 @@ namespace GraphPriceOne.ViewModels
             catch (Exception ex)
             {
                 IsBusy = false;
-                await ExceptionDialog(ex);
+                await Dialogs.ExceptionDialog(ex);
             }
             finally
             {
@@ -383,7 +383,7 @@ namespace GraphPriceOne.ViewModels
             }
             catch (Exception ex)
             {
-                await ExceptionDialog(ex);
+                await Dialogs.ExceptionDialog(ex);
             }
         }
         private void ShowMessageFirstProduct()
@@ -455,7 +455,7 @@ namespace GraphPriceOne.ViewModels
             }
             catch (Exception ex)
             {
-                await ExceptionDialog(ex);
+                await Dialogs.ExceptionDialog(ex);
             }
             finally
             {
@@ -552,18 +552,8 @@ namespace GraphPriceOne.ViewModels
             }
             catch (Exception ex)
             {
-                await ExceptionDialog(ex);
+                await Dialogs.ExceptionDialog(ex);
             }
-        }
-        private async Task ExceptionDialog(Exception ex)
-        {
-            ContentDialog ExcepcionMessage = new ContentDialog()
-            {
-                Title = "Exception",
-                PrimaryButtonText = "Ok",
-                Content = ex.ToString()
-            };
-            await ExcepcionMessage.ShowAsync();
         }
     }
 }

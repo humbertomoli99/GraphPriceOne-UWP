@@ -23,7 +23,7 @@ namespace GraphPriceOne.Library
         {
             //private static JObject jsonFile;
         }
-        public async static Task<string> GetHistory()
+        public async static Task GetHistory()
         {
             try
             {
@@ -60,11 +60,10 @@ namespace GraphPriceOne.Library
                         i++;
                     }
                 }
-                return "Task completed";
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                await Dialogs.ExceptionDialog(ex);
             }
         }
         public static async Task NotifyPriceChangeAsync()
@@ -112,7 +111,7 @@ namespace GraphPriceOne.Library
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                await Dialogs.ExceptionDialog(ex);
             }
         }
         private static void ShowToastNotification(string title, string stringContent)
@@ -297,7 +296,7 @@ namespace GraphPriceOne.Library
                 return null;
             }
         }
-        public static string DownloadMetaIcon(string URL, ScrapingDate.EnlaceImage urlImage, string folder, string name)
+        public async static Task<string> DownloadMetaIcon(string URL, ScrapingDate.EnlaceImage urlImage, string folder, string name)
         {
             try
             {
@@ -338,7 +337,8 @@ namespace GraphPriceOne.Library
             }
             catch (Exception ex)
             {
-                return ex.ToString();
+                await Dialogs.ExceptionDialog(ex);
+                return null;
             }
         }
         //public static PRODUCT GetPrice(HtmlDocument UploadedDocument, string XPath)
