@@ -20,8 +20,8 @@ namespace GraphPriceOne.Tests.MSTest
         public void TestAddStoreViewModelCreation()
         {
             // This test is trivial. Add your own tests for the logic you add to the ViewModel.
-            var vm = new AddStoreViewModel();
-            Assert.IsNotNull(vm);
+            //var vm = new AddStoreViewModel();
+            //Assert.IsNotNull(vm);
         }
 
         // TODO WTS: Add tests for functionality you add to ExportViewModel.
