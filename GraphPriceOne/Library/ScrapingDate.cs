@@ -531,8 +531,9 @@ namespace GraphPriceOne.Library
                 producto.productName = resultStock;
                 return producto;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await Dialogs.ExceptionDialog(ex);
                 return null;
             }
         }
@@ -704,7 +705,8 @@ namespace GraphPriceOne.Library
             }
             catch (Exception ex)
             {
-                Console.Write(ex.ToString());
+
+                await Dialogs.ExceptionDialog(ex);
                 return null;
             }
         }
