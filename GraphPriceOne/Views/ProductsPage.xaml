@@ -10,17 +10,13 @@
     mc:Ignorable="d">
 
     <Grid x:Name="ContentArea">
-        <Grid>
-            <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            <ScrollViewer>
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto" />
                         <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
-                        <RowDefinition Height="auto" />
                     </Grid.RowDefinitions>
-                    <CommandBar Grid.Row="2" Visibility="{Binding CommandBarVisibility, Mode=TwoWay}">
+                    <CommandBar Grid.Row="0" Visibility="{Binding CommandBarVisibility, Mode=TwoWay}">
                         <AppBarToggleButton
                             x:Name="CheckBox1"
                             Checked="CheckBox_Checked"
@@ -93,7 +89,7 @@
                         </CommandBar.Content>
                     </CommandBar>
                     <Grid
-                        Grid.Row="3"
+                        Grid.Row="1"
                         Margin="0,0,0,0"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Top"
@@ -102,22 +98,21 @@
                             <ListView
                                 x:Name="ListProducts"
                                 HorizontalAlignment="Stretch"
-                                VerticalAlignment="Stretch"
                                 ItemsSource="{Binding ListViewCollection, Mode=TwoWay}"
                                 SelectionChanged="productView_SelectionChanged">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
                                         <Grid
                                             Height="100"
-                                            Margin="0,10"
+                                            Margin="{StaticResource SmallTopBottomMargin}"
                                             AutomationProperties.Name="{Binding productName}"
                                             Background="{ThemeResource LayerFillColorDefaultBrush}"
                                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                             BorderThickness="1,1"
-                                            CornerRadius="8">
+                                            CornerRadius="10">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto" MinWidth="150" />
-                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="150" />
+                                                <ColumnDefinition Width="auto" />
                                             </Grid.ColumnDefinitions>
                                             <StackPanel
                                                 Grid.Column="0"
@@ -129,19 +124,15 @@
                                                     Source="{Binding ImageLocation}"
                                                     Stretch="Uniform" />
                                             </StackPanel>
-                                            <StackPanel Grid.Column="1" Margin="12,10,0,0">
+                                            <StackPanel Grid.Column="1" Margin="12,10" HorizontalAlignment="Stretch">
                                                 <TextBlock
-                                                    Margin="0,0,0,6"
-                                                    HorizontalAlignment="Left"
-                                                    FontSize="18"
-                                                    FontWeight="SemiBold"
+                                                    Margin="{StaticResource SmallLeftRightMargin}"
                                                     LineHeight="1"
                                                     MaxLines="1"
-                                                    Style="{ThemeResource BaseTextBlockStyle}"
+                                                    Style="{ThemeResource ListTitleStyle}"
                                                     Text="{Binding productName}" />
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock
-                                                        Margin="0,0,0,0"
                                                         HorizontalAlignment="Left"
                                                         Style="{ThemeResource CaptionTextBlockStyle}"
                                                         Text="$" />
@@ -189,7 +180,6 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 IsActive="{Binding IsBusy, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-        </Grid>
         <Grid>
             <Button
                 Margin="10,10,10,10"
