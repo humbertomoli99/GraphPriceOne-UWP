@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 
 using GraphPriceOne.Activation;
-
+using GraphPriceOne.Library;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Notifications;
 
@@ -10,14 +10,15 @@ namespace GraphPriceOne.Services
 {
     internal partial class ToastNotificationsService : ActivationHandler<ToastNotificationActivatedEventArgs>
     {
-        public void ShowToastNotification(ToastNotification toastNotification)
+        public async Task ShowToastNotification(ToastNotification toastNotification)
         {
             try
             {
                 ToastNotificationManager.CreateToastNotifier().Show(toastNotification);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await Dialogs.ExceptionDialog(ex);
                 // TODO WTS: Adding ToastNotification can fail in rare conditions, please handle exceptions as appropriate to your scenario.
             }
         }
@@ -29,20 +30,27 @@ namespace GraphPriceOne.Services
 
             await Task.CompletedTask;
         }
-        public static void ShowToastNotification(string title, string stringContent)
+        public static async void ShowToastNotification(string title, string stringContent)
         {
-            ToastNotifier ToastNotifier = ToastNotificationManager.CreateToastNotifier();
-            Windows.Data.Xml.Dom.XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
-            Windows.Data.Xml.Dom.XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
-            toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode(title));
-            toastNodeList.Item(1).AppendChild(toastXml.CreateTextNode(stringContent));
-            Windows.Data.Xml.Dom.IXmlNode toastNode = toastXml.SelectSingleNode("/toast");
-            Windows.Data.Xml.Dom.XmlElement audio = toastXml.CreateElement("audio");
-            audio.SetAttribute("src", "ms-winsoundevent:Notification.SMS");
+            try
+            {
+                ToastNotifier ToastNotifier = ToastNotificationManager.CreateToastNotifier();
+                Windows.Data.Xml.Dom.XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
+                Windows.Data.Xml.Dom.XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
+                toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode(title));
+                toastNodeList.Item(1).AppendChild(toastXml.CreateTextNode(stringContent));
+                Windows.Data.Xml.Dom.IXmlNode toastNode = toastXml.SelectSingleNode("/toast");
+                Windows.Data.Xml.Dom.XmlElement audio = toastXml.CreateElement("audio");
+                audio.SetAttribute("src", "ms-winsoundevent:Notification.SMS");
 
-            ToastNotification toast = new ToastNotification(toastXml);
-            //toast.ExpirationTime = DateTime.Now.AddSeconds(4);
-            ToastNotifier.Show(toast);
+                ToastNotification toast = new ToastNotification(toastXml);
+                //toast.ExpirationTime = DateTime.Now.AddSeconds(4);
+                ToastNotifier.Show(toast);
+            }
+            catch (Exception ex)
+            {
+                await Dialogs.ExceptionDialog(ex);
+            }
         }
     }
 }
