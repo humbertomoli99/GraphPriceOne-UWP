@@ -102,7 +102,7 @@
                                 SelectionChanged="productView_SelectionChanged">
                                 <ListView.ItemTemplate>
                                     <DataTemplate>
-                                        <Grid
+                                    <Grid
                                             Height="100"
                                             Margin="{StaticResource SmallTopBottomMargin}"
                                             AutomationProperties.Name="{Binding productName}"
@@ -110,21 +110,22 @@
                                             BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                                             BorderThickness="1,1"
                                             CornerRadius="10">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="150" />
-                                                <ColumnDefinition Width="auto" />
-                                            </Grid.ColumnDefinitions>
-                                            <StackPanel
-                                                Grid.Column="0"
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="150"/>
+                                            <ColumnDefinition/>
+                                        </Grid.ColumnDefinitions>
+                                        <StackPanel
+                                            Grid.Column="0"
+                                                Width="150"
                                                 HorizontalAlignment="Stretch"
                                                 Background="White">
-                                                <Image
+                                            <Image
                                                     Height="100"
                                                     MaxWidth="150"
                                                     Source="{Binding ImageLocation}"
                                                     Stretch="Uniform" />
-                                            </StackPanel>
-                                            <StackPanel Grid.Column="1" Margin="12,10" HorizontalAlignment="Stretch">
+                                        </StackPanel>
+                                        <StackPanel Grid.Column="1" Margin="12,10" Width="999">
                                                 <TextBlock
                                                     Margin="{StaticResource SmallLeftRightMargin}"
                                                     LineHeight="1"
@@ -168,7 +169,8 @@
                                                     <TextBlock Style="{StaticResource BodyStrongTextBlockStyle}" Text="{Binding shippingPrice}" />
                                                 </StackPanel>
                                             </StackPanel>
-                                        </Grid>
+
+                                    </Grid>
                                     </DataTemplate>
                                 </ListView.ItemTemplate>
                             </ListView>
