@@ -1,5 +1,6 @@
 ﻿using Fizzler.Systems.HtmlAgilityPack;
 using GraphPriceOne.Core.Models;
+using GraphPriceOne.Services;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 using System;
@@ -95,7 +96,7 @@ namespace GraphPriceOne.Library
                             var titleNotification = drop + "\n" + ProductSelected.productName;
                             var contentNotification = "\n (" + previousPrice + " to " + newPrice + ")";
 
-                            ShowToastNotification(titleNotification, contentNotification);
+                            ToastNotificationsService.ShowToastNotification(titleNotification, contentNotification);
 
                             Notify.Message = titleNotification + contentNotification;
                             Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
@@ -113,21 +114,6 @@ namespace GraphPriceOne.Library
             {
                 await Dialogs.ExceptionDialog(ex);
             }
-        }
-        private static void ShowToastNotification(string title, string stringContent)
-        {
-            ToastNotifier ToastNotifier = ToastNotificationManager.CreateToastNotifier();
-            Windows.Data.Xml.Dom.XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
-            Windows.Data.Xml.Dom.XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
-            toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode(title));
-            toastNodeList.Item(1).AppendChild(toastXml.CreateTextNode(stringContent));
-            Windows.Data.Xml.Dom.IXmlNode toastNode = toastXml.SelectSingleNode("/toast");
-            Windows.Data.Xml.Dom.XmlElement audio = toastXml.CreateElement("audio");
-            audio.SetAttribute("src", "ms-winsoundevent:Notification.SMS");
-
-            ToastNotification toast = new ToastNotification(toastXml);
-            //toast.ExpirationTime = DateTime.Now.AddSeconds(4);
-            ToastNotifier.Show(toast);
         }
         public static async Task<HtmlNode> LoadPageAsync(string RequestUri)
         {
