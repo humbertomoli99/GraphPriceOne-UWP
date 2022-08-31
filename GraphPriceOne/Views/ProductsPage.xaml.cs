@@ -1,12 +1,9 @@
-﻿using System;
-using GraphPriceOne.Core.Models;
-using GraphPriceOne.Models;
+﻿using GraphPriceOne.Models;
 using GraphPriceOne.Services;
 using GraphPriceOne.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Navigation;
 
 namespace GraphPriceOne.Views
 {

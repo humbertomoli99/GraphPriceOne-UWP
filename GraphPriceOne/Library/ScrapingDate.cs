@@ -11,7 +11,6 @@ using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Windows.UI.Notifications;
 
 namespace GraphPriceOne.Library
 {
@@ -96,7 +95,7 @@ namespace GraphPriceOne.Library
                             var titleNotification = drop + "\n" + ProductSelected.productName;
                             var contentNotification = "\n (" + previousPrice + " to " + newPrice + ")";
 
-                            ToastNotificationsService.ShowToastNotification(titleNotification, contentNotification);
+                            ToastNotificationsService.ShowToastNotification(titleNotification, contentNotification, item.ID_PRODUCT);
 
                             Notify.Message = titleNotification + contentNotification;
                             Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;

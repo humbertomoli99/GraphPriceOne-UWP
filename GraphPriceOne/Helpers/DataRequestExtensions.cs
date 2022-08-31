@@ -1,10 +1,8 @@
-﻿using System;
+﻿using GraphPriceOne.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
-using GraphPriceOne.Models;
-
 using Windows.ApplicationModel.DataTransfer;
 using Windows.Storage;
 using Windows.Storage.Streams;

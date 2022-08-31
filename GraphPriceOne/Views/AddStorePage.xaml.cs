@@ -1,7 +1,5 @@
-﻿using System;
-
-using GraphPriceOne.ViewModels;
-
+﻿using GraphPriceOne.ViewModels;
+using System;
 using Windows.UI.Xaml.Controls;
 
 namespace GraphPriceOne.Views

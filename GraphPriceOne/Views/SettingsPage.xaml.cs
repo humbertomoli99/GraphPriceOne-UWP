@@ -1,6 +1,4 @@
-﻿using System;
-
-using GraphPriceOne.ViewModels;
+﻿using GraphPriceOne.ViewModels;
 
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
