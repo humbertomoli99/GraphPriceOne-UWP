@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 using GraphPriceOne.Activation;
 using GraphPriceOne.Library;
+using Microsoft.Toolkit.Uwp.Notifications;
+using System;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Notifications;
 
