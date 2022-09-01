@@ -1,6 +1,10 @@
 ﻿using GraphPriceOne.Activation;
+using GraphPriceOne.Core.Models;
 using GraphPriceOne.Library;
+using Microsoft.Toolkit.Uwp.Notifications;
 using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Notifications;
@@ -29,22 +33,22 @@ namespace GraphPriceOne.Services
 
             await Task.CompletedTask;
         }
-        public static async void ShowToastNotification(string title, string stringContent)
+        public static async void ShowToastNotification(string title, string stringContent, ProductInfo PRODUCT)
         {
             try
             {
-                ToastNotifier ToastNotifier = ToastNotificationManager.CreateToastNotifier();
-                Windows.Data.Xml.Dom.XmlDocument toastXml = ToastNotificationManager.GetTemplateContent(ToastTemplateType.ToastText02);
-                Windows.Data.Xml.Dom.XmlNodeList toastNodeList = toastXml.GetElementsByTagName("text");
-                toastNodeList.Item(0).AppendChild(toastXml.CreateTextNode(title));
-                toastNodeList.Item(1).AppendChild(toastXml.CreateTextNode(stringContent));
-                Windows.Data.Xml.Dom.IXmlNode toastNode = toastXml.SelectSingleNode("/toast");
-                Windows.Data.Xml.Dom.XmlElement audio = toastXml.CreateElement("audio");
-                audio.SetAttribute("src", "ms-winsoundevent:Notification.SMS");
+                string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
 
-                ToastNotification toast = new ToastNotification(toastXml);
-                //toast.ExpirationTime = DateTime.Now.AddSeconds(4);
-                ToastNotifier.Show(toast);
+                var Images = await App.PriceTrackerService.GetImagesAsync();
+                var ProductImage = Images.Where(u => u.ID_PRODUCT.Equals(PRODUCT.ID_PRODUCT)).ToList().FirstOrDefault();
+
+                new ToastContentBuilder()
+                        .AddHeroImage(new Uri(LocalState + ProductImage.PhotoSrc))
+                        .AddArgument("Action", "viewProduct")
+                        .AddArgument("ProductId", PRODUCT.ID_PRODUCT)
+                        .AddText(title)
+                        .AddText(stringContent)
+                        .Show();
             }
             catch (Exception ex)
             {

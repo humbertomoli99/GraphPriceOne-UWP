@@ -95,7 +95,7 @@ namespace GraphPriceOne.Library
                             var titleNotification = drop + "\n" + ProductSelected.productName;
                             var contentNotification = "\n (" + previousPrice + " to " + newPrice + ")";
 
-                            ToastNotificationsService.ShowToastNotification(titleNotification, contentNotification);
+                            ToastNotificationsService.ShowToastNotification(titleNotification, contentNotification, ProductSelected);
 
                             Notify.Message = titleNotification + contentNotification;
                             Notify.PRODUCT_ID = ProductSelected.ID_PRODUCT;
