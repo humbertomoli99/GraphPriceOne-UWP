@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+
 using GraphPriceOne.Helpers;
 using GraphPriceOne.Services;
+
+using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Mvvm.Input;
+
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 

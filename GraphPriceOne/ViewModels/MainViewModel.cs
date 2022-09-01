@@ -1,10 +1,10 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using GraphPriceOne.Core.Models;
+﻿using GraphPriceOne.Core.Models;
 using GraphPriceOne.Library;
 using GraphPriceOne.Models;
 using GraphPriceOne.Services;
 using GraphPriceOne.Views;
 using HtmlAgilityPack;
+using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

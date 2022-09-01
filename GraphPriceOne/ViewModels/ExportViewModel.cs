@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+
 using GraphPriceOne.Core.Models;
 using GraphPriceOne.Core.Services;
+
+using Microsoft.Toolkit.Mvvm.ComponentModel;
 
 namespace GraphPriceOne.ViewModels
 {
