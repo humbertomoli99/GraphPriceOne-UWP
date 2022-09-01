@@ -1,7 +1,5 @@
 ﻿using GraphPriceOne.Core.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GraphPriceOne.Core.Services
@@ -13,7 +11,7 @@ namespace GraphPriceOne.Core.Services
         Task<bool> DeleteProductAsync(int id);
         Task<ProductInfo> GetProductAsync(int id);
         Task<IEnumerable<ProductInfo>> GetProductsAsync();
-        
+
         Task<bool> AddStoreAsync(Store PriceTrackerService);
         Task<bool> UpdateStoreAsync(Store PriceTrackerService);
         Task<bool> DeleteStoreAsync(int id);

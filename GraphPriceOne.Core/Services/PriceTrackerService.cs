@@ -1,10 +1,8 @@
 ﻿using GraphPriceOne.Core.Models;
 using SQLite;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace GraphPriceOne.Core.Services

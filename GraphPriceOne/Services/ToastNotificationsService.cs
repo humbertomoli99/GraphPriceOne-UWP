@@ -1,8 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-
-using GraphPriceOne.Activation;
+﻿using GraphPriceOne.Activation;
 using GraphPriceOne.Library;
+using System;
+using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Notifications;
 

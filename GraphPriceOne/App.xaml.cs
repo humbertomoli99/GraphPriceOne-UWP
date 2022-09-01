@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using GraphPriceOne.Core.Services;
+﻿using GraphPriceOne.Core.Services;
 using GraphPriceOne.Services;
-
+using System;
+using System.IO;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
