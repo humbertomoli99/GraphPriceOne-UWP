@@ -1,6 +1,6 @@
-﻿using GraphPriceOne.Core.Models;
+﻿using CommunityToolkit.Mvvm.Input;
+using GraphPriceOne.Core.Models;
 using GraphPriceOne.Models;
-using Microsoft.Toolkit.Mvvm.Input;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
