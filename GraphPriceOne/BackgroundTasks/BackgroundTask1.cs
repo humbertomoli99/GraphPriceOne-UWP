@@ -71,8 +71,8 @@ namespace GraphPriceOne.BackgroundTasks
         {
             _cancelRequested = true;
 
-            // TODO WTS: Insert code to handle the cancelation request here.
-            // Documentation: https://docs.microsoft.com/windows/uwp/launch-resume/handle-a-cancelled-background-task
+           // TODO WTS: Insert code to handle the cancelation request here.
+           // Documentation: https://docs.microsoft.com/windows/uwp/launch-resume/handle-a-cancelled-background-task
         }
 
         private void SampleTimerCallback(ThreadPoolTimer timer)

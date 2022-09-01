@@ -1,4 +1,7 @@
-﻿using Windows.ApplicationModel.Resources;
+﻿using System;
+using System.Runtime.InteropServices;
+
+using Windows.ApplicationModel.Resources;
 
 namespace GraphPriceOne.Helpers
 {

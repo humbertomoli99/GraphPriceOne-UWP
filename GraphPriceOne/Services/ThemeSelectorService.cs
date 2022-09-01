@@ -1,6 +1,8 @@
-﻿using GraphPriceOne.Helpers;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+
+using GraphPriceOne.Helpers;
+
 using Windows.ApplicationModel.Core;
 using Windows.Storage;
 using Windows.UI.Core;

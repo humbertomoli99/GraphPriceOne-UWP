@@ -1,7 +1,10 @@
-﻿using GraphPriceOne.Views;
-using Microsoft.Toolkit.Uwp.Helpers;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+
+using GraphPriceOne.Views;
+
+using Microsoft.Toolkit.Uwp.Helpers;
+
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 

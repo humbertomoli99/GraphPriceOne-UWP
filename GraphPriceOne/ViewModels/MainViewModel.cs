@@ -524,17 +524,17 @@ namespace GraphPriceOne.ViewModels
                     //shipping currency
                     shippingCurrency = (shippingCurrency == null) ? "$" : shippingCurrency;
                     //shipping price
-                    if (item.shippingPrice == null)
+                    if(item.shippingPrice == null)
                     {
                         shippingPrice = "Not Available";
                     }
                     else
                     {
-                        shippingPrice = (item.shippingPrice <= 0) ? "Free Shipping" : shippingCurrency + ProductHistory[LastHistory].shippingPrice;
+                        shippingPrice = (item.shippingPrice <= 0)? "Free Shipping" : shippingCurrency + ProductHistory[LastHistory].shippingPrice;
                     }
                     //Stock
-                    stock = (item.stock == null) ? "Not Available" : ProductHistory[LastHistory].stock.ToString();
-
+                    stock = (item.stock == null)? "Not Available" : ProductHistory[LastHistory].stock.ToString();
+                    
                     ListViewCollection.Add(new ProductsModel()
                     {
                         ID_PRODUCT = item.ID_PRODUCT,

@@ -1,13 +1,15 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using GraphPriceOne.Core.Models;
-using GraphPriceOne.Models;
-using GraphPriceOne.Services;
-using GraphPriceOne.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
+using GraphPriceOne.Core.Models;
+using GraphPriceOne.Core.Services;
+using GraphPriceOne.Models;
+using GraphPriceOne.Services;
+using GraphPriceOne.Views;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media.Imaging;
 

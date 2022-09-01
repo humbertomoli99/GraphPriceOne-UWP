@@ -1,4 +1,6 @@
-﻿using GraphPriceOne.ViewModels;
+﻿using System;
+
+using GraphPriceOne.ViewModels;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

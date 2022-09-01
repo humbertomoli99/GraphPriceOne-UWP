@@ -1,8 +1,8 @@
-﻿using GraphPriceOne.Library;
+﻿using System;
+using System.Threading;
+using GraphPriceOne.Library;
 using GraphPriceOne.Services;
 using GraphPriceOne.ViewModels;
-using System;
-using System.Threading;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.ViewManagement;
@@ -56,10 +56,9 @@ namespace GraphPriceOne.Views
         private async void timerCallback(object state)
         {
             // do some work not connected with UI
-
+            
             await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
-                async () =>
-                {
+                async () => {
                     await ScrapingDate.GetHistory();
 
                     // do some work on UI here;

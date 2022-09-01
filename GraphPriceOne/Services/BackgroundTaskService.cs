@@ -1,10 +1,12 @@
-﻿using GraphPriceOne.Activation;
-using GraphPriceOne.BackgroundTasks;
-using GraphPriceOne.Core.Helpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
+using GraphPriceOne.Activation;
+using GraphPriceOne.BackgroundTasks;
+using GraphPriceOne.Core.Helpers;
+
 using Windows.ApplicationModel.Activation;
 using Windows.ApplicationModel.Background;
 

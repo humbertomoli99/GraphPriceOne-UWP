@@ -1,4 +1,6 @@
-﻿using Windows.UI.Xaml;
+﻿using System;
+
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace GraphPriceOne.Views

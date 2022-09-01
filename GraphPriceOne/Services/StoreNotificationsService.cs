@@ -1,7 +1,10 @@
-﻿using GraphPriceOne.Activation;
-using Microsoft.Services.Store.Engagement;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+
+using GraphPriceOne.Activation;
+
+using Microsoft.Services.Store.Engagement;
+
 using Windows.ApplicationModel.Activation;
 
 namespace GraphPriceOne.Services

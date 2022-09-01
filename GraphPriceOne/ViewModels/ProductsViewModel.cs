@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using GraphPriceOne.Core.Models;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
+using GraphPriceOne.Core.Models;
+using GraphPriceOne.Core.Services;
 
 namespace GraphPriceOne.ViewModels
 {

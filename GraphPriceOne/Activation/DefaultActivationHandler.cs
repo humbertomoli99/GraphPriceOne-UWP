@@ -1,7 +1,9 @@
-﻿using GraphPriceOne.Core.Helpers;
-using GraphPriceOne.Services;
-using System;
+﻿using System;
 using System.Threading.Tasks;
+
+using GraphPriceOne.Core.Helpers;
+using GraphPriceOne.Services;
+
 using Windows.ApplicationModel.Activation;
 
 namespace GraphPriceOne.Activation
