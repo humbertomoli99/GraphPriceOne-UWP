@@ -79,7 +79,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0" HorizontalAlignment="Stretch">
+                <StackPanel Grid.Column="0" HorizontalAlignment="Stretch" BorderBrush="{ThemeResource CardStrokeColorDefault}" BorderThickness="0,0,2,0">
                     <TextBlock HorizontalTextAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}">Lowest Price</TextBlock>
                     <TextBlock HorizontalTextAlignment="Center" Text="{Binding ShowMinProductPrice}">999</TextBlock>
                 </StackPanel>
@@ -87,7 +87,7 @@
                     <TextBlock HorizontalTextAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}">Averange Price</TextBlock>
                     <TextBlock HorizontalTextAlignment="Center" Text="{Binding ShowAvgProductPrice}">999</TextBlock>
                 </StackPanel>
-                <StackPanel Grid.Column="2" HorizontalAlignment="Stretch">
+                <StackPanel Grid.Column="2" HorizontalAlignment="Stretch" BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}" BorderThickness="2,0,0,0">
                     <TextBlock HorizontalTextAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}">Highest Price</TextBlock>
                     <TextBlock HorizontalTextAlignment="Center" Text="{Binding ShowMaxProductPrice}">999</TextBlock>
                 </StackPanel>
