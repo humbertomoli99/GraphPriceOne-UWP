@@ -1,0 +1,10 @@
+﻿{
+  "profiles": {
+    "GraphPriceOne (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "GraphPriceOne (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

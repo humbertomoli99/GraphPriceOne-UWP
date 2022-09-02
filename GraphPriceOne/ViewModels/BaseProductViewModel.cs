@@ -1,4 +1,4 @@
-﻿using GraphPriceOne.Core.Models;
+using GraphPriceOne.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

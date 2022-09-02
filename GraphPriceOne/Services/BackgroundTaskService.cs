@@ -1,4 +1,4 @@
-﻿using GraphPriceOne.Activation;
+using GraphPriceOne.Activation;
 using GraphPriceOne.BackgroundTasks;
 using GraphPriceOne.Core.Helpers;
 using System;

@@ -1,4 +1,4 @@
-﻿using GraphPriceOne.Activation;
+using GraphPriceOne.Activation;
 using GraphPriceOne.ViewModels;
 using GraphPriceOne.Views;
 using Microsoft.Services.Store.Engagement;

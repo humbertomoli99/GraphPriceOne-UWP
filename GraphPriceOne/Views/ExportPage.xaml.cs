@@ -1,7 +1,7 @@
-﻿using GraphPriceOne.ViewModels;
+using GraphPriceOne.ViewModels;
 using Microsoft.Toolkit.Uwp.Notifications;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 namespace GraphPriceOne.Views
 {
@@ -23,7 +23,7 @@ namespace GraphPriceOne.Views
             await ViewModel.LoadDataAsync();
         }
 
-        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void Button_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             //ExportData.ExportDataCsv();
             new ToastContentBuilder()

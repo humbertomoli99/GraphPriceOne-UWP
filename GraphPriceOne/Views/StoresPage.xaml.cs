@@ -1,9 +1,9 @@
-﻿using GraphPriceOne.Models;
+using GraphPriceOne.Models;
 using GraphPriceOne.Services;
 using GraphPriceOne.ViewModels;
 
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Data;
 
 namespace GraphPriceOne.Views
 {
@@ -21,12 +21,12 @@ namespace GraphPriceOne.Views
 
             selectors = new AddSelectorsViewModel();
         }
-        private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void Button_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             NavigationService.Navigate(typeof(AddStorePage));
         }
 
-        private void CheckBox_Checked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void CheckBox_Checked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             if (ListStores.SelectionMode == ListViewSelectionMode.Multiple || ListStores.SelectionMode == ListViewSelectionMode.Extended)
             {
@@ -36,7 +36,7 @@ namespace GraphPriceOne.Views
             }
         }
 
-        private void CheckBox_Unchecked(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private void CheckBox_Unchecked(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
         {
             if (ListStores.SelectionMode == ListViewSelectionMode.Multiple || ListStores.SelectionMode == ListViewSelectionMode.Extended)
             {

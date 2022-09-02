@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace GraphPriceOne.Library
 {
@@ -124,7 +124,7 @@ namespace GraphPriceOne.Library
         public async Task<object[]> LoadImageAsync()
         {
             avatar = null;
-            var picker = new FileOpenPicker();
+            var picker = this.InitializeWithWindow(new FileOpenPicker());
             picker.ViewMode = PickerViewMode.Thumbnail;
             picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
             picker.SuggestedStartLocation = PickerLocationId.Desktop;
@@ -150,6 +150,11 @@ namespace GraphPriceOne.Library
             object[] objects = { avatar, _bitmapImage, file };
             return objects;
         }
+                        private FileOpenPicker InitializeWithWindow(FileOpenPicker obj)
+                        {
+                            WinRT.Interop.InitializeWithWindow.Initialize(obj, App.WindowHandle);
+                            return obj;
+                        }
         public async Task<byte[]> ImagebyteAsync(BitmapImage image)
         {
             RandomAccessStreamReference streamRef = RandomAccessStreamReference.CreateFromUri(image.UriSource);

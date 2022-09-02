@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Net;
 using System.Text.RegularExpressions;
-using Windows.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Input;
 
 namespace GraphPriceOne.Library
 {

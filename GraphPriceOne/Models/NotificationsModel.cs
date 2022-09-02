@@ -1,4 +1,4 @@
-﻿namespace GraphPriceOne.Models
+namespace GraphPriceOne.Models
 {
     public class NotificationsModel : PropertyChangedNotification
     {

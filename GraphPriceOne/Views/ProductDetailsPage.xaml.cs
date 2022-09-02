@@ -1,6 +1,6 @@
-﻿using GraphPriceOne.ViewModels;
+using GraphPriceOne.ViewModels;
 
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 
 namespace GraphPriceOne.Views
 {
@@ -23,7 +23,7 @@ namespace GraphPriceOne.Views
         //    //await ViewModel.LoadDataAsync();
         //}
 
-        private void FlipView_SizeChanged(object sender, Windows.UI.Xaml.SizeChangedEventArgs e)
+        private void FlipView_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs e)
         {
             this.flip.Height = this.ActualWidth * 0.5625;
         }

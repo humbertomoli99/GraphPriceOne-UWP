@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 
 namespace GraphPriceOne.Library
 {
@@ -14,7 +14,15 @@ namespace GraphPriceOne.Library
                 PrimaryButtonText = "Ok",
                 Content = ex.ToString()
             };
-            await ExcepcionMessage.ShowAsync();
+            await this.SetContentDialogRoot(ExcepcionMessage).ShowAsync();
         }
+                    private ContentDialog SetContentDialogRoot(ContentDialog contentDialog)
+                    {
+                        if (Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
+                        {
+                            contentDialog.XamlRoot = this.Content.XamlRoot;
+                        }
+                        return contentDialog;
+                    }
     }
 }
