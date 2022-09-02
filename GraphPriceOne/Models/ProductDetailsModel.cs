@@ -15,6 +15,21 @@ namespace GraphPriceOne.Models
             get { return GetValue(() => ID_PRODUCT); }
             set { SetValue(() => ID_PRODUCT, value); }
         }
+        public string ShowAvgProductPrice
+        {
+            get { return GetValue(() => ShowAvgProductPrice); }
+            set { SetValue(() => ShowAvgProductPrice, value); }
+        }
+        public string ShowMinProductPrice
+        {
+            get { return GetValue(() => ShowMinProductPrice); }
+            set { SetValue(() => ShowMinProductPrice, value); }
+        }
+        public string ShowMaxProductPrice
+        {
+            get { return GetValue(() => ShowMaxProductPrice); }
+            set { SetValue(() => ShowMaxProductPrice, value); }
+        }
         public string productName
         {
             get { return GetValue(() => productName); }
