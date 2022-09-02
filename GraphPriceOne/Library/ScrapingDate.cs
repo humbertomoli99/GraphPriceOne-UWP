@@ -60,6 +60,7 @@ namespace GraphPriceOne.Library
                         i++;
                     }
                 }
+                await ScrapingDate.NotifyPriceChangeAsync();
             }
             catch (Exception ex)
             {
