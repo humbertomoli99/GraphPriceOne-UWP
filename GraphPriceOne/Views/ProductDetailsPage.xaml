@@ -81,15 +81,15 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" HorizontalAlignment="Stretch">
                     <TextBlock HorizontalTextAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}">Lowest Price</TextBlock>
-                    <TextBlock HorizontalTextAlignment="Center" Text="{Binding lowestPrice}">999</TextBlock>
+                    <TextBlock HorizontalTextAlignment="Center" Text="{Binding ShowMinProductPrice}">999</TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Stretch">
                     <TextBlock HorizontalTextAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}">Averange Price</TextBlock>
-                    <TextBlock HorizontalTextAlignment="Center" Text="{Binding averagePrice}">999</TextBlock>
+                    <TextBlock HorizontalTextAlignment="Center" Text="{Binding ShowAvgProductPrice}">999</TextBlock>
                 </StackPanel>
                 <StackPanel Grid.Column="2" HorizontalAlignment="Stretch">
                     <TextBlock HorizontalTextAlignment="Center" Style="{StaticResource BodyStrongTextBlockStyle}">Highest Price</TextBlock>
-                    <TextBlock HorizontalTextAlignment="Center" Text="{Binding highestPrice}">999</TextBlock>
+                    <TextBlock HorizontalTextAlignment="Center" Text="{Binding ShowMaxProductPrice}">999</TextBlock>
                 </StackPanel>
             </Grid>
             <TextBlock

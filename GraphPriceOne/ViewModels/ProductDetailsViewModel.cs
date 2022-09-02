@@ -27,16 +27,24 @@ namespace GraphPriceOne.ViewModels
 
                 int NumberOfRecords = ProductHistoryList.Count;
 
-                double? SumProductPrice = 0;
+                double?[] SumProductPrice = new double?[NumberOfRecords];
 
+                var i = 0;
                 foreach (var item in ProductHistoryList)
                 {
-                    SumProductPrice += item.PriceTag;
+                    SumProductPrice[i] = double.Parse(item.PriceTag.ToString());
                     productHistory += "Price: " + item.PriceTag + "  Shipping: " + item.ShippingPrice + "  Stock: " + item.Stock + "   Date: " + item.ProductDate + "\n";
+                    i++;
                 }
 
-                //averange product price
-                double? AvgProductPrice = SumProductPrice / NumberOfRecords;
+                //Product price estadisticas
+                double? AvgProductPrice = SumProductPrice.Average();
+                double? MinProductPrice = SumProductPrice.Min();
+                double? MaxProductPrice = SumProductPrice.Max();
+
+                ShowAvgProductPrice = AvgProductPrice.ToString();
+                ShowMinProductPrice = MinProductPrice.ToString();
+                ShowMaxProductPrice = MaxProductPrice.ToString();
 
                 ID_PRODUCT = SelectedProduct;
                 var Product = await App.PriceTrackerService.GetProductAsync(SelectedProduct);
