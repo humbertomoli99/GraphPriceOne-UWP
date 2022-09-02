@@ -1,10 +1,10 @@
-﻿using GraphPriceOne.Services;
+using GraphPriceOne.Services;
 
 using Microsoft.Xaml.Interactivity;
 
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Navigation;
 
 using WinUI = Microsoft.UI.Xaml.Controls;
 

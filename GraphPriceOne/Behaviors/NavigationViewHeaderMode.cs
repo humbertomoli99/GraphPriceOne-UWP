@@ -1,4 +1,4 @@
-﻿namespace GraphPriceOne.Behaviors
+namespace GraphPriceOne.Behaviors
 {
     public enum NavigationViewHeaderMode
     {

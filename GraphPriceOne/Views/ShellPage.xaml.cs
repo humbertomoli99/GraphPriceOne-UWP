@@ -1,4 +1,4 @@
-﻿using GraphPriceOne.Library;
+using GraphPriceOne.Library;
 using GraphPriceOne.Services;
 using GraphPriceOne.ViewModels;
 using System;
@@ -6,9 +6,9 @@ using System.Threading;
 using Windows.ApplicationModel.Core;
 using Windows.UI;
 using Windows.UI.ViewManagement;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 
 namespace GraphPriceOne.Views
 {
@@ -26,7 +26,12 @@ namespace GraphPriceOne.Views
 
             NavigationService.Navigate(typeof(MainPage));
 
-            var titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            var titleBar = 
+                /*
+                   TODO UA315_A Use Microsoft.UI.Windowing.AppWindow for window Management instead of ApplicationView/CoreWindow or Microsoft.UI.Windowing.AppWindow APIs
+                   Read: https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/guides/windowing
+                */
+                ApplicationView.GetForCurrentView().TitleBar;
 
             titleBar.ButtonBackgroundColor = Colors.Transparent;
             titleBar.ButtonInactiveBackgroundColor = Colors.Transparent;
@@ -37,7 +42,7 @@ namespace GraphPriceOne.Views
             UpdateTitleBarLayout(coreTitleBar);
 
             // Set XAML element as a draggable region.
-            Window.Current.SetTitleBar(AppTitleBar);
+            App.Window.SetTitleBar(AppTitleBar);
 
             // Register a handler for when the size of the overlaid caption control changes.
             // For example, when the app moves to a screen with a different DPI.
@@ -48,7 +53,7 @@ namespace GraphPriceOne.Views
             coreTitleBar.IsVisibleChanged += CoreTitleBar_IsVisibleChanged;
 
             //Register a handler for when the window changes focus
-            Window.Current.Activated += Current_Activated;
+            App.Window.Activated += Current_Activated;
 
             timer = new Timer(timerCallback, null, (int)TimeSpan.FromHours(1).TotalMilliseconds, Timeout.Infinite);
 
@@ -57,7 +62,11 @@ namespace GraphPriceOne.Views
         {
             // do some work not connected with UI
 
-            await CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
+            await /*
+                TODO UA306_A2: UWP CoreDispatcher : Windows.UI.Core.CoreDispatcher is no longer supported. Use DispatcherQueue instead. Read: https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/guides/threading
+            *//*
+                TODO UA306_A2: UWP CoreDispatcher : Windows.UI.Core.CoreDispatcher is no longer supported. Use DispatcherQueue instead. Read: https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/guides/threading
+            */CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal,
                 async () =>
                 {
                     await ScrapingDate.GetHistory();

@@ -1,4 +1,4 @@
-﻿using GraphPriceOne.Activation;
+using GraphPriceOne.Activation;
 using GraphPriceOne.Core.Models;
 using GraphPriceOne.Library;
 using Microsoft.Toolkit.Uwp.Notifications;

@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using GraphPriceOne.Core.Models;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;

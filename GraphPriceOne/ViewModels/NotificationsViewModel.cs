@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using GraphPriceOne.Core.Models;
 using GraphPriceOne.Models;
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.System;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls;
 
 namespace GraphPriceOne.ViewModels
 {
@@ -48,8 +48,16 @@ namespace GraphPriceOne.ViewModels
                 PrimaryButtonText = "Ok",
                 Content = ex.ToString()
             };
-            await ExcepcionMessage.ShowAsync();
+            await this.SetContentDialogRoot(ExcepcionMessage).ShowAsync();
         }
+                    private ContentDialog SetContentDialogRoot(ContentDialog contentDialog)
+                    {
+                        if (Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
+                        {
+                            contentDialog.XamlRoot = this.Content.XamlRoot;
+                        }
+                        return contentDialog;
+                    }
         private async Task RemoveItem(int id_item)
         {
             await App.PriceTrackerService.DeleteNotificationAsync(id_item);

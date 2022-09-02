@@ -1,4 +1,4 @@
-﻿using GraphPriceOne.Activation;
+using GraphPriceOne.Activation;
 using GraphPriceOne.Core.Helpers;
 using System;
 using System.Collections.Generic;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace GraphPriceOne.Services
 {
@@ -39,19 +39,23 @@ namespace GraphPriceOne.Services
 
                 // Do not repeat app initialization when the Window already has content,
                 // just ensure that the window is active
-                if (Window.Current.Content == null)
+                if (App.Window.Content == null)
                 {
                     // Create a Shell or Frame to act as the navigation context
-                    Window.Current.Content = _shell?.Value ?? new Frame();
+                    App.Window.Content = _shell?.Value ?? new Frame();
 
-                    // Add support for system back requests. 
-                    SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
-                    // Add support for accelerator keys. 
-                    // Listen to the window directly so the app responds
-                    // to accelerator keys regardless of which element has focus.
-                    Window.Current.CoreWindow.Dispatcher.AcceleratorKeyActivated += CoreDispatcher_AcceleratorKeyActivated;
+            /*
+              
+            TODO UA307 Default back button in the title bar does not exist in WinUI3 apps.
+            The tool has generated a custom back button in the MainWindow.xaml.cs file.
+            Feel free to edit its position, behavior and use the custom back button instead.
+            Read: https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/case-study-1#restoring-back-button-functionality
+            */SystemNavigationManager.GetForCurrentView().BackRequested += System_BackRequested;
+/*
+                TODO UA306_A3: UWP CoreDispatcher : Windows.UI.Core.CoreDispatcher is no longer supported. Use DispatcherQueue instead. Read: https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/guides/threading
+            */App.Window.CoreWindow.Dispatcher.AcceleratorKeyActivated += CoreDispatcher_AcceleratorKeyActivated;
                     // Add support for mouse navigation buttons. 
-                    Window.Current.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
+                    App.Window.CoreWindow.PointerPressed += CoreWindow_PointerPressed;
                 }
             }
 
@@ -63,7 +67,7 @@ namespace GraphPriceOne.Services
             if (IsInteractive(activationArgs))
             {
                 // Ensure the current window is active
-                Window.Current.Activate();
+                App.Window.Activate();
 
                 // Tasks after activation
                 await StartupAsync();

@@ -1,10 +1,10 @@
-﻿using GraphPriceOne.Helpers;
+using GraphPriceOne.Helpers;
 using System;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Core;
 using Windows.Storage;
 using Windows.UI.Core;
-using Windows.UI.Xaml;
+using Microsoft.UI.Xaml;
 
 namespace GraphPriceOne.Services
 {
@@ -31,9 +31,13 @@ namespace GraphPriceOne.Services
         {
             foreach (var view in CoreApplication.Views)
             {
-                await view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+                await /*
+                TODO UA306_A2: UWP CoreDispatcher : Windows.UI.Core.CoreDispatcher is no longer supported. Use DispatcherQueue instead. Read: https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/guides/threading
+            *//*
+                TODO UA306_A2: UWP CoreDispatcher : Windows.UI.Core.CoreDispatcher is no longer supported. Use DispatcherQueue instead. Read: https://docs.microsoft.com/en-us/windows/apps/windows-app-sdk/migrate-to-windows-app-sdk/guides/threading
+            */view.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
                 {
-                    if (Window.Current.Content is FrameworkElement frameworkElement)
+                    if (App.Window.Content is FrameworkElement frameworkElement)
                     {
                         frameworkElement.RequestedTheme = Theme;
                     }

@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using GraphPriceOne.Core.Models;
 using GraphPriceOne.Library;
 using GraphPriceOne.Models;
@@ -11,8 +11,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace GraphPriceOne.ViewModels
 {
@@ -76,7 +76,7 @@ namespace GraphPriceOne.ViewModels
                         PrimaryButtonText = "OK, THANKS",
                         Content = "Copy a URL to begin\n" + "Copy the URL of the product, then select Add Product to start tracking the product's price."
                     };
-                    await InvalidClipboardUrl.ShowAsync();
+                    await this.SetContentDialogRoot(InvalidClipboardUrl).ShowAsync();
                     return;
                 }
                 if (UrlShop.Count == 0 || UrlShop == null)
@@ -89,7 +89,7 @@ namespace GraphPriceOne.ViewModels
                         CloseButtonText = "CANCEL",
                         Content = "The store has no assigned sectors."
                     };
-                    ContentDialogResult result1 = await UnassignedSectors.ShowAsync();
+                    ContentDialogResult result1 = await this.SetContentDialogRoot(UnassignedSectors).ShowAsync();
                     if (result1 == ContentDialogResult.Primary)
                     {
                         NavigationService.Navigate(typeof(AddStorePage));
@@ -110,7 +110,7 @@ namespace GraphPriceOne.ViewModels
                         PrimaryButtonText = "OK",
                         Content = "The product is registered and will continue to be tracked."
                     };
-                    await ProductRegisterMessage.ShowAsync();
+                    await this.SetContentDialogRoot(ProductRegisterMessage).ShowAsync();
                     return;
                 }
                 HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(url);
@@ -159,7 +159,7 @@ namespace GraphPriceOne.ViewModels
                     CloseButtonText = "CANCEL",
                     Content = content
                 };
-                ContentDialogResult result = await dialogOk.ShowAsync();
+                ContentDialogResult result = await this.SetContentDialogRoot(dialogOk).ShowAsync();
 
                 if (result == ContentDialogResult.Primary)
                 {
@@ -362,7 +362,7 @@ namespace GraphPriceOne.ViewModels
                         PrimaryButtonText = "Delete",
                         CloseButtonText = "Cancel"
                     };
-                    ContentDialogResult result = await deleteFileDialog.ShowAsync();
+                    ContentDialogResult result = await this.SetContentDialogRoot(deleteFileDialog).ShowAsync();
                     if (result == ContentDialogResult.Primary)
                     {
                         foreach (var item in itemsSelected)
@@ -386,6 +386,14 @@ namespace GraphPriceOne.ViewModels
                 await Dialogs.ExceptionDialog(ex);
             }
         }
+                    private ContentDialog SetContentDialogRoot(ContentDialog contentDialog)
+                    {
+                        if (Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
+                        {
+                            contentDialog.XamlRoot = this.Content.XamlRoot;
+                        }
+                        return contentDialog;
+                    }
         private void ShowMessageFirstProduct()
         {
             FirstProductVisibility = Visibility.Visible;

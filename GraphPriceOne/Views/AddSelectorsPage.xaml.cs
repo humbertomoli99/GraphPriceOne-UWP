@@ -1,5 +1,5 @@
-﻿using GraphPriceOne.ViewModels;
-using Windows.UI.Xaml.Controls;
+using GraphPriceOne.ViewModels;
+using Microsoft.UI.Xaml.Controls;
 
 // La plantilla de elemento Página en blanco está documentada en https://go.microsoft.com/fwlink/?LinkId=234238
 

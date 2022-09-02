@@ -1,4 +1,4 @@
-﻿using GraphPriceOne.Core.Helpers;
+using GraphPriceOne.Core.Helpers;
 using System;
 using System.IO;
 using System.Threading.Tasks;

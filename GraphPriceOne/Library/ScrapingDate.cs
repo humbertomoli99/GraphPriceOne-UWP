@@ -1,4 +1,4 @@
-﻿using Fizzler.Systems.HtmlAgilityPack;
+using Fizzler.Systems.HtmlAgilityPack;
 using GraphPriceOne.Core.Models;
 using GraphPriceOne.Services;
 using HtmlAgilityPack;

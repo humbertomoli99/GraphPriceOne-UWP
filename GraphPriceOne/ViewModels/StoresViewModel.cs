@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Input;
 using GraphPriceOne.Core.Models;
 using GraphPriceOne.Models;
 using GraphPriceOne.Services;
@@ -8,8 +8,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace GraphPriceOne.ViewModels
 {
@@ -36,15 +36,15 @@ namespace GraphPriceOne.ViewModels
             _ListView.SelectedItem = null;
             SelectMultipleIsEnabled = false;
             _ListView.SelectionMode = ListViewSelectionMode.Single;
-            isCheckedAllVisibility = Windows.UI.Xaml.Visibility.Collapsed;
-            DeleteStoreVisibility = Windows.UI.Xaml.Visibility.Collapsed;
+            isCheckedAllVisibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            DeleteStoreVisibility = Microsoft.UI.Xaml.Visibility.Collapsed;
         }
         private void ShowButtons()
         {
             SelectMultipleIsEnabled = true;
             _ListView.SelectionMode = ListViewSelectionMode.Multiple;
-            isCheckedAllVisibility = Windows.UI.Xaml.Visibility.Visible;
-            DeleteStoreVisibility = Windows.UI.Xaml.Visibility.Visible;
+            isCheckedAllVisibility = Microsoft.UI.Xaml.Visibility.Visible;
+            DeleteStoreVisibility = Microsoft.UI.Xaml.Visibility.Visible;
         }
         private void SelectMulti()
         {
@@ -88,7 +88,7 @@ namespace GraphPriceOne.ViewModels
                         PrimaryButtonText = "Delete",
                         CloseButtonText = "Cancel"
                     };
-                    ContentDialogResult result = await deleteFileDialog.ShowAsync();
+                    ContentDialogResult result = await this.SetContentDialogRoot(deleteFileDialog).ShowAsync();
                     if (result == ContentDialogResult.Primary)
                     {
                         foreach (var item in itemsSelected)
@@ -123,6 +123,14 @@ namespace GraphPriceOne.ViewModels
                 ex.ToString();
             }
         }
+                    private ContentDialog SetContentDialogRoot(ContentDialog contentDialog)
+                    {
+                        if (Windows.Foundation.Metadata.ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 8))
+                        {
+                            contentDialog.XamlRoot = this.Content.XamlRoot;
+                        }
+                        return contentDialog;
+                    }
         public async Task GetStoresAsync()
         {
             var ListProduct = new List<StoresModel>();
