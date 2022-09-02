@@ -3,7 +3,6 @@ using GraphPriceOne.Core.Models;
 using GraphPriceOne.Library;
 using Microsoft.Toolkit.Uwp.Notifications;
 using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
@@ -48,7 +47,11 @@ namespace GraphPriceOne.Services
                         .AddArgument("ProductId", PRODUCT.ID_PRODUCT)
                         .AddText(title)
                         .AddText(stringContent)
-                        .Show();
+                        .Show(toast =>
+                        {
+                            toast.ExpirationTime = DateTime.Now.AddDays(1);
+                        }
+                        );
             }
             catch (Exception ex)
             {
