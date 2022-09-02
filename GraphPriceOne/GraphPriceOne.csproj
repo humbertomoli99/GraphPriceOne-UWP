@@ -97,9 +97,6 @@
     <PackageReference Include="CommunityToolkit.WinUI.UI.Controls.DataGrid" Version="7.1.2" />
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="Strings\en-us\Resources.resw" />
-  </ItemGroup>
-  <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
@@ -118,5 +115,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="App.xaml.old.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Strings\en-us\" />
   </ItemGroup>
 </Project>
