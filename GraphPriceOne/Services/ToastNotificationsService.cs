@@ -47,6 +47,7 @@ namespace GraphPriceOne.Services
                         .AddArgument("ProductId", PRODUCT.ID_PRODUCT)
                         .AddText(title)
                         .AddText(stringContent)
+
                         .Show(toast =>
                         {
                             toast.ExpirationTime = DateTime.Now.AddDays(1);
