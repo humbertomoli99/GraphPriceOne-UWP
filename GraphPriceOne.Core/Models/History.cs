@@ -8,10 +8,10 @@ namespace GraphPriceOne.Core.Models
         public int ID_HISTORY { get; set; }
         public int STORE_ID { get; set; }
         public int PRODUCT_ID { get; set; }
-        public double? priceTag { get; set; }
-        public int? priceDesc { get; set; }
-        public string productDate { get; set; }
-        public double? shippingPrice { get; set; }
-        public int? stock { get; set; }
+        public double? PriceTag { get; set; }
+        public int? PriceDesc { get; set; }
+        public string ProductDate { get; set; }
+        public double? ShippingPrice { get; set; }
+        public int? Stock { get; set; }
     }
 }

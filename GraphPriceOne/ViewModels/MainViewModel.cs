@@ -126,22 +126,22 @@ namespace GraphPriceOne.ViewModels
                     productName = ScrapingDate.GetTitle(HtmlUrl, SitemapSelectors.Title),
                     productUrl = url,
                     productDescription = ScrapingDate.GetDescription(HtmlUrl, SitemapSelectors.Description, SitemapSelectors.DescriptionGetAttribute),
-                    stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                    Stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
                     PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
-                    shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
+                    ShippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                 };
-                var shipping = Product.shippingCurrency + " " + Product.shippingPrice;
-                if (Product.shippingPrice == 0)
+                var shipping = Product.ShippingCurrency + " " + Product.ShippingPrice;
+                if (Product.ShippingPrice == 0)
                 {
                     shipping = "Free shipping";
                 }
-                else if (Product.shippingCurrency == null)
+                else if (Product.ShippingCurrency == null)
                 {
-                    shipping = "$" + Product.shippingPrice;
+                    shipping = "$" + Product.ShippingPrice;
                 }
 
-                var currency = Product.priceCurrency;
-                if (Product.priceCurrency == null)
+                var currency = Product.PriceCurrency;
+                if (Product.PriceCurrency == null)
                 {
                     currency = "$";
                 }
@@ -190,11 +190,11 @@ namespace GraphPriceOne.ViewModels
                     History ProductHistory = new History()
                     {
                         PRODUCT_ID = lastId,
-                        productDate = DateTime.UtcNow.ToString(),
+                        ProductDate = DateTime.UtcNow.ToString(),
                         STORE_ID = id_sitemap,
-                        stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
-                        priceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
-                        shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
+                        Stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                        PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
+                        ShippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                     };
 
                     await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
@@ -268,9 +268,9 @@ namespace GraphPriceOne.ViewModels
                 productName = ScrapingDate.GetTitle(HtmlUrl1, SitemapSelectors.Title),
                 productUrl = url,
                 productDescription = ScrapingDate.GetDescription(HtmlUrl1, SitemapSelectors.Description, SitemapSelectors.DescriptionGetAttribute),
-                stock = ScrapingDate.GetStock(HtmlUrl1, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                Stock = ScrapingDate.GetStock(HtmlUrl1, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
                 PriceTag = ScrapingDate.GetPrice(HtmlUrl1, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
-                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute),
+                ShippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute),
             };
 
             if (SitemapSelectors.TitleNotNull == 1 && Product.productName != null ||
@@ -285,16 +285,16 @@ namespace GraphPriceOne.ViewModels
                             Product.PriceTag != null || SitemapSelectors.PriceNotNull == 0)
                         {
                             if (SitemapSelectors.PriceCurrencyNotNull == 1 &&
-                                Product.priceCurrency != null || SitemapSelectors.PriceCurrencyNotNull == 0)
+                                Product.PriceCurrency != null || SitemapSelectors.PriceCurrencyNotNull == 0)
                             {
                                 if (SitemapSelectors.ShippingNotNull == 1 &&
-                                    Product.shippingPrice != null || SitemapSelectors.ShippingNotNull == 0)
+                                    Product.ShippingPrice != null || SitemapSelectors.ShippingNotNull == 0)
                                 {
                                     if (SitemapSelectors.ShippingCurrencyNotNull == 1 &&
-                                        Product.shippingCurrency != null || SitemapSelectors.ShippingCurrencyNotNull == 0)
+                                        Product.ShippingCurrency != null || SitemapSelectors.ShippingCurrencyNotNull == 0)
                                     {
                                         if (SitemapSelectors.StockNotNull == 1 &&
-                                            Product.stock != null || SitemapSelectors.StockNotNull == 0)
+                                            Product.Stock != null || SitemapSelectors.StockNotNull == 0)
                                         {
                                             await App.PriceTrackerService.AddProductAsync(Product);
 
@@ -321,11 +321,11 @@ namespace GraphPriceOne.ViewModels
                                             History ProductHistory = new History()
                                             {
                                                 PRODUCT_ID = lastId,
-                                                productDate = DateTime.UtcNow.ToString(),
+                                                ProductDate = DateTime.UtcNow.ToString(),
                                                 STORE_ID = id_sitemap,
-                                                stock = ScrapingDate.GetStock(HtmlUrl1, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
-                                                priceTag = ScrapingDate.GetPrice(HtmlUrl1, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
-                                                shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
+                                                Stock = ScrapingDate.GetStock(HtmlUrl1, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                                                PriceTag = ScrapingDate.GetPrice(HtmlUrl1, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
+                                                ShippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl1, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                                             };
                                             await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
                                             await GetProductsAsync();
@@ -498,11 +498,11 @@ namespace GraphPriceOne.ViewModels
                 }
                 else if (order == "stock" && Ascendant == false)
                 {
-                    OrderedList = ProductsList.OrderByDescending(o => o.stock).ToList();
+                    OrderedList = ProductsList.OrderByDescending(o => o.Stock).ToList();
                 }
                 else if (order == "stock" && Ascendant == true)
                 {
-                    OrderedList = ProductsList.OrderBy(o => o.stock).ToList();
+                    OrderedList = ProductsList.OrderBy(o => o.Stock).ToList();
                 }
                 foreach (var item in OrderedList)
                 {
@@ -524,16 +524,16 @@ namespace GraphPriceOne.ViewModels
                     //shipping currency
                     shippingCurrency = (shippingCurrency == null) ? "$" : shippingCurrency;
                     //shipping price
-                    if (item.shippingPrice == null)
+                    if (item.ShippingPrice == null)
                     {
                         shippingPrice = "Not Available";
                     }
                     else
                     {
-                        shippingPrice = (item.shippingPrice <= 0) ? "Free Shipping" : shippingCurrency + ProductHistory[LastHistory].shippingPrice;
+                        shippingPrice = (item.ShippingPrice <= 0) ? "Free Shipping" : shippingCurrency + ProductHistory[LastHistory].ShippingPrice;
                     }
                     //Stock
-                    stock = (item.stock == null) ? "Not Available" : ProductHistory[LastHistory].stock.ToString();
+                    stock = (item.Stock == null) ? "Not Available" : ProductHistory[LastHistory].Stock.ToString();
 
                     ListViewCollection.Add(new ProductsModel()
                     {
@@ -541,8 +541,8 @@ namespace GraphPriceOne.ViewModels
                         productName = item.productName,
                         productDescription = item.productDescription,
                         productUrl = item.productUrl,
-                        PriceTag = ProductHistory[LastHistory].priceTag,
-                        priceCurrency = item.priceCurrency,
+                        PriceTag = ProductHistory[LastHistory].PriceTag,
+                        priceCurrency = item.PriceCurrency,
                         shippingPrice = shippingPrice,
                         shippingCurrency = shippingCurrency,
                         stock = stock,

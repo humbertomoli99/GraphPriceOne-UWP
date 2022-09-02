@@ -1,5 +1,6 @@
 ﻿using GraphPriceOne.Library;
 using GraphPriceOne.Models;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,50 +20,67 @@ namespace GraphPriceOne.ViewModels
 
         private async Task GetProductsAsync()
         {
-            var Histories = await App.PriceTrackerService.GetHistoriesAsync();
-            var ProductHistory = Histories.Where(u => u.PRODUCT_ID.Equals(SelectedProduct)).ToList();
-            foreach (var item in ProductHistory)
+            try
             {
-                productHistory += "Price: " + item.priceTag + "  Shipping: " + item.shippingPrice + "  Stock: " + item.stock + "   Date: " + item.productDate + "\n";
+                var Histories = await App.PriceTrackerService.GetHistoriesAsync();
+                var ProductHistoryList = Histories.Where(u => u.PRODUCT_ID.Equals(SelectedProduct)).ToList();
+
+                int NumberOfRecords = ProductHistoryList.Count;
+
+                double? SumProductPrice = 0;
+
+                foreach (var item in ProductHistoryList)
+                {
+                    SumProductPrice += item.PriceTag;
+                    productHistory += "Price: " + item.PriceTag + "  Shipping: " + item.ShippingPrice + "  Stock: " + item.Stock + "   Date: " + item.ProductDate + "\n";
+                }
+
+                //averange product price
+                double? AvgProductPrice = SumProductPrice / NumberOfRecords;
+
+                ID_PRODUCT = SelectedProduct;
+                var Product = await App.PriceTrackerService.GetProductAsync(SelectedProduct);
+
+                productName = Product.productName;
+                productUrl = Product.productUrl;
+                var lastItem = ProductHistoryList.Count - 1;
+
+                var descript = Product.productDescription;
+                productDescription = (descript == null) ? "" : TextBoxEvent.StripHtml(descript);
+
+                var priceCurrency = Product.PriceCurrency;
+                priceCurrency = (priceCurrency == null) ? "$" : priceCurrency;
+                PriceTag = priceCurrency + ProductHistoryList[lastItem].PriceTag;
+
+                var shippingCurrency = Product.ShippingCurrency;
+                shippingCurrency = (shippingCurrency == null) ? "$" : shippingCurrency;
+
+                string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+
+                var Images = await App.PriceTrackerService.GetImagesAsync();
+                var ProductImages = Images.Where(u => u.ID_PRODUCT.Equals(Product.ID_PRODUCT)).ToList();
+
+                ListImages = new ObservableCollection<string>() { };
+                foreach (var item in ProductImages)
+                {
+                    ListImages.Add(LocalState + item.PhotoSrc);
+                }
+
+                if (Product.ShippingPrice == null)
+                {
+                    shippingPrice = "Not Available";
+                }
+                else
+                {
+                    shippingPrice = (Product.ShippingPrice <= 0) ? "Free Shipping" : shippingCurrency + ProductHistoryList[lastItem].ShippingPrice;
+                }
+
+                stock = (Product.Stock == null) ? "Stock: Not Available" : "Stock: " + ProductHistoryList[lastItem].Stock;
             }
-            ID_PRODUCT = SelectedProduct;
-            var Product = await App.PriceTrackerService.GetProductAsync(SelectedProduct);
-
-            productName = Product.productName;
-            productUrl = Product.productUrl;
-            var lastItem = ProductHistory.Count - 1;
-
-            var descript = Product.productDescription;
-            productDescription = (descript == null) ? "" : TextBoxEvent.StripHtml(descript);
-
-            var priceCurrency = Product.priceCurrency;
-            priceCurrency = (priceCurrency == null) ? "$" : priceCurrency;
-            PriceTag = priceCurrency + ProductHistory[lastItem].priceTag;
-
-            var shippingCurrency = Product.shippingCurrency;
-            shippingCurrency = (shippingCurrency == null) ? "$" : shippingCurrency;
-
-            string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-
-            var Images = await App.PriceTrackerService.GetImagesAsync();
-            var ProductImages = Images.Where(u => u.ID_PRODUCT.Equals(Product.ID_PRODUCT)).ToList();
-
-            ListImages = new ObservableCollection<string>() { };
-            foreach (var item in ProductImages)
+            catch (Exception ex)
             {
-                ListImages.Add(LocalState + item.PhotoSrc);
+                await Dialogs.ExceptionDialog(ex);
             }
-
-            if (Product.shippingPrice == null)
-            {
-                shippingPrice = "Not Available";
-            }
-            else
-            {
-                shippingPrice = (Product.shippingPrice <= 0) ? "Free Shipping" : shippingCurrency + ProductHistory[lastItem].shippingPrice;
-            }
-
-            stock = (Product.stock == null) ? "Stock: Not Available" : "Stock: " + ProductHistory[lastItem].stock;
         }
     }
 }

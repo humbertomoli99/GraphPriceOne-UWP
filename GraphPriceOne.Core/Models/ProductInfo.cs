@@ -11,13 +11,13 @@ namespace GraphPriceOne.Core.Models
         public string productDescription { get; set; }
         public string productUrl { get; set; }
         public double? PriceTag { get; set; }
-        public string priceCurrency { get; set; }
-        public string productDate { get; set; }
-        public double? shippingPrice { get; set; }
-        public string shippingCurrency { get; set; }
-        public string storeName { get; set; }
-        public string status { get; set; }
-        public int? stock { get; set; }
+        public string PriceCurrency { get; set; }
+        public string ProductDate { get; set; }
+        public double? ShippingPrice { get; set; }
+        public string ShippingCurrency { get; set; }
+        public string StoreName { get; set; }
+        public string Status { get; set; }
+        public int? Stock { get; set; }
         public string Image { get; set; }
         [ForeignKey(typeof(Store))]
         public int ID_STORE { get; set; }

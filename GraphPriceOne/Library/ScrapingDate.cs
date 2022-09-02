@@ -48,10 +48,10 @@ namespace GraphPriceOne.Library
                         {
                             STORE_ID = id_sitemap,
                             PRODUCT_ID = item.ID_PRODUCT,
-                            productDate = DateTime.UtcNow.ToString(),
-                            stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
-                            priceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
-                            shippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
+                            ProductDate = DateTime.UtcNow.ToString(),
+                            Stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
+                            PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
+                            ShippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                         };
 
                         await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
@@ -84,8 +84,8 @@ namespace GraphPriceOne.Library
                     {
                         int lastItem = HistorySelected.Count - 1;
 
-                        double? newPrice = HistorySelected[lastItem].priceTag;
-                        double? previousPrice = HistorySelected[lastItem - 1].priceTag;
+                        double? newPrice = HistorySelected[lastItem].PriceTag;
+                        double? previousPrice = HistorySelected[lastItem - 1].PriceTag;
 
                         ProductInfo ProductSelected = Products.Where(s => s.ID_PRODUCT.Equals(item.ID_PRODUCT)).ToList().First();
 
@@ -386,25 +386,25 @@ namespace GraphPriceOne.Library
                 {
                     if (selector.Contains("¡Última disponible!") || selector.Contains("Última") || selector.Contains("Ultima"))
                     {
-                        producto.stock = 1;
+                        producto.Stock = 1;
                     }
                     else
                     {
                         string stockArray = new String(selector.Where(Char.IsDigit).ToArray());
-                        producto.stock = int.Parse(stockArray);
+                        producto.Stock = int.Parse(stockArray);
                     }
                 }
                 else
                 {
-                    producto.stock = null;
+                    producto.Stock = null;
                 }
             }
             else
             {
                 string selector = DocumentNode?.QuerySelector(withDoubleQuotes)?.GetAttributeValue(GetAttribute, "");
-                producto.stock = int.Parse(selector);
+                producto.Stock = int.Parse(selector);
             }
-            return producto.stock;
+            return producto.Stock;
         }
         public static double? GetPrice(HtmlNode DocumentNode, string XPath, string GetAttribute = null)
         {
@@ -455,11 +455,11 @@ namespace GraphPriceOne.Library
                 {
                     if (Price.Contains("free") || Price.Contains("gratis") || Price.Contains("GRATUITO"))
                     {
-                        producto.shippingPrice = 0;
+                        producto.ShippingPrice = 0;
                     }
                     else if (Price.Contains("Envío a todo el país"))
                     {
-                        producto.shippingPrice = null;
+                        producto.ShippingPrice = null;
                     }
                     else
                     {
@@ -467,20 +467,20 @@ namespace GraphPriceOne.Library
                         string Price1 = Regex.Replace(Price0, "[A-z]", "");
                         string Price2 = Regex.Replace(Price1, @"[$,]", "");
                         string Price3 = Regex.Replace(Price2, "í", "").Trim();
-                        producto.shippingPrice = double.Parse(Price3);// return ""
-                        return producto.shippingPrice;
+                        producto.ShippingPrice = double.Parse(Price3);// return ""
+                        return producto.ShippingPrice;
                     }
                 }
                 else
                 {
-                    producto.shippingPrice = double.Parse(DocumentNode?.QuerySelector(XPath).GetAttributeValue(GetAttribute, ""));
+                    producto.ShippingPrice = double.Parse(DocumentNode?.QuerySelector(XPath).GetAttributeValue(GetAttribute, ""));
                 }
             }
             else
             {
-                producto.shippingPrice = null;
+                producto.ShippingPrice = null;
             }
-            return producto.shippingPrice;
+            return producto.ShippingPrice;
         }
         //private static PRODUCT GetPriceCurrency(HtmlDocument UploadedDocument, string XPath)
         //{
@@ -546,7 +546,7 @@ namespace GraphPriceOne.Library
                 producto.productName = Title;
 
                 var horaCaptura = DateTime.UtcNow.ToString();
-                producto.productDate = horaCaptura;
+                producto.ProductDate = horaCaptura;
                 //fin datos universales
 
                 //amazon
@@ -563,7 +563,7 @@ namespace GraphPriceOne.Library
                 {
                     var amazonShipping1 = Regex.Replace(amazonShipping, @" entrega:", "");
                     var amazonShipping2 = Regex.Replace(amazonShipping1, @"\$", "");
-                    producto.shippingPrice = double.Parse(Regex.Replace(amazonShipping2, @"", ""));
+                    producto.ShippingPrice = double.Parse(Regex.Replace(amazonShipping2, @"", ""));
                 }
 
                 //MercadoLibre
@@ -572,13 +572,13 @@ namespace GraphPriceOne.Library
                 {
                     //string stockMl1 = Regex.Replace(stockMl, @"\d+", "");
                     string stockMlArray = new String(stockMl.Where(Char.IsDigit).ToArray());
-                    producto.stock = int.Parse(stockMlArray);
+                    producto.Stock = int.Parse(stockMlArray);
                 }
                 var stockMlOne = document?.DocumentNode?.SelectSingleNode("//p[@class='ui-pdp-color--BLACK ui-pdp-size--MEDIUM ui-pdp-family--SEMIBOLD']")?.InnerHtml?.ToString();
                 if (stockMlOne != null)
                 {
                     int stockMlOne1 = 1;
-                    producto.stock = stockMlOne1;
+                    producto.Stock = stockMlOne1;
                 }
                 //JObject rssAmaz = JObject.Parse(amazonPrice);
                 //string PriceA = (string)rssAmaz?["value"]?.ToString();
@@ -624,7 +624,7 @@ namespace GraphPriceOne.Library
                             string PriceCurrency = (string)rss?["offers"]?["priceCurrency"]?.ToString();
                             if (PriceCurrency != null)
                             {
-                                producto.priceCurrency = PriceCurrency;
+                                producto.PriceCurrency = PriceCurrency;
                             }
 
                             //melidata("add", "event_data"
@@ -641,18 +641,18 @@ namespace GraphPriceOne.Library
                             string DeliveryChargePrice = (string)rss?["shipping_promise"]?["price"]?["amount"]?.ToString();
                             if (DeliveryChargePrice != null)
                             {
-                                producto.shippingPrice = Int32.Parse(DeliveryChargePrice);
+                                producto.ShippingPrice = Int32.Parse(DeliveryChargePrice);
                             }
 
                             //divisa de precio del envio
                             string DeliveryChargeCurrency = (string)rss?["shipping_promise"]?["price"]?["currency_id"]?.ToString();
                             if (DeliveryChargeCurrency != null)
                             {
-                                producto.shippingCurrency = DeliveryChargeCurrency;
+                                producto.ShippingCurrency = DeliveryChargeCurrency;
                             }
                             else
                             {
-                                producto.shippingCurrency = producto.priceCurrency;
+                                producto.ShippingCurrency = producto.PriceCurrency;
                             }
                         }
                     }
@@ -668,21 +668,21 @@ namespace GraphPriceOne.Library
                         if (DeliveryChargePrice != null)
                         {
                             //Int32.Parse(Regex.Replace())
-                            producto.shippingPrice = Int32.Parse(DeliveryChargePrice);
+                            producto.ShippingPrice = Int32.Parse(DeliveryChargePrice);
                         }
 
                         //divisa de precio del envio
                         string DeliveryChargeCurrency = (string)rss2?["offers"]?["priceSpecification"]?["priceCurrency"]?.ToString();
                         if (DeliveryChargeCurrency != null)
                         {
-                            producto.shippingCurrency = DeliveryChargeCurrency;
+                            producto.ShippingCurrency = DeliveryChargeCurrency;
                         }
 
                         string StockString = (string)rss2?["article"]?["stock"]?.ToString();
                         if (StockString != null)
                         {
                             //convirtiendo string stock a int
-                            producto.stock = Int32.Parse(Regex.Replace(StockString, @"", ""));
+                            producto.Stock = Int32.Parse(Regex.Replace(StockString, @"", ""));
                         }
                     }
                     return producto;
