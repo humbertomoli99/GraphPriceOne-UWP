@@ -48,6 +48,18 @@ namespace GraphPriceOne.Services
                         .AddText(title)
                         .AddText(stringContent)
 
+                        //Buttons
+                        .AddButton(new ToastButton()
+                        .SetContent("Buy now")
+                        .AddArgument("action", "buy")
+                        .SetBackgroundActivation())
+
+
+                        .AddButton(new ToastButton()
+                        .SetContent("Stop following")
+                        .AddArgument("action", "stopfollow")
+                        .SetBackgroundActivation())
+
                         .Show(toast =>
                         {
                             toast.ExpirationTime = DateTime.Now.AddDays(1);
