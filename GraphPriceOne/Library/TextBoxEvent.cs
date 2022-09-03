@@ -29,6 +29,8 @@ namespace GraphPriceOne.Library
             try
             {
                 HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+                //C:\Users\humberto\source\repos
+                //retorna error si en el portapapeles tienes un directorio local
                 request.Timeout = 5000;
                 request.Method = "GET";
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
