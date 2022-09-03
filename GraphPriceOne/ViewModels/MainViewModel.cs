@@ -66,6 +66,17 @@ namespace GraphPriceOne.ViewModels
                 var Stores = await App.PriceTrackerService.GetStoresAsync();
                 var UrlShop = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
 
+                if (!TextBoxEvent.IsValidURL(url))
+                {
+                    ContentDialog InvalidClipboardUrl = new ContentDialog()
+                    {
+                        Title = "Your clipboard url is invalid",
+                        PrimaryButtonText = "OK, THANKS",
+                        Content = "Your url must start with http:// or https:// to be valid for the application"
+                    };
+                    await InvalidClipboardUrl.ShowAsync();
+                    return;
+                }
                 //url no valida
                 //validar url valida para envio masivo de productos
                 if (!TextBoxEvent.IsValidURL(url))

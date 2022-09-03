@@ -28,25 +28,27 @@ namespace GraphPriceOne.Library
         {
             try
             {
-                HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
-                //C:\Users\humberto\source\repos
-                //retorna error si en el portapapeles tienes un directorio local
-                request.Timeout = 5000;
-                request.Method = "GET";
-                using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
+                if (url.StartsWith("http://") || url.StartsWith("https://"))
                 {
-                    int statusCode = (int)response.StatusCode;
-                    if (statusCode >= 100 && statusCode < 400)
+                    HttpWebRequest request = HttpWebRequest.Create(url) as HttpWebRequest;
+                    request.Timeout = 5000;
+                    request.Method = "GET";
+                    using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                     {
-                        return true;
+                        int statusCode = (int)response.StatusCode;
+                        if (statusCode >= 100 && statusCode < 400)
+                        {
+                            return true;
+                        }
+                        else if (statusCode >= 500 && statusCode <= 510)
+                        {
+                            System.Diagnostics.Debug.WriteLine(string.Format("The remote server has thrown an internal error.url is not valid: {0}", url));
+                            return false;
+                        }
                     }
-                    else if (statusCode >= 500 && statusCode <= 510)
-                    {
-                        System.Diagnostics.Debug.WriteLine(string.Format("The remote server has thrown an internal error.url is not valid: {0}", url));
-                        return false;
-                    }
+                    return true;
                 }
-                return true;
+                return false;
             }
             catch (WebException ex)
             {
@@ -58,6 +60,14 @@ namespace GraphPriceOne.Library
                 {
                     System.Diagnostics.Debug.WriteLine(string.Format("Unhandled status [{0}] returned for url: {1}", ex.Status, url), ex);
                 }
+            }
+            catch (TimeoutException ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
+            }
+            catch (NullReferenceException ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex);
             }
             catch (Exception ex)
             {
