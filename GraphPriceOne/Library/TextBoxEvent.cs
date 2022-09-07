@@ -75,7 +75,7 @@ namespace GraphPriceOne.Library
             }
             return false;
         }
-        public static void textPreviewKeyDown(KeyRoutedEventArgs e)
+        public static void TextPreviewKeyDown(KeyRoutedEventArgs e)
         {
             var code = e.KeyStatus;
             // Concidicion que nos permite ingresar solo datos alfanumericos
@@ -88,7 +88,7 @@ namespace GraphPriceOne.Library
                 e.Handled = false;
             }
         }
-        public static void numberPreviewKeyDown(KeyRoutedEventArgs e)
+        public static void NumberPreviewKeyDown(KeyRoutedEventArgs e)
         {
             var code = e.KeyStatus;
             // Concidicion que nos permite ingresar solo datos alfanumericos
