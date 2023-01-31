@@ -56,7 +56,7 @@ namespace GraphPriceOne.ViewModels
             IsBusy = true;
             try
             {
-                string url = await ClipboardEvents.OutputClipboardTextAsync();
+                string url = await ClipboardEvents.GetClipboardTextAsync();
 
                 List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
                 var query = Products.Where(s => s.productUrl.Equals(url))?.ToList();
