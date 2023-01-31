@@ -286,47 +286,58 @@ namespace GraphPriceOne.Library
         {
             try
             {
+                // Si no hay enlace a una imagen
+                if (urlImage == null)
+                {
+                    return null;
+                }
+
                 WebClient oClient = new WebClient();
 
+                // Obtener la ruta local
                 string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
 
+                // Crear la carpeta donde se almacenarán las imágenes
                 string storesIcons = Directory.CreateDirectory(LocalState + folder).ToString();
 
-                //cambiar este valor
+                // Extensión de archivo
                 string format = Path.GetExtension(urlImage.href);
 
-                //formato de salida
+                // Formato de salida
                 string path = Path.Combine(storesIcons, name + urlImage.type);
 
-                if (urlImage != null)
+                // Si el enlace comienza con "//", agregar "https:"
+                if (urlImage.href.StartsWith("//"))
                 {
-                    if (urlImage.href.StartsWith("//"))
-                    {
-                        urlImage.href = "https:" + urlImage;
-                    }
-
-                    if (!TextBoxEvent.IsValidURL(urlImage.href))
-                    {
-                        Uri uri = new Uri(URL);
-                        urlImage.href = "https://" + uri.Host + urlImage.href.ToString();
-                    }
-
-                    if (urlImage.href.Contains("?"))
-                    {
-                        urlImage.href = urlImage.href.Split(new Char[] { '?' })[0];
-                        path = path.Split(new Char[] { '?' })[0];
-                    }
-                    oClient.DownloadFile(new Uri(urlImage.href), path);
-                    return name + urlImage.type;
+                    urlImage.href = "https:" + urlImage;
                 }
-                return null;
+
+                // Si no es una URL válida
+                if (!TextBoxEvent.IsValidURL(urlImage.href))
+                {
+                    Uri uri = new Uri(URL);
+                    urlImage.href = "https://" + uri.Host + urlImage.href.ToString();
+                }
+
+                // Si hay un signo de interrogación "?" en la URL
+                if (urlImage.href.Contains("?"))
+                {
+                    urlImage.href = urlImage.href.Split(new Char[] { '?' })[0];
+                    path = path.Split(new Char[] { '?' })[0];
+                }
+
+                // Descargar el archivo
+                oClient.DownloadFile(new Uri(urlImage.href), path);
+                return name + urlImage.type;
             }
             catch (Exception ex)
             {
+                // Mostrar una ventana de excepción
                 await Dialogs.ExceptionDialog(ex);
                 return null;
             }
         }
+
         //public static PRODUCT GetPrice(HtmlDocument UploadedDocument, string XPath)
         //{
         //    PRODUCT producto = new PRODUCT();
