@@ -55,38 +55,49 @@ namespace GraphPriceOne.ViewModels
             await App.PriceTrackerService.DeleteNotificationAsync(id_item);
             await GetNotificationsAsync();
         }
-
         private async Task GetNotificationsAsync()
         {
             try
             {
+                // Obtener la ruta de la carpeta local
                 string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-                var NotificationsList = (List<Notifications>)await App.PriceTrackerService.GetNotificationsAsync();
-                List<Notifications> OrderedList = new List<Notifications>();
 
+                // Obtener la lista de notificaciones
+                var NotificationsList = (List<Notifications>)await App.PriceTrackerService.GetNotificationsAsync();
+
+                // Inicializar la lista ordenada y la colección de ListView
+                List<Notifications> OrderedList = new List<Notifications>();
                 ListViewCollection.Clear();
                 OrderedList.Clear();
 
+                // Ordenar la lista de notificaciones por ID de notificación en orden descendente
                 OrderedList = NotificationsList.OrderByDescending(o => o.ID_Notification).ToList();
 
+                // Iterar a través de cada notificación en la lista ordenada
                 foreach (var item in OrderedList)
                 {
+                    // Obtener la lista de productos y las imágenes de producto
                     List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-                    var Product = Products.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID)).ToList();
 
+                    if (Products != null && Products.Any())
+                    { break; }
+
+                    var Product = Products.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID)).ToList();
                     List<ProductPhotos> Images = (List<ProductPhotos>)await App.PriceTrackerService.GetImagesAsync();
                     var ProductImages = Images.Where(u => u.ID_PRODUCT.Equals(item.PRODUCT_ID)).ToList();
 
-                    //string mensaje = item.Message?.Replace("\n", "");
+                    // Crear el mensaje de precio actualizado
                     var drop = (item.NewPrice < item.PreviousPrice) ? "📉 Dropped" : "📈 Increased";
                     var message = drop + " (" + item.PreviousPrice + " to " + item.NewPrice + ")";
 
+                    // Establecer la ubicación de la imagen
                     ImageLocation = "";
                     if (ProductImages != null && ProductImages.Count != 0)
                     {
                         ImageLocation = LocalState + ProductImages.First().PhotoSrc;
                     }
 
+                    // Agregar la notificación a la colección de ListView
                     ListViewCollection.Add(new NotificationsModel()
                     {
                         PRODUCT_ID = item.PRODUCT_ID,
@@ -98,12 +109,16 @@ namespace GraphPriceOne.ViewModels
                         ProductUrl = Product.FirstOrDefault().productUrl,
                         ImageLocation = ImageLocation
                     });
+
                 }
             }
             catch (Exception ex)
             {
+                // Mostrar un diálogo de excepción
                 await ExceptionDialog(ex.ToString());
             }
         }
+
+
     }
 }
