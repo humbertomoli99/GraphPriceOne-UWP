@@ -82,16 +82,27 @@ namespace GraphPriceOne.Helpers
             }
         }
 
+        public static string GetMetaValue(HtmlNode DocumentNode, string selector, string attributeName)
+        {
+            HtmlNode metaNode = DocumentNode.QuerySelector(selector);
+            return metaNode?.GetAttributeValue(attributeName, string.Empty) ?? string.Empty;
+        }
+
         public static string GetMetaTitle(HtmlNode DocumentNode)
         {
-            HtmlNode titleNode = DocumentNode.QuerySelector("head > title");
-            return titleNode?.InnerHtml.Trim() ?? string.Empty;
+            return GetMetaValue(DocumentNode, "head > title", "InnerHtml");
         }
 
         public static string GetMetaDescription(HtmlNode DocumentNode)
         {
-            HtmlNode descriptionNode = DocumentNode.QuerySelector("head > meta[name='description']");
-            return descriptionNode?.GetAttributeValue("content", string.Empty) ?? string.Empty;
+            return GetMetaValue(DocumentNode, "head > meta[name='description']", "content");
         }
+
+        public static string GetMetaImage(HtmlNode DocumentNode)
+        {
+            return GetMetaValue(DocumentNode, "head > meta[property='og:image']", "content");
+        }
+
+
     }
 }
