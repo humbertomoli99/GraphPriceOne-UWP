@@ -1,5 +1,6 @@
 ﻿using Fizzler.Systems.HtmlAgilityPack;
 using GraphPriceOne.Core.Models;
+using GraphPriceOne.Helpers;
 using GraphPriceOne.Services;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
@@ -349,7 +350,7 @@ namespace GraphPriceOne.Library
         //}
         public static string GetTitle(HtmlNode DocumentNode, string Selector)
         {
-            string productName = GetMetaTitle(DocumentNode);
+            string productName = MetaDataHelper.GetMetaTitle(DocumentNode);
 
             if (!string.IsNullOrEmpty(Selector))
             {
@@ -362,12 +363,6 @@ namespace GraphPriceOne.Library
             }
 
             return productName;
-        }
-
-        public static string GetMetaTitle(HtmlNode DocumentNode)
-        {
-            HtmlNode titleNode = DocumentNode.QuerySelector("head > title");
-            return titleNode?.InnerHtml.Trim() ?? string.Empty;
         }
 
         public static string GetDescription(HtmlNode DocumentNode, string XPath, string GetAttribute = null)
