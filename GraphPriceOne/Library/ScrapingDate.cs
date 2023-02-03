@@ -350,18 +350,27 @@ namespace GraphPriceOne.Library
         //}
         public static string GetTitle(HtmlNode DocumentNode, string Selector)
         {
+            // Obtener el título de la página a partir del método GetMetaTitle
             string productName = MetaDataHelper.GetMetaTitle(DocumentNode);
 
+            // Verificar si el selector especificado no es nulo ni está vacío
             if (!string.IsNullOrEmpty(Selector))
             {
+                // Reemplazar las comillas dobles con comillas simples en el selector
                 string withDoubleQuotes = Selector.Replace("\"", "'");
+
+                // Obtener el nodo correspondiente al selector especificado
                 HtmlNode productNameNode = DocumentNode.QuerySelector(withDoubleQuotes);
+
+                // Verificar si el nodo existe
                 if (productNameNode != null)
                 {
+                    // Asignar el texto interno del nodo a la variable productName
                     productName = productNameNode.InnerText.Trim();
                 }
             }
 
+            // Devolver el nombre del producto
             return productName;
         }
 
