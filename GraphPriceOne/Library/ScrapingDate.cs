@@ -366,7 +366,7 @@ namespace GraphPriceOne.Library
 
         public static string GetMetaTitle(HtmlNode DocumentNode)
         {
-            HtmlNode titleNode = DocumentNode.SelectSingleNode("//head/title");
+            HtmlNode titleNode = DocumentNode.QuerySelector("head > title");
             return titleNode?.InnerHtml.Trim() ?? string.Empty;
         }
 
