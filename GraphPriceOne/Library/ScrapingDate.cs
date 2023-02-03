@@ -365,32 +365,21 @@ namespace GraphPriceOne.Library
             return productName;
         }
 
-        public static string GetDescription(HtmlNode DocumentNode, string XPath, string GetAttribute = null)
+        public static string GetDescription(HtmlNode DocumentNode, string Selector, string GetAttribute = null)
         {
-            string GetDescription = "";
-            if (XPath != null)
+            // Obtiene la descripción del producto utilizando el selector y el atributo especificados
+            string productDescription = MetaDataHelper.GetMetaValue(DocumentNode, Selector, GetAttribute);
+
+            // Si la descripción no se encuentra, utiliza la descripción obtenida desde la etiqueta meta
+            if (string.IsNullOrEmpty(productDescription))
             {
-                if (GetAttribute == null || GetAttribute == string.Empty)
-                {
-                    GetDescription = DocumentNode?.QuerySelector(XPath)?.InnerHtml?.ToString();
-                    //GetDescription = DocumentNode?.SelectSingleNode(XPath)?.InnerHtml?.ToString();
-                    if (GetDescription == null)
-                    {
-                        //GetDescription = DocumentNode.QuerySelector("meta[name='description']").GetAttributeValue("content","");
-                        GetDescription = DocumentNode?.SelectSingleNode("//meta[@name='description']")?.GetAttributeValue("content", "")?.ToString();
-                    }
-                }
-                else
-                {
-                    GetDescription = DocumentNode?.QuerySelector(XPath)?.GetAttributeValue(GetAttribute, "")?.ToString();
-                }
+                productDescription = MetaDataHelper.GetMetaDescription(DocumentNode);
             }
-            else
-            {
-                GetDescription = DocumentNode?.SelectSingleNode("//meta[@name='description']")?.GetAttributeValue("content", "")?.ToString();
-            }
-            return GetDescription;
+
+            // Devuelve la descripción del producto
+            return productDescription;
         }
+
         public static int? GetStock(HtmlNode DocumentNode, string XPath, string GetAttribute = null)
         {
             var producto = new ProductInfo();
