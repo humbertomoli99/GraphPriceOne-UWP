@@ -85,7 +85,7 @@ namespace GraphPriceOne.Helpers
         public static string GetMetaValue(HtmlNode DocumentNode, string selector, string attributeName)
         {
             HtmlNode metaNode = DocumentNode.QuerySelector(selector);
-            return metaNode?.GetAttributeValue(attributeName, string.Empty) ?? string.Empty;
+            return metaNode.GetAttributeValue(attributeName, string.Empty);
         }
 
         public static string GetMetaTitle(HtmlNode DocumentNode)
