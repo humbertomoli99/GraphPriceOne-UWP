@@ -1,10 +1,11 @@
-﻿using System.Net.Http;
-using Microsoft.Web.WebView2.Core;
-using System.IO;
+﻿using Fizzler.Systems.HtmlAgilityPack;
+using HtmlAgilityPack;
 using Microsoft.UI.Xaml.Controls;
-using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace GraphPriceOne.Helpers
 {
@@ -79,6 +80,18 @@ namespace GraphPriceOne.Helpers
                 // Si el formato no es soportado, lanzar una excepción
                 throw new Exception("Formato de favicon no soportado");
             }
+        }
+
+        public static string GetMetaTitle(HtmlNode DocumentNode)
+        {
+            HtmlNode titleNode = DocumentNode.QuerySelector("head > title");
+            return titleNode?.InnerHtml.Trim() ?? string.Empty;
+        }
+
+        public static string GetMetaDescription(HtmlNode DocumentNode)
+        {
+            HtmlNode descriptionNode = DocumentNode.QuerySelector("head > meta[name='description']");
+            return descriptionNode?.GetAttributeValue("content", string.Empty) ?? string.Empty;
         }
     }
 }
