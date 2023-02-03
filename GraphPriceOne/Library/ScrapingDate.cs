@@ -231,57 +231,58 @@ namespace GraphPriceOne.Library
         }
         public static string[] DownloadImage(string URL, List<string> Imagen, string Folder, string NameFile)
         {
-            try
-            {
                 WebClient oClient = new WebClient();
                 string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
                 string productsIcons = Directory.CreateDirectory(LocalState + Folder).ToString();
 
                 List<string> ListUrl = new List<string>();
-                if (Imagen != null)
+            if (Imagen == null || Imagen.Count == 0)
                 {
-                    var i = 0;
-                    foreach (var lista2 in Imagen)
+                return new string[0];
+            }
+
+            for (var i = 0; i < Imagen.Count; i++)
                     {
-                        string format = Path.GetExtension(lista2);
+                string format = Path.GetExtension(Imagen[i]);
                         //formato de salida
                         string path = Path.Combine(productsIcons, NameFile + i + format);
-                        if (lista2 != null && lista2 != string.Empty && !lista2.StartsWith("data:"))
+                if (Imagen[i] == null || Imagen[i] == string.Empty || Imagen[i].StartsWith("data:"))
                         {
-                            var lista3 = lista2;
-                            if (lista2.StartsWith("//"))
+                    continue;
+                }
+
+                var lista3 = Imagen[i];
+                if (Imagen[i].StartsWith("//"))
                             {
-                                lista3 = "https:" + lista2;
+                    lista3 = "https:" + Imagen[i];
                             }
 
-                            if (!TextBoxEvent.IsValidURL(lista2))
+                if (!TextBoxEvent.IsValidURL(Imagen[i]))
                             {
-                                Uri uri = new Uri(lista2);
-                                lista3 = "https://" + uri.Host + lista2.ToString();
+                    Uri uri = new Uri(Imagen[i]);
+                    lista3 = "https://" + uri.Host + Imagen[i].ToString();
                             }
 
-                            if (lista2.Contains("?"))
+                if (Imagen[i].Contains("?"))
                             {
-                                lista3 = lista2.Split(new Char[] { '?' })[0];
+                    lista3 = Imagen[i].Split(new Char[] { '?' })[0];
                                 path = path.Split(new Char[] { '?' })[0];
                             }
+
+                try
+                {
                             oClient.DownloadFile(new Uri(lista3), path);
                             ListUrl.Add(Path.Combine(Folder, NameFile + i + format));
-
-                            string[] str = ListUrl.ToArray();
-                            i++;
-                            return str;
                         }
-                        return null;
-                    }
-                }
-                return null;
-            }
             catch (Exception)
             {
-                return null;
+                    // Do nothing
             }
+            }
+
+            return ListUrl.ToArray();
         }
+
         public async static Task<string> DownloadMetaIcon(string URL, ScrapingDate.EnlaceImage urlImage, string folder, string name)
         {
             try
