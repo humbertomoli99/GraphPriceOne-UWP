@@ -231,53 +231,53 @@ namespace GraphPriceOne.Library
         }
         public static string[] DownloadImage(string URL, List<string> Imagen, string Folder, string NameFile)
         {
-                WebClient oClient = new WebClient();
-                string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
-                string productsIcons = Directory.CreateDirectory(LocalState + Folder).ToString();
+            WebClient oClient = new WebClient();
+            string LocalState = Windows.Storage.ApplicationData.Current.LocalFolder.Path;
+            string productsIcons = Directory.CreateDirectory(LocalState + Folder).ToString();
 
-                List<string> ListUrl = new List<string>();
+            List<string> ListUrl = new List<string>();
             if (Imagen == null || Imagen.Count == 0)
-                {
+            {
                 return new string[0];
             }
 
             for (var i = 0; i < Imagen.Count; i++)
-                    {
+            {
                 string format = Path.GetExtension(Imagen[i]);
-                        //formato de salida
-                        string path = Path.Combine(productsIcons, NameFile + i + format);
+                //formato de salida
+                string path = Path.Combine(productsIcons, NameFile + i + format);
                 if (Imagen[i] == null || Imagen[i] == string.Empty || Imagen[i].StartsWith("data:"))
-                        {
+                {
                     continue;
                 }
 
                 var lista3 = Imagen[i];
                 if (Imagen[i].StartsWith("//"))
-                            {
+                {
                     lista3 = "https:" + Imagen[i];
-                            }
+                }
 
                 if (!TextBoxEvent.IsValidURL(Imagen[i]))
-                            {
+                {
                     Uri uri = new Uri(Imagen[i]);
                     lista3 = "https://" + uri.Host + Imagen[i].ToString();
-                            }
+                }
 
                 if (Imagen[i].Contains("?"))
-                            {
+                {
                     lista3 = Imagen[i].Split(new Char[] { '?' })[0];
-                                path = path.Split(new Char[] { '?' })[0];
-                            }
+                    path = path.Split(new Char[] { '?' })[0];
+                }
 
                 try
                 {
-                            oClient.DownloadFile(new Uri(lista3), path);
-                            ListUrl.Add(Path.Combine(Folder, NameFile + i + format));
-                        }
-            catch (Exception)
-            {
+                    oClient.DownloadFile(new Uri(lista3), path);
+                    ListUrl.Add(Path.Combine(Folder, NameFile + i + format));
+                }
+                catch (Exception)
+                {
                     // Do nothing
-            }
+                }
             }
 
             return ListUrl.ToArray();
@@ -347,18 +347,29 @@ namespace GraphPriceOne.Library
         //    producto.PriceTag = StringPrice;
         //    return producto;
         //}
-        public static string GetTitle(HtmlNode DocumentNode, string XPath)
+        public static string GetTitle(HtmlNode DocumentNode, string Selector)
         {
-            var producto = new ProductInfo();
-            producto.productName = DocumentNode?.QuerySelector("head > title")?.InnerHtml?.ToString();
-            if (XPath != null)
+            string productName = GetMetaTitle(DocumentNode);
+
+            if (!string.IsNullOrEmpty(Selector))
             {
-                String withDoubleQuotes = XPath?.Replace("\"", "'");
-                producto.productName = DocumentNode?.QuerySelector(withDoubleQuotes)?.InnerText?.Trim();
-                return producto.productName;
+                string withDoubleQuotes = Selector.Replace("\"", "'");
+                HtmlNode productNameNode = DocumentNode.QuerySelector(withDoubleQuotes);
+                if (productNameNode != null)
+                {
+                    productName = productNameNode.InnerText.Trim();
+                }
             }
-            return producto.productName;
+
+            return productName;
         }
+
+        public static string GetMetaTitle(HtmlNode DocumentNode)
+        {
+            HtmlNode titleNode = DocumentNode.SelectSingleNode("//head/title");
+            return titleNode?.InnerHtml.Trim() ?? string.Empty;
+        }
+
         public static string GetDescription(HtmlNode DocumentNode, string XPath, string GetAttribute = null)
         {
             string GetDescription = "";
