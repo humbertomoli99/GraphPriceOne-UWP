@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Net.Http;
+﻿using System.Net.Http;
 using Microsoft.Web.WebView2.Core;
 using System.IO;
 using Microsoft.UI.Xaml.Controls;
+using System.Threading.Tasks;
+using System;
+using System.Collections.Generic;
 
 namespace GraphPriceOne.Helpers
 {
-    public static class FaviconHelper
+    public class MetaDataHelper
     {
         public static async Task DownloadFaviconAsync(string url)
         {
