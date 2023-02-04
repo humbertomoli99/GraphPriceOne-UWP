@@ -41,193 +41,217 @@ namespace GraphPriceOne.ViewModels
         {
 
         }
-        public ICommand SelectMultipleCommand => new RelayCommand(new Action(() => SelectMulti()));
+        public ICommand SelectMultipleCommand => new RelayCommand(new Action(SelectMulti));
         public ICommand ClearFilterCommand => new RelayCommand(new Action(async () => await GetProductsAsync()));
-        public ICommand OrderDescendentCommand => new RelayCommand(new Action(async () => await ShowOrderedList(OrderBy, false)));
-        public ICommand OrderAscendantCommand => new RelayCommand(new Action(async () => await ShowOrderedList(OrderBy, true)));
-        public ICommand OrderByNameCommand => new RelayCommand(new Action(async () => await ShowOrderedList("name", OrderDescen)));
-        public ICommand OrderByPriceCommand => new RelayCommand(new Action(async () => await ShowOrderedList("price", OrderDescen)));
-        public ICommand OrderByStockCommand => new RelayCommand(new Action(async () => await ShowOrderedList("stock", OrderDescen)));
+        public ICommand OrderCommand => new RelayCommand(new Action(async () => await OrderListAsync()));
         public ICommand AddProductCommand => new RelayCommand(new Action(async () => await AddProductAsync()));
         public ICommand UpdateListCommand => new RelayCommand(new Action(async () => await GetProductsAsync()));
         public ICommand DeleteCommand => new RelayCommand(new Action(async () => await DeleteAsync()));
+
+        private async Task OrderListAsync()
+        {
+            switch (OrderBy)
+            {
+                case "name":
+                    await ShowOrderedList("name", OrderDescen);
+                    break;
+                case "price":
+                    await ShowOrderedList("price", OrderDescen);
+                    break;
+                case "stock":
+                    await ShowOrderedList("stock", OrderDescen);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+
         private async Task AddProductAsync()
         {
             IsBusy = true;
-            try
+
+            string url = await ClipboardEvents.GetClipboardTextAsync();
+
+            List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+            var query = Products.Where(s => s.productUrl.Equals(url))?.ToList();
+
+            bool IsRegistered = ((Products.Where(s => s.productUrl.Equals(url))?.ToList().Count) > 0) ? true : false;
+
+            var Stores = await App.PriceTrackerService.GetStoresAsync();
+            var UrlShop = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
+
+            if (!TextBoxEvent.IsValidURL(url))
             {
-                string url = await ClipboardEvents.GetClipboardTextAsync();
-
-                List<ProductInfo> Products = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-                var query = Products.Where(s => s.productUrl.Equals(url))?.ToList();
-
-                bool IsRegistered = ((Products.Where(s => s.productUrl.Equals(url))?.ToList().Count) > 0) ? true : false;
-
-                var Stores = await App.PriceTrackerService.GetStoresAsync();
-                var UrlShop = Stores.Where(s => url.Contains(s.startUrl))?.ToList();
-
-                if (!TextBoxEvent.IsValidURL(url))
+                ContentDialog InvalidClipboardUrl = new ContentDialog()
                 {
-                    ContentDialog InvalidClipboardUrl = new ContentDialog()
-                    {
-                        Title = "Your clipboard url is invalid",
-                        PrimaryButtonText = "OK, THANKS",
-                        Content = "Your url must start with http:// or https:// to be valid for the application"
-                    };
-                    await InvalidClipboardUrl.ShowAsync();
-                    return;
+                    Title = "Your clipboard url is invalid",
+                    PrimaryButtonText = "OK, THANKS",
+                    Content = "Your url must start with http:// or https:// to be valid for the application"
+                };
+                await InvalidClipboardUrl.ShowAsync();
+                return;
+            }
+            //url no valida
+            //validar url valida para envio masivo de productos
+            if (!TextBoxEvent.IsValidURL(url))
+            {
+                ContentDialog InvalidClipboardUrl = new ContentDialog()
+                {
+                    Title = "Add a new product",
+                    PrimaryButtonText = "OK, THANKS",
+                    Content = "Copy a URL to begin\n" + "Copy the URL of the product, then select Add Product to start tracking the product's price."
+                };
+                await InvalidClipboardUrl.ShowAsync();
+                return;
+            }
+            if (UrlShop.Count == 0 || UrlShop == null)
+            {
+                ContentDialog UnassignedSectors = new ContentDialog()
+                {
+                    Title = "No selectors assigned to Store",
+                    PrimaryButtonText = "OK",
+                    SecondaryButtonText = "MASS SHIPPING",
+                    CloseButtonText = "CANCEL",
+                    Content = "The store has no assigned sectors."
+                };
+                ContentDialogResult result1 = await UnassignedSectors.ShowAsync();
+                if (result1 == ContentDialogResult.Primary)
+                {
+                    NavigationService.Navigate(typeof(AddStorePage));
                 }
-                //url no valida
-                //validar url valida para envio masivo de productos
-                if (!TextBoxEvent.IsValidURL(url))
+                else if (result1 == ContentDialogResult.Secondary)
                 {
-                    ContentDialog InvalidClipboardUrl = new ContentDialog()
-                    {
-                        Title = "Add a new product",
-                        PrimaryButtonText = "OK, THANKS",
-                        Content = "Copy a URL to begin\n" + "Copy the URL of the product, then select Add Product to start tracking the product's price."
-                    };
-                    await InvalidClipboardUrl.ShowAsync();
-                    return;
+                    // obtener todas las url de la pagina, y pasarla por el filtro si existe la tienda con selectores
+                    await MassShipping(url);
                 }
-                if (UrlShop.Count == 0 || UrlShop == null)
+                return;
+            }
+            //crear un if por si el sitemap no tiene selectores
+            if (IsRegistered)
+            {
+                ContentDialog ProductRegisterMessage = new ContentDialog()
                 {
-                    ContentDialog UnassignedSectors = new ContentDialog()
+                    Title = "This product is already registered",
+                    PrimaryButtonText = "OK",
+                    Content = "The product is registered and will continue to be tracked."
+                };
+                await ProductRegisterMessage.ShowAsync();
+                return;
+            }
+            HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(url);
+            ScrapingDate.EnlaceImage icon = ScrapingDate.GetMetaIcon(HtmlUrl);
+
+            var id_sitemap = UrlShop.First().ID_STORE;
+            var Selectores = await App.PriceTrackerService.GetSelectorsAsync();
+            var SitemapSelectors = Selectores.Where(s => s.ID_SELECTOR.Equals(id_sitemap))?.ToList()?.First();
+
+            var productName = ScrapingDate.GetTitle(HtmlUrl, SitemapSelectors.Title);
+            var productDescription = ScrapingDate.GetDescription(HtmlUrl, SitemapSelectors.Description, SitemapSelectors.DescriptionGetAttribute);
+            var PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute);
+            var ShippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute);
+            var Stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute);
+
+            ProductInfo Product = new ProductInfo()
+            {
+                ID_STORE = id_sitemap,
+                productName = productName,
+                productUrl = url,
+                productDescription = productDescription,
+                Stock = Stock,
+                PriceTag = PriceTag,
+                ShippingPrice = ShippingPrice
+            };
+            var shipping = Product.ShippingCurrency + " " + Product.ShippingPrice;
+            if (Product.ShippingPrice == 0)
+            {
+                shipping = "Free shipping";
+            }
+            else if (Product.ShippingCurrency == null)
+            {
+                shipping = "$" + Product.ShippingPrice;
+            }
+
+            var currency = Product.PriceCurrency;
+            if (Product.PriceCurrency == null)
+            {
+                currency = "$";
+            }
+
+            //if (!string.IsNullOrEmpty(PriceTag.ToString()))
+            //{
+            //    ContentDialog dialognoprice = new ContentDialog()
+            //    {
+            //        Title = "No se ha encontado el precio del producto",
+            //    };
+            //    await dialognoprice.ShowAsync();
+            //}
+
+            var content = Product.productName + "\n\n" +
+                "Price: " + currency + Product.PriceTag + "\n" +
+                "Shipping: " + shipping + "\n" +
+                "Store ID: " + Product.ID_STORE;
+
+            ContentDialog dialogOk = new ContentDialog()
+            {
+                Title = "Add a new product",
+                PrimaryButtonText = "ADD PRODUCT",
+                SecondaryButtonText = "MASS SHIPPING",
+                CloseButtonText = "CANCEL",
+                Content = content
+            };
+            ContentDialogResult result = await dialogOk.ShowAsync();
+
+            if (result == ContentDialogResult.Primary)
+            {
+                await App.PriceTrackerService.AddProductAsync(Product);
+
+                List<ProductInfo> Products2 = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
+                var lastId = Products2[Products2.Count - 1].ID_PRODUCT;
+
+                // si hay 0 items es 1;
+                //for para añadir todas las imagenes encontradas
+                List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl, SitemapSelectors.Images);
+
+                string[] imagenes = ScrapingDate.DownloadImage(url, imagen, @"\Products\", lastId.ToString());
+                if (imagenes != null)
+                {
+                    foreach (var item in imagenes)
                     {
-                        Title = "No selectors assigned to Store",
-                        PrimaryButtonText = "OK",
-                        SecondaryButtonText = "MASS SHIPPING",
-                        CloseButtonText = "CANCEL",
-                        Content = "The store has no assigned sectors."
-                    };
-                    ContentDialogResult result1 = await UnassignedSectors.ShowAsync();
-                    if (result1 == ContentDialogResult.Primary)
-                    {
-                        NavigationService.Navigate(typeof(AddStorePage));
+                        ProductPhotos ProductImages = new ProductPhotos()
+                        {
+                            PhotoSrc = item,
+                            ID_PRODUCT = lastId,
+
+                        };
+                        await App.PriceTrackerService.AddImageAsync(ProductImages);
                     }
-                    else if (result1 == ContentDialogResult.Secondary)
-                    {
-                        // obtener todas las url de la pagina, y pasarla por el filtro si existe la tienda con selectores
-                        await MassShipping(url);
-                    }
-                    return;
                 }
-                //crear un if por si el sitemap no tiene selectores
-                if (IsRegistered)
-                {
-                    ContentDialog ProductRegisterMessage = new ContentDialog()
-                    {
-                        Title = "This product is already registered",
-                        PrimaryButtonText = "OK",
-                        Content = "The product is registered and will continue to be tracked."
-                    };
-                    await ProductRegisterMessage.ShowAsync();
-                    return;
-                }
-                HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(url);
-                ScrapingDate.EnlaceImage icon = ScrapingDate.GetMetaIcon(HtmlUrl);
 
-                var id_sitemap = UrlShop.First().ID_STORE;
-                var Selectores = await App.PriceTrackerService.GetSelectorsAsync();
-
-                var SitemapSelectors = Selectores.Where(s => s.ID_SELECTOR.Equals(id_sitemap))?.ToList()?.First();
-                ProductInfo Product = new ProductInfo()
+                History ProductHistory = new History()
                 {
-                    ID_STORE = id_sitemap,
-                    productName = ScrapingDate.GetTitle(HtmlUrl, SitemapSelectors.Title),
-                    productUrl = url,
-                    productDescription = ScrapingDate.GetDescription(HtmlUrl, SitemapSelectors.Description, SitemapSelectors.DescriptionGetAttribute),
+                    PRODUCT_ID = lastId,
+                    ProductDate = DateTime.UtcNow.ToString(),
+                    STORE_ID = id_sitemap,
                     Stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
                     PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
                     ShippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
                 };
-                var shipping = Product.ShippingCurrency + " " + Product.ShippingPrice;
-                if (Product.ShippingPrice == 0)
-                {
-                    shipping = "Free shipping";
-                }
-                else if (Product.ShippingCurrency == null)
-                {
-                    shipping = "$" + Product.ShippingPrice;
-                }
 
-                var currency = Product.PriceCurrency;
-                if (Product.PriceCurrency == null)
-                {
-                    currency = "$";
-                }
+                await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
 
-                var content = Product.productName + "\n\n" +
-                    "Price: " + currency + Product.PriceTag + "\n" +
-                    "Shipping: " + shipping + "\n" +
-                    "Store ID: " + Product.ID_STORE;
-
-                ContentDialog dialogOk = new ContentDialog()
-                {
-                    Title = "Add a new product",
-                    PrimaryButtonText = "ADD PRODUCT",
-                    SecondaryButtonText = "MASS SHIPPING",
-                    CloseButtonText = "CANCEL",
-                    Content = content
-                };
-                ContentDialogResult result = await dialogOk.ShowAsync();
-
-                if (result == ContentDialogResult.Primary)
-                {
-                    await App.PriceTrackerService.AddProductAsync(Product);
-
-                    List<ProductInfo> Products2 = (List<ProductInfo>)await App.PriceTrackerService.GetProductsAsync();
-                    var lastId = Products2[Products2.Count - 1].ID_PRODUCT;
-
-                    // si hay 0 items es 1;
-                    //for para añadir todas las imagenes encontradas
-                    List<string> imagen = ScrapingDate.GetUrlImage(HtmlUrl, SitemapSelectors.Images);
-
-                    string[] imagenes = ScrapingDate.DownloadImage(url, imagen, @"\Products\", lastId.ToString());
-                    if (imagenes != null)
-                    {
-                        foreach (var item in imagenes)
-                        {
-                            ProductPhotos ProductImages = new ProductPhotos()
-                            {
-                                PhotoSrc = item,
-                                ID_PRODUCT = lastId,
-
-                            };
-                            await App.PriceTrackerService.AddImageAsync(ProductImages);
-                        }
-                    }
-
-                    History ProductHistory = new History()
-                    {
-                        PRODUCT_ID = lastId,
-                        ProductDate = DateTime.UtcNow.ToString(),
-                        STORE_ID = id_sitemap,
-                        Stock = ScrapingDate.GetStock(HtmlUrl, SitemapSelectors.Stock, SitemapSelectors.StockGetAttribute),
-                        PriceTag = ScrapingDate.GetPrice(HtmlUrl, SitemapSelectors.Price, SitemapSelectors.PriceGetAttribute),
-                        ShippingPrice = ScrapingDate.GetShippingPrice(HtmlUrl, SitemapSelectors.Shipping, SitemapSelectors.ShippingGetAttribute)
-                    };
-
-                    await App.PriceTrackerService.AddHistoryAsync(ProductHistory);
-
-                    HideMessageFirstProduct();
-                    await GetProductsAsync();
-                }
-                else if (result == ContentDialogResult.Secondary)
-                {
-                    HideMessageFirstProduct();
-                    await MassShipping(url);
-                }
+                HideMessageFirstProduct();
+                await GetProductsAsync();
             }
-            catch (Exception ex)
+            else if (result == ContentDialogResult.Secondary)
             {
-                IsBusy = false;
-                await Dialogs.ExceptionDialog(ex);
+                HideMessageFirstProduct();
+                await MassShipping(url);
             }
-            finally
-            {
-                IsBusy = false;
-            }
+
+
+            IsBusy = false;
+
         }
         private async Task MassShipping(string url)
         {
