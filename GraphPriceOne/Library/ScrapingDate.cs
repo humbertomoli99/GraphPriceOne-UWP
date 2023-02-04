@@ -374,8 +374,12 @@ namespace GraphPriceOne.Library
             return productName;
         }
 
-        public static string GetDescription(HtmlNode DocumentNode, string Selector, string GetAttribute = null)
+        public static string GetDescription(HtmlNode DocumentNode, string Selector, string GetAttribute)
         {
+            if (string.IsNullOrEmpty(GetAttribute))
+            {
+                GetAttribute = "innerHTML";
+            }
             // Obtiene la descripción del producto utilizando el selector y el atributo especificados
             string productDescription = MetaDataHelper.GetMetaValue(DocumentNode, Selector, GetAttribute);
 
