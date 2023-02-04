@@ -90,6 +90,7 @@ namespace GraphPriceOne.ViewModels
                     Content = "Your url must start with http:// or https:// to be valid for the application"
                 };
                 await InvalidClipboardUrl.ShowAsync();
+                IsBusy = false;
                 return;
             }
             //url no valida
@@ -103,6 +104,7 @@ namespace GraphPriceOne.ViewModels
                     Content = "Copy a URL to begin\n" + "Copy the URL of the product, then select Add Product to start tracking the product's price."
                 };
                 await InvalidClipboardUrl.ShowAsync();
+                IsBusy = false;
                 return;
             }
             if (UrlShop.Count == 0 || UrlShop == null)
@@ -125,6 +127,7 @@ namespace GraphPriceOne.ViewModels
                     // obtener todas las url de la pagina, y pasarla por el filtro si existe la tienda con selectores
                     await MassShipping(url);
                 }
+                IsBusy = false;
                 return;
             }
             //crear un if por si el sitemap no tiene selectores
@@ -137,6 +140,7 @@ namespace GraphPriceOne.ViewModels
                     Content = "The product is registered and will continue to be tracked."
                 };
                 await ProductRegisterMessage.ShowAsync();
+                IsBusy = false;
                 return;
             }
             HtmlNode HtmlUrl = await ScrapingDate.LoadPageAsync(url);
