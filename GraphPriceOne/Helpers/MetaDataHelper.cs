@@ -81,21 +81,39 @@ namespace GraphPriceOne.Helpers
                 throw new Exception("Formato de favicon no soportado");
             }
         }
-
-        public static string GetMetaValue(HtmlNode DocumentNode, string Selector, string attributeName)
+        /// Obtiene el valor de un atributo de un nodo HTML específico.
+        /// </summary>
+        /// <param name="documentNode">El nodo raíz del documento HTML.</param>
+        /// <param name="selector">El selector CSS utilizado para seleccionar el nodo deseado.</param>
+        /// <param name="attributeName">El nombre del atributo que se desea obtener.</param>
+        /// <returns>El valor del atributo o una cadena vacía en caso de no existir.</returns>
+        public static string GetMetaValue(HtmlNode documentNode, string selector, string attributeName)
         {
-            HtmlNode metaNode = DocumentNode.QuerySelector(Selector);
-            if(attributeName == "innerHTML")
-            {
-                string selector = DocumentNode?.QuerySelector(Selector)?.InnerHtml?.ToString();
+            // Selecciona el nodo específico utilizando el selector CSS
+            HtmlNode metaNode = documentNode.QuerySelector(selector);
 
-                return selector ?? string.Empty;
+            // Inicializa una variable para almacenar el resultado
+            string result = string.Empty;
+
+            // Si se quiere obtener el contenido HTML interno del nodo
+            if (attributeName == "innerHTML")
+            {
+                // Asigna el contenido interno del nodo al resultado
+                result = metaNode?.InnerHtml;
             }
-            return metaNode?.GetAttributeValue(attributeName, string.Empty) ?? string.Empty;
+            else
+            {
+                // Asigna el valor del atributo al resultado
+                result = metaNode?.GetAttributeValue(attributeName, string.Empty);
+            }
+
+            // Devuelve el resultado o una cadena vacía en caso de ser nulo
+            return result ?? string.Empty;
         }
+
         public static string GetMetaTitle(HtmlNode DocumentNode)
         {
-            return GetMetaValue(DocumentNode, "head > title","innerHTML");
+            return GetMetaValue(DocumentNode, "head > title", "innerHTML");
         }
 
         public static string GetMetaDescription(HtmlNode DocumentNode)
