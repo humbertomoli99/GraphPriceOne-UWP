@@ -115,11 +115,12 @@ namespace GraphPriceOne.ViewModels
             }
             //}
 
-            Store StoreObjects = new Store();
-
-            StoreObjects.nameStore = nameStore;
-            StoreObjects.startUrl = startUrl;
-            StoreObjects.image = _imageSrc;
+            Store StoreObjects = new Store()
+            {
+                nameStore = nameStore,
+                startUrl = startUrl,
+                image = _imageSrc
+            };
 
             await App.PriceTrackerService.AddStoreAsync(StoreObjects);
         }
