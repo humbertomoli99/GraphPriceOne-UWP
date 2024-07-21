@@ -11,6 +11,7 @@ namespace GraphPriceOne.ViewModels
 
         public ExportViewModel()
         {
+           _ = LoadDataAsync();
         }
 
         public async Task LoadDataAsync()

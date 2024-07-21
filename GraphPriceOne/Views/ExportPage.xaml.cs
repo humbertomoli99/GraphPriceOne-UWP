@@ -19,8 +19,6 @@ namespace GraphPriceOne.Views
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            await ViewModel.LoadDataAsync();
         }
 
         private void Button_Click(object sender, Windows.UI.Xaml.RoutedEventArgs e)
