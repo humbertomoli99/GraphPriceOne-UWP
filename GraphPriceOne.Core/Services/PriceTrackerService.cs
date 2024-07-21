@@ -18,8 +18,8 @@ namespace GraphPriceOne.Core.Services
                 var StoresList = DefaultData.AllDefaultStores().ToList();
                 var SelectoresList = DefaultData.AllDefaultSelectores().ToList();
 
-                _database.CreateTableAsync<Store>().Wait();
-                _database.CreateTableAsync<Selector>().Wait();
+                _database.CreateTableAsync<Store>();
+                _database.CreateTableAsync<Selector>();
 
                 foreach (var item in StoresList)
                 {
@@ -30,12 +30,12 @@ namespace GraphPriceOne.Core.Services
                     _database.InsertAsync(item);
                 }
             }
-            _database.CreateTableAsync<ProductInfo>().Wait();
-            _database.CreateTableAsync<Store>().Wait();
-            _database.CreateTableAsync<Selectores>().Wait();
-            _database.CreateTableAsync<ProductPhotos>().Wait();
-            _database.CreateTableAsync<Notifications>().Wait();
-            _database.CreateTableAsync<History>().Wait();
+            _database.CreateTableAsync<Store>();
+            _database.CreateTableAsync<Selectores>();
+            _database.CreateTableAsync<ProductPhotos>();
+            _database.CreateTableAsync<Notifications>();
+            _database.CreateTableAsync<History>();
+            _database.CreateTableAsync<ProductInfo>();
         }
 
         public async Task<bool> AddHistoryAsync(History PriceTrackerService)
